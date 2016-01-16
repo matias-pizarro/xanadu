@@ -45,14 +45,21 @@
   - name: Add new host to our inventory.
     add_host:
       name: "{{droplet_01.droplet.ip_address}}"
-      groups: digital_ocean
-      ansible_python_interpreter: /usr/local/bin/python
+      groups: new_droplets
+      ansible_python_interpreter: /usr/local/bin/python2
     when: droplet_01.droplet is defined
 
-- hosts: digital_ocean
+- hosts: new_droplets
   gather_facts: false
 
   tasks:
   - name: Wait for port 22 to become available.
     local_action: "wait_for port=22 host={{ inventory_hostname }}"
+
+- hosts: new_droplets
+  user: freebsd
+  sudo: yes
+  gather_facts: no
+  roles:
+    - python
 ...
