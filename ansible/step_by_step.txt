@@ -1,0 +1,7 @@
+mkvirtualenv --python=/usr/local/bin/python2 ansible2
+pip install --upgrade pip ansible six ipython dopy
+export DO_API_VERSION='2'
+export DO_API_TOKEN='jshdksafhdhsafkjhdskfhsdkfhgfiwgsfyigscabdskbdskfgasfdgsafd'
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${DO_API_TOKEN}" "https://api.digitalocean.com/v2/account/keys" | python -m json.tool
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${DO_API_TOKEN}" "https://api.digitalocean.com/v2/droplets" | python -m json.tool
+curl -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer ${DO_API_TOKEN}" "https://api.digitalocean.com/v2/droplets/10202814"

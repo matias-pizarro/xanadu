@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: create new Droplet
+    digital_ocean:
+      #api_token:
+      state: present
+      command: droplet
+      name: droplet01
+      region_id: ams2
+      size_id: 512mb
+      image_id: freebsd-10-2-x64
+      backups_enabled: no
+      ssh_key_ids: 689293,689296,689294
+      user_data: null
+      # Need to turn off private networking to guarantee ip_address is public
+      private_networking: yes
+      # Required for idempotence/only one droplet creation
+      unique_name: yes
+      wait: yes
+      wait_timeout: 500
+    register: droplet_01
+
+  - name: debug
+    debug:
+      var=droplet_01
+
+  - name: debug
+    debug:
+      msg="ID is {{ droplet_01.droplet.id }}"
+      msg="IP is {{ droplet_01.droplet.ip_address }}"
+
+  - name: Add new host to our inventory.
+    add_host:
+      name: "{{droplet_01.droplet.ip_address}}"
+      groups: digital_ocean
+    when: droplet_01.droplet is defined
+
+- hosts: digital_ocean
+  remote_user: freebsd
+  gather_facts: false
+
+  tasks:
+  - name: Wait for port 22 to become available.
+    local_action: "wait_for port=22 host={{ inventory_hostname }}"
+...
