@@ -1,7 +1,13 @@
 ---
-- hosts: localhost
+- name: Digital Ocean Example
+  hosts: localhost
   connection: local
   gather_facts: false
+  vars:
+    - droplet_image: freebsd-10-2-x64
+    - droplet_size: 512mb
+    - droplet_region: ams2
+    - droplet_ssh_keys: 689293,689296,689294
 
   tasks:
   - name: create new Droplet
@@ -10,11 +16,11 @@
       state: present
       command: droplet
       name: droplet01
-      region_id: ams2
-      size_id: 512mb
-      image_id: freebsd-10-2-x64
+      image_id: '{{ droplet_image }}'
+      size_id: '{{ droplet_size }}'
+      region_id: '{{ droplet_region }}'
+      ssh_key_ids: '{{ droplet_ssh_keys }}'
       backups_enabled: no
-      ssh_key_ids: 689293,689296,689294
       user_data: null
       # Need to turn off private networking to guarantee ip_address is public
       private_networking: yes
