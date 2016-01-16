@@ -1,60 +1,8 @@
 ---
-- name: Digital Ocean Example
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  vars:
-    - droplet_image: freebsd-10-2-x64
-    - droplet_size: 512mb
-    - droplet_region: ams2
-    - droplet_ssh_keys: 689293,689296,689294
-
-  tasks:
-  - name: create new Droplet
-    digital_ocean:
-      #api_token:
-      state: present
-      command: droplet
-      name: droplet01
-      image_id: '{{ droplet_image }}'
-      size_id: '{{ droplet_size }}'
-      region_id: '{{ droplet_region }}'
-      ssh_key_ids: '{{ droplet_ssh_keys }}'
-      backups_enabled: no
-      user_data: null
-      # Need to turn off private networking to guarantee ip_address is public
-      private_networking: yes
-      # Required for idempotence/only one droplet creation
-      unique_name: yes
-      wait: yes
-      wait_timeout: 500
-    register: droplet_01
-
-  - name: debug
-    debug:
-      var=droplet_01
-
-  - name: debug
-    debug:
-      msg="ID is {{ droplet_01.droplet.id }}"
-
-  - name: debug
-    debug:
-      msg="IP is {{ droplet_01.droplet.ip_address }}"
-
-  - name: Add new host to our inventory.
-    add_host:
-      name: "{{droplet_01.droplet.ip_address}}"
-      groups: new_droplets
-      ansible_python_interpreter: /usr/local/bin/python2
-    when: droplet_01.droplet is defined
-
-- hosts: new_droplets
-  gather_facts: false
-
-  tasks:
-  - name: Wait for port 22 to become available.
-    local_action: "wait_for port=22 host={{ inventory_hostname }}"
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - do_create
 
 - hosts: new_droplets
   user: freebsd
