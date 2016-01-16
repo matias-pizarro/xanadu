@@ -1,0 +1,9 @@
+---
+- hosts: digital_ocean
+  user: freebsd
+  sudo: yes
+  vars:
+    - fqdn: mail02.docbase.net
+  roles:
+      - common
+...

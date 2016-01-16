@@ -1,4 +1,7 @@
 ---
 - name: install python
-  raw: env ASSUME_ALWAYS_YES=YES pkg install python
+  raw: env ASSUME_ALWAYS_YES=YES pkg install python bash-static
+
+- name: set freebsd user shell to bash
+  raw: pw usermod freebsd -s /usr/local/bin/bash
 ...
