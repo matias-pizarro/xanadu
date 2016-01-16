@@ -1,13 +1,6 @@
 ---
 - name: create new Droplet
-  vars:
-    - droplet_name: droplet01
-    - droplet_image: freebsd-10-2-x64
-    - droplet_size: 512mb
-    - droplet_region: ams2
-    - droplet_ssh_keys: 689293,689296,689294
   digital_ocean:
-    #api_token:
     state: present
     command: droplet
     name: '{{ droplet_name }}'

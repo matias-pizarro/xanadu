@@ -1,3 +1,4 @@
 ---
 - name: install python
   raw: env ASSUME_ALWAYS_YES=YES pkg install python
+...

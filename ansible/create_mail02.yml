@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    - droplet_name: mail02
+    - droplet_image: freebsd-10-2-x64
+    - droplet_size: 512mb
+    - droplet_region: ams2
+    - droplet_ssh_keys: 689293,689296,689294
+  roles:
+    - do_create
+
+- hosts: new_droplets
+  user: freebsd
+  sudo: yes
+  gather_facts: no
+  roles:
+    - python
+...
