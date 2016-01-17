@@ -1,7 +1,71 @@
 ---
+
 - name: set hostname
   command: hostname {{ fqdn }}
 
 - name: persist hostname
   command: /usr/sbin/sysrc hostname={{ fqdn }}
+
+- name: disable ipv6
+  command: /usr/sbin/sysrc ipv6_network_interfaces=none
+
+- name: enable pf
+  command: /usr/sbin/sysrc pf_enable=YES
+  tags: pf
+
+- name: configuring pf
+  command: /usr/sbin/sysrc pflog_enable=YES
+  tags: pf
+  notify:
+    - flush pf
+
+- name: configuring pf
+  template: src=pf.conf.j2
+    dest=/etc/pf.conf owner=0 group=0 mode=0644
+    validate='/sbin/pfctl -nf %s'
+  tags: pf
+  notify:
+    - flush pf
+
+- name: set timezone
+  command: /usr/sbin/tzsetup -s {{ timezone }}
+  tags: ntp
+  notify:
+    - restart ntpd
+
+- name: enable ntp
+  command: /usr/sbin/sysrc ntpd_enable=YES
+  tags: ntp
+
+- name: ntp sync on start
+  command: /usr/sbin/sysrc ntpd_sync_on_start=YES
+  tags: ntp
+
+- name: install sshguard
+  pkgng: name=sshguard-pf state=present
+  tags: pf
+
+- name: enable sshguard
+  command: /usr/sbin/sysrc sshguard_enable=YES
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_safety_thresh="30"
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_pardon_min_interval="600"
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_prescribe_interval="7200"
+  notify:
+    - restart sshguard
+  tags: pf
 ...

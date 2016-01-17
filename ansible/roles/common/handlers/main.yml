@@ -1,0 +1,21 @@
+---
+- name: restart ntpd
+  service: name=ntpd state=restarted
+
+- name: parse pf rules
+  shell: /sbin/pfctl -nf /etc/pf.conf
+
+- name: load pf rules
+  shell: /sbin/pfctl -f /etc/pf.conf
+
+- name: flush pf
+  shell: /sbin/pfctl -F nat -F queue -F rules -F Sources -F info -F Tables -F osfp -f /etc/pf.conf
+
+- name: enable pf
+  shell: /sbin/pfctl -e
+
+- name: disable pf
+  shell: /sbin/pfctl -d
+
+- name: restart sshguard
+  service: name=sshguard state=restarted
