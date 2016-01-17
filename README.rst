@@ -1,3 +1,6 @@
+.. display Digital Ocean account details
+./do_account.sh
+
 .. display Digital Ocean options
 ./do_options.sh
 
