@@ -14,4 +14,6 @@
 
 - include: sshguard.yml
 
+- include: ezjail.yml
+
 ...
