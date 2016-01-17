@@ -1,0 +1,21 @@
+---
+
+- name: enable pf
+  command: /usr/sbin/sysrc pf_enable=YES
+  tags: pf
+
+- name: configuring pf
+  command: /usr/sbin/sysrc pflog_enable=YES
+  tags: pf
+  notify:
+    - flush pf
+
+- name: configuring pf
+  template: src=pf.conf.j2
+    dest=/etc/pf.conf owner=0 group=0 mode=0644
+    validate='/sbin/pfctl -nf %s'
+  tags: pf
+  notify:
+    - flush pf
+
+...

@@ -1,0 +1,31 @@
+---
+
+- name: install sshguard
+  pkgng: name=sshguard-pf state=present
+  tags: pf
+
+- name: enable sshguard
+  command: /usr/sbin/sysrc sshguard_enable=YES
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_safety_thresh="30"
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_pardon_min_interval="600"
+  notify:
+    - restart sshguard
+  tags: pf
+
+- name: configure sshguard
+  command: /usr/sbin/sysrc sshguard_prescribe_interval="7200"
+  notify:
+    - restart sshguard
+  tags: pf
+
+...

@@ -1,6 +1,8 @@
 ---
+
 - hosts: digital_ocean
   sudo: yes
   roles:
       - common
+
 ...

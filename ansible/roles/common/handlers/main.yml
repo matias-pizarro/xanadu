@@ -1,4 +1,5 @@
 ---
+
 - name: restart ntpd
   service: name=ntpd state=restarted
 
@@ -19,3 +20,5 @@
 
 - name: restart sshguard
   service: name=sshguard state=restarted
+
+...

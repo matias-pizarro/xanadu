@@ -1,4 +1,5 @@
 ---
+
 - hosts: localhost
   gather_facts: no
   vars:
@@ -16,4 +17,5 @@
   gather_facts: no
   roles:
     - python
+
 ...
