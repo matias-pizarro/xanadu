@@ -12,11 +12,11 @@
 ################ Macros ###################################
 
   ### Interfaces ###
-    ext_if = "{{ ansible_default_ipv4.interface }}"
+    ext_if = "{{ ipv4.interface }}"
     unfiltered  = "{ lo0 }"
 
   ### Hosts ###
-    host_ipv4        = "{{ main_ipv4_address }}"
+    host_ipv4        = "{{ ipv4.address }}"
 
 ################ Tables ###################################
 

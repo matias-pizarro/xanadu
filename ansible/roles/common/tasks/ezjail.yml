@@ -11,9 +11,7 @@
     - ezjail
 
 - name: install ezjail
-  pkgng:
-    name=sysutils/ezjail
-    state=present
+  pkgng: name=sysutils/ezjail state=present
   register: ezjail_installed
   tags:
     - ezjail
@@ -22,13 +20,13 @@
   command: /usr/sbin/sysrc ezjail_enable="YES"
   tags:
     - ezjail
-  notify:
-    - start ezjail
 
 - name: create base jail
   command: ezjail-admin install
   when: ezjail_installed.changed == true
   tags:
     - ezjail
+  notify:
+    - start ezjail
 
 ...

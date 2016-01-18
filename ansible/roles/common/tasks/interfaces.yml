@@ -1,6 +1,0 @@
----
-
-- name: disable ipv6
-  command: /usr/sbin/sysrc ipv6_network_interfaces=none
-
-...

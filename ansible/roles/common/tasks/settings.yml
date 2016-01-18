@@ -1,5 +1,11 @@
 ---
 
+- name: disable crash dumps
+  command: /usr/sbin/sysrc dumpdev="NO"
+
+- name: enable fsck improvements
+  command: /usr/sbin/sysrc fsck_y_enable="YES"
+
 - name: stop sendmail
   service: name=sendmail state=stopped
 

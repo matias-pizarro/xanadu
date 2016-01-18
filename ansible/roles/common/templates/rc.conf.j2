@@ -1,0 +1,55 @@
+hostname="{{ fqdn }}"
+keymap="us.iso.acc"
+
+# zfs
+zfs_enable="NO"
+
+# sshd
+sshd_enable="YES"
+
+# pf
+pf_enable="NO"
+pflog_enable="NO"
+
+# sendmail
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+
+# misc
+linux_enable="NO"
+bsdstats_enable="NO"
+
+# ntpd
+ntpd_enable="NO"
+ntpd_sync_on_start="NO"
+
+# S.M.A.R.T. monitoring (sysutils/smartmontools)
+smartd_enable="NO"
+
+# ezjail
+ezjail_enable="NO"
+
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="NO"
+
+syslogd_flags="-s -b localhost"
+
+# FSCK Enhancements
+fsck_y_enable="NO"
+
+# Network options
+cloned_interfaces="${cloned_interfaces} lo1"
+ipv6_activate_all_interfaces="NO"
+ipv6_default_interface="{{ ipv6.interface }}"
+ip6addrctl_enable="NO"
+ip6addrctl_policy="ipv4_prefer"
+
+# IPv4
+ifconfig_{{ ipv4.interface }}_ipv4="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
+defaultrouter="{{ ipv4.gateway }}"
+
+# IPv6
+ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
+ipv6_defaultrouter="{{ ipv6.gateway }}"

@@ -1,7 +1,0 @@
----
-
-- name: install rsync
-  command: /usr/sbin/pkg install -y rsync
-  tags: packages
-
-...

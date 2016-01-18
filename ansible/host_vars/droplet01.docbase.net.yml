@@ -1,7 +1,19 @@
 ---
 
+hostname: droplet01
 fqdn: droplet01.docbase.net
-ports_open: "22 25 80 587 993"
 timezone: Europe/Amsterdam
+
+ipv4:
+  interface: vtnet0
+  address: 185.14.184.227
+  netmask: 255.255.255.0
+  gateway: 185.14.184.1
+
+ipv6:
+  interface: vtnet0
+  address: 2A03:B0C0:0000:1010:0000:0000:001E:9001
+  netmask: 64
+  gateway: 2A03:B0C0:0000:1010:0000:0000:0000:0001
 
 ...

@@ -1,14 +1,17 @@
 ---
 
+- name: create rc.conf
+  template: src=rc.conf.j2
+    dest=/etc/rc.conf owner=0 group=0 mode=0644
+  tags: rc.conf
+
 - name: set hostname
   command: hostname {{ fqdn }}
 
 - name: persist hostname
   command: /usr/sbin/sysrc hostname="{{ fqdn }}"
 
-# - include: interfaces.yml
-
-- include: sendmail.yml
+- include: settings.yml
 
 - include: pf.yml
 
@@ -18,6 +21,9 @@
 
 - include: ezjail.yml
 
-- include: packages.yml
+- include: utils.yml
+
+# keep this the last to avoid ${} substitution
+- include: network.yml
 
 ...
