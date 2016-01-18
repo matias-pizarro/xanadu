@@ -6,7 +6,9 @@
 - name: persist hostname
   command: /usr/sbin/sysrc hostname={{ fqdn }}
 
-- include: interfaces.yml
+# - include: interfaces.yml
+
+- include: sendmail.yml
 
 - include: pf.yml
 
@@ -15,5 +17,7 @@
 - include: sshguard.yml
 
 - include: ezjail.yml
+
+- include: packages.yml
 
 ...
