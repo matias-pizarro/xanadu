@@ -3,6 +3,8 @@
 - hosts: digital_ocean
   sudo: yes
   roles:
-      - common
+    - common
+    - { role: f500.dumpall, dumpall_host_destination: examine/droplet01/ }
+
 
 ...

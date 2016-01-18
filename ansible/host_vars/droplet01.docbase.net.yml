@@ -1,6 +1,6 @@
 ---
 
-fqdn: mail02.docbase.net
+fqdn: droplet01.docbase.net
 ports_open: "22 25 80 587 993"
 timezone: Europe/Amsterdam
 

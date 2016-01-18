@@ -3,7 +3,7 @@
 - hosts: localhost
   gather_facts: no
   vars:
-    - droplet_name: mail02
+    - droplet_name: droplet01
     - droplet_image: freebsd-10-2-x64
     - droplet_size: 512mb
     - droplet_region: ams2
