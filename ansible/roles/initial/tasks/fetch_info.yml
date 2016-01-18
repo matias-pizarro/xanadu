@@ -1,0 +1,13 @@
+---
+
+- stat: path=/etc/rc.digitalocean.d/droplet.conf
+  register: droplet_conf
+
+- name: fetch /etc/rc.digitalocean.d/droplet.conf
+  when: droplet_conf.stat.exists == true
+  fetch:
+    flat=yes
+    src=/etc/rc.digitalocean.d/droplet.conf
+    dest=examine/{{ droplet_name }}/
+
+...

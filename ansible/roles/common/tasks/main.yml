@@ -4,7 +4,7 @@
   command: hostname {{ fqdn }}
 
 - name: persist hostname
-  command: /usr/sbin/sysrc hostname={{ fqdn }}
+  command: /usr/sbin/sysrc hostname="{{ fqdn }}"
 
 # - include: interfaces.yml
 
