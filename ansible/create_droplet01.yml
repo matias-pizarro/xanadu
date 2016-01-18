@@ -16,6 +16,6 @@
   sudo: yes
   gather_facts: no
   roles:
-    - python
+    - initial
 
 ...
