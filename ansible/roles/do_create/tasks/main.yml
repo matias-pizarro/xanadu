@@ -11,7 +11,8 @@
     ssh_key_ids: '{{ droplet_ssh_keys }}'
     backups_enabled: no
     user_data: null
-    private_networking: yes
+    ipv6: yes
+    private_networking: no
     # Required for idempotence/only one droplet creation
     unique_name: yes
     wait: yes
