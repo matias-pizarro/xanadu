@@ -1,0 +1,9 @@
+---
+
+- name: set hostname
+  command: hostname {{ fqdn }}
+
+- name: persist hostname
+  command: /usr/sbin/sysrc hostname="{{ fqdn }}"
+
+...

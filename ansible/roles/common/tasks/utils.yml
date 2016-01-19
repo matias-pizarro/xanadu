@@ -4,12 +4,4 @@
   pkgng: name=rsync state=present
   tags: utils
 
-- name: install bsdstats
-  command: env ASSUME_ALWAYS_YES=YES /usr/sbin/pkg install -y bsdstats
-  tags: utils
-
-- name: enable bsdstats
-  command: /usr/sbin/sysrc bsdstats_enable="YES"
-  tags: utils
-
 ...

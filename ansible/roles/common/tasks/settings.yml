@@ -1,9 +1,11 @@
 ---
 
 - name: disable crash dumps
+  when: is_jail == false
   command: /usr/sbin/sysrc dumpdev="NO"
 
 - name: enable fsck improvements
+  when: is_jail == false
   command: /usr/sbin/sysrc fsck_y_enable="YES"
 
 - name: stop sendmail

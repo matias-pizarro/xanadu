@@ -1,27 +1,13 @@
 ---
 
-- name: create rc.conf
-  template: src=rc.conf.j2
-    dest=/etc/rc.conf owner=0 group=0 mode=0644
-  tags: rc.conf
+- include: rc_conf.yml
 
-- name: set hostname
-  command: hostname {{ fqdn }}
-
-- name: persist hostname
-  command: /usr/sbin/sysrc hostname="{{ fqdn }}"
+- include: hostname.yml
 
 - include: settings.yml
 
-- include: pf.yml
-
-- include: ntp.yml
-
-- include: sshguard.yml
-
-- include: ezjail.yml
-
-- include: utils.yml
+- include: host/tasks.yml
+  when: is_jail == false
 
 # keep this the last to avoid ${} substitution
 - include: network.yml
