@@ -17,8 +17,10 @@ export DO_API_TOKEN='<YOUR_API_TOKEN_HERE>'
 .. retrieve required roles from Ansible Galaxy
 ansible-galaxy install --server https://galaxy-qa.ansible.com -r requirements.yml
 
+.. deploy variables safely. The playbooks expect them to be stored in ../../ansible_variables
+
 .. create droplet01
-cd ansible && ansible-playbook create_droplet01.yml
+ansible-playbook --extra-vars "droplet_name=droplet01" create_droplet.yml
 
 .. apply configs to Digital Ocean hosts
-cd ansible && ansible-playbook digital_ocean.yml
+cd ansible && ansible-playbook --extra-vars "hostname=droplet01.docbase.net" digital_ocean.yml

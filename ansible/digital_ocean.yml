@@ -2,6 +2,8 @@
 
 - hosts: digital_ocean
   sudo: yes
+  vars_files:
+    - '../../ansible_variables/digital_ocean/{{ hostname }}.yml'
   roles:
     - common
 

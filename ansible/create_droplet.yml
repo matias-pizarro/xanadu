@@ -1,0 +1,28 @@
+---
+
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+  roles:
+    - do_create
+
+- hosts: new_droplets
+  user: freebsd
+  sudo: yes
+  gather_facts: no
+  vars_files:
+    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+  roles:
+    - initial
+
+- hosts: new_droplets
+  user: freebsd
+  sudo: yes
+  gather_facts: yes
+  vars_files:
+    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+  roles:
+    - { role: f500.dumpall, dumpall_host_destination: 'examine/{{ droplet_name }}/' }
+
+...
