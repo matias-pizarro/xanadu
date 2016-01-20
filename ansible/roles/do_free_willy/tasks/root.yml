@@ -1,0 +1,22 @@
+---
+
+- name: delete 'Match User root'
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    state=absent
+    line='Match User root'
+
+- name: delete ForceCommand
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    state=absent
+    regexp='^.*ForceCommand echo "Please use the freebsd@ user to access this droplet."'
+
+- name: allow freebsd and root login
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    state=present
+    line='AllowUsers root freebsd'
+  notify: reload sshd
+
+...

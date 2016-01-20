@@ -14,11 +14,9 @@
   vars_files:
     - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
   roles:
-    - initial
+    - do_free_willy
 
 - hosts: new_droplets
-  user: freebsd
-  sudo: yes
   gather_facts: yes
   vars_files:
     - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'

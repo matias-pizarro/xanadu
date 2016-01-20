@@ -4,4 +4,8 @@
 
 - include: users.yml
 
+- include: fetch_info.yml
+
+- include: root.yml
+
 ...

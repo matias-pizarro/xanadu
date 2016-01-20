@@ -1,4 +1,5 @@
 ---
-main_ipv4_address: "{% if ansible_all_ipv4_addresses|length %}{{ ansible_all_ipv4_addresses[0] }}{% else %}{% endif %}"
-main_ipv6_address: "{% if ansible_all_ipv6_addresses|length %}{{ ansible_all_ipv6_addresses[0] }}{% else %}{% endif %}"
+
+ansible_user: root
+
 ...
