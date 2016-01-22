@@ -1,5 +1,9 @@
 ---
 
+- include: python.yml
+
+- include: users.yml
+
 - include: rc_conf.yml
 
 - include: hostname.yml

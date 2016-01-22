@@ -8,13 +8,11 @@
     - do_new_droplet
 
 - hosts: new_droplets
-  user: freebsd
-  sudo: yes
   gather_facts: no
   vars_files:
     - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
   roles:
-    - do_free_droplet
+    - { role: do_free_droplet, ansible_user: freebsd, sudo: yes }
 
 - hosts: new_droplets
   gather_facts: yes
