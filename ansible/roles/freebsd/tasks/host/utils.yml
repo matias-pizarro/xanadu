@@ -1,7 +1,7 @@
 ---
 
 - name: install bsdstats
-  command: env ASSUME_ALWAYS_YES=YES /usr/sbin/pkg install -y bsdstats
+  shell: yes '' | /usr/sbin/pkg install -y bsdstats
   when: is_jail == false
   tags: utils
 
