@@ -3,21 +3,21 @@
 - hosts: localhost
   gather_facts: no
   vars_files:
-    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+    - '../../ansible_variables/digital_ocean/{{ droplet_file }}.yml'
   roles:
     - do_new_droplet
 
 - hosts: new_droplets
   gather_facts: no
   vars_files:
-    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+    - '../../ansible_variables/digital_ocean/{{ droplet_file }}.yml'
   roles:
     - { role: do_free_droplet, ansible_user: freebsd, sudo: yes }
 
 - hosts: new_droplets
   gather_facts: yes
   vars_files:
-    - '../../ansible_variables/digital_ocean/{{ droplet_name }}.yml'
+    - '../../ansible_variables/digital_ocean/{{ droplet_file }}.yml'
   roles:
     - { role: f500.dumpall, dumpall_host_destination: 'examine/{{ droplet_name }}/' }
 

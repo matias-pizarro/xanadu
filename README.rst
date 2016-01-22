@@ -20,7 +20,7 @@ ansible-galaxy install --server https://galaxy-qa.ansible.com -r requirements.ym
 .. deploy variables safely. The playbooks expect them to be stored in ../../ansible_variables
 
 .. create droplet01
-ansible-playbook --extra-vars "droplet_name=droplet01" create_droplet.yml
+ansible-playbook --extra-vars "droplet_name=droplet01 droplet_file=freebsd droplet_size=512mb" create_droplet.yml
 
-.. apply configs to Digital Ocean hosts
-cd ansible && ansible-playbook --extra-vars "hostname=droplet01.docbase.net" digital_ocean.yml
+.. apply configs to all hosts
+cd ansible && ansible-playbook --extra-vars "hostname=droplet01.docbase.net" site.yml
