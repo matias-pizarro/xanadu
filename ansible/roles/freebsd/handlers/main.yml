@@ -30,4 +30,7 @@
 - name: start ezjail
   service: name=ezjail state=started
 
+- name: reload sshd
+  service: name=sshd state=reloaded
+
 ...

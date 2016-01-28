@@ -10,6 +10,8 @@
 
 - include: settings.yml
 
+- include: sshd_config.yml
+
 - include: host/tasks.yml
   when: is_jail == false
 
