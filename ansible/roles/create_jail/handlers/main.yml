@@ -1,0 +1,6 @@
+---
+
+- name: restart jail
+  shell: ezjail-admin restart {{ jail_name }}
+
+...

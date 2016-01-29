@@ -1,0 +1,11 @@
+---
+
+- hosts: "{{ hostname }}"
+  sudo: yes
+  vars_files:
+    - '../../ansible_variables/{{ hostname }}.yml'
+    - '../../ansible_variables/jails/{{ jail }}/main.yml'
+  roles:
+    - create_jail
+
+...

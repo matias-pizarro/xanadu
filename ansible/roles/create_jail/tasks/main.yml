@@ -1,0 +1,34 @@
+---
+
+- name: check whether jail {{ jail_name }} exists on {{ hostname }}
+  shell: ezjail-admin list | grep /usr/jails/{{ jail_name }} | wc -l | sed -e 's/^[ \t]*//'
+  register: jail_exists
+
+- name: check whether directory /usr/jails/{{ jail_name }} exists on {{ hostname }}
+  stat:
+    path=/usr/jails/{{ jail_name }}
+  register: directory
+
+- name: create jail {{ jail_name }} on {{ hostname }}
+  shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }}'
+  when: jail_exists.stdout == "0" and directory.stat.exists == false
+  notify: restart jail
+
+- name: replace jail name in hostname configuration
+  replace:
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    regexp='^(export jail\_iredmail\_hostname="){{ jail_name }}(")$'
+    replace='\1{{ jail_hostname }}\2'
+  notify: restart jail
+
+- name: ensure jail hostname is correctly configured
+  lineinfile:
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    state=present
+    line='export jail_iredmail_hostname="{{ jail_hostname }}"'
+  notify: restart jail
+
+- name: copy host's /etc/resolv.conf to jail {{ jail_name }}
+  shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name }}/etc/
+
+...
