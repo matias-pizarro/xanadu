@@ -9,8 +9,11 @@
 - name: load pf rules
   shell: /sbin/pfctl -f /etc/pf.conf
 
-- name: flush pf
+- name: full pf flush
   shell: /sbin/pfctl -F all -f /etc/pf.conf
+
+- name: partial pf flush
+  shell: /sbin/pfctl -F nat -F queue -F rules -F Sources -F info -F Tables -F osfp -f /etc/pf.conf
 
 - name: start pf
   service: name=pf state=started

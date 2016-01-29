@@ -13,7 +13,12 @@
 
   ### Interfaces ###
     ext_if = "{{ ipv4.interface }}"
-    unfiltered  = "{ lo0 }"
+    loopback_if = "lo0"
+    jails_if = "lo1"
+    unfiltered  = "{" $loopback_if "}"
+
+  ### Host classes ###
+    jailnet = "{$jails_if:network}"
 
   ### Hosts ###
     host_ipv4        = "{{ ipv4.address }}"
@@ -55,7 +60,7 @@
   no rdr on $unfiltered from any to any
 
 # Allows nat to specified addresses
-nat on $ext_if from any to any      -> $host_ipv4
+nat on $ext_if from {lo1:network} to any      -> $host_ipv4
 
 
 ################ Filtering #################################

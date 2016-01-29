@@ -1,0 +1,24 @@
+---
+
+hostname: droplet01
+fqdn: droplet01.example.net
+timezone: Europe/Amsterdam
+is_jail: false
+
+ipv4:
+  interface: vtnet0
+  address: 111.222.333.444
+  netmask: 255.255.255.0
+  gateway: 111.222.333.1
+
+ipv6:
+  interface: vtnet0
+  address: AAAA:BBBB:0000:0000:0000:0000:0000:9999
+  netmask: 64
+  gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
+
+loopback_if: lo0
+jails_if: lo1
+jails_base_ip: 10.0.0
+
+...

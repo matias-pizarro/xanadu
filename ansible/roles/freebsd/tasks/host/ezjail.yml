@@ -1,7 +1,7 @@
 ---
 
 - name: enable cloned interface
-  command: /usr/sbin/sysrc cloned_interfaces="lo1"
+  command: /usr/sbin/sysrc cloned_interfaces="{{ jails_if }}"
   tags:
     - ezjail
 

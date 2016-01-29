@@ -7,12 +7,14 @@
   tags: pf
   notify:
     - load pf rules
+    - partial pf flush
 
 - name: enable pf
   command: /usr/sbin/sysrc pf_enable=YES
   tags: pf
   notify:
     - start pf
+    - partial pf flush
 
 - name: enable pflog
   command: /usr/sbin/sysrc pflog_enable=YES

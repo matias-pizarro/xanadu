@@ -46,7 +46,7 @@ syslogd_flags="-s -b localhost"
 fsck_y_enable="NO"
 
 # Network options
-cloned_interfaces="${cloned_interfaces} lo1"
+cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 ipv6_activate_all_interfaces="NO"
 ipv6_default_interface="{{ ipv6.interface }}"
 ip6addrctl_enable="NO"

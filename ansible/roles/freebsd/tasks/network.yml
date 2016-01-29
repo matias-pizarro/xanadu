@@ -1,7 +1,7 @@
 ---
 
 - name: set cloned interfaces
-  command: /usr/sbin/sysrc cloned_interfaces="${cloned_interfaces} lo1"
+  command: /usr/sbin/sysrc cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 
 - name: activate ipv6 on all interfaces
   command: /usr/sbin/sysrc ipv6_activate_all_interfaces="YES"
