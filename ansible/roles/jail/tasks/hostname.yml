@@ -1,0 +1,21 @@
+
+---
+
+- name: replace jail name in hostname configuration
+  replace:
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
+    replace='\1{{ jail_hostname }}\2'
+  notify: restart jail
+
+- name: ensure jail hostname is correctly configured
+  lineinfile:
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    state=present
+    line='export jail_{{ jail_name }}_hostname="{{ jail_hostname }}"'
+  notify: restart jail
+
+- name: set jail hostname
+  command: /usr/sbin/sysrc -f /usr/jails/{{ jail_name }}/etc/rc.conf hostname="{{ jail_fqdn }}"
+
+...

@@ -1,67 +1,14 @@
 
 ---
 
-- name: check whether jail {{ jail_name }} exists on {{ hostname }}
-  shell: ezjail-admin list | grep /usr/jails/{{ jail_name }} | wc -l | sed -e 's/^[ \t]*//'
-  register: jail_exists
+- include: create.yml
 
-- name: check whether directory /usr/jails/{{ jail_name }} exists on {{ hostname }}
-  stat:
-    path=/usr/jails/{{ jail_name }}
-  register: directory
+- include: hostname.yml
 
-- name: create jail {{ jail_name }} on {{ hostname }}
-  shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }}'
-  when: jail_exists.stdout == "0" and directory.stat.exists == false
-  register: jail_created
-  notify: start jail
+- include: config.yml
 
-- name: set jail {{ jail_name }} autorun to 'run' on {{ hostname }}
-  shell: ezjail-admin config -r run {{ jail_name }}
-  when: jail_autorun == true
+- include: sshd.yml
 
-- name: set jail {{ jail_name }} autorun to 'norun' on {{ hostname }}
-  shell: ezjail-admin config -r norun {{ jail_name }}
-  when: jail_autorun == false
-
-- name: replace jail name in hostname configuration
-  replace:
-    dest=/usr/local/etc/ezjail/{{ jail_name }}
-    regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
-    replace='\1{{ jail_hostname }}\2'
-  notify: restart jail
-
-- name: ensure jail hostname is correctly configured
-  lineinfile:
-    dest=/usr/local/etc/ezjail/{{ jail_name }}
-    state=present
-    line='export jail_{{ jail_name }}_hostname="{{ jail_hostname }}"'
-  notify: restart jail
-
-- name: set jail hostname
-  command: /usr/sbin/sysrc -f /usr/jails/{{ jail_name }}/etc/rc.conf hostname="{{ jail_fqdn }}"
-
-- name: add pf config to allow direct ssh connection
-  lineinfile:
-    dest=/etc/pf/ssh.rdr.conf
-    create=yes
-    owner=0
-    group=0
-    mode=644
-    state=present
-    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port 22'
-  notify: partial pf flush
-
-- name: copy host's /etc/resolv.conf to jail {{ jail_name }}
-  shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name }}/etc/
-
-- name: check whether jail {{ jail_name }} is started
-  shell: jls | grep /usr/jails/{{ jail_name }} | wc -l | sed -e 's/^[ \t]*//'
-  register: jail_started
-
-- name: start jail {{ jail_name }} on {{ hostname }}
-  command: /usr/bin/true
-  when: jail_started.stdout == "0"
-  notify: start jail
+- include: start.yml
 
 ...

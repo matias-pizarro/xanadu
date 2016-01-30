@@ -1,0 +1,15 @@
+
+---
+
+- name: set jail {{ jail_name }} autorun to 'run' on {{ hostname }}
+  shell: ezjail-admin config -r run {{ jail_name }}
+  when: jail_autorun == true
+
+- name: set jail {{ jail_name }} autorun to 'norun' on {{ hostname }}
+  shell: ezjail-admin config -r norun {{ jail_name }}
+  when: jail_autorun == false
+
+- name: copy host's /etc/resolv.conf to jail {{ jail_name }}
+  shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name }}/etc/
+
+...

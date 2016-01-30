@@ -1,0 +1,15 @@
+
+---
+
+- name: add pf config to allow direct ssh connection
+  lineinfile:
+    dest=/etc/pf/ssh.rdr.conf
+    create=yes
+    owner=0
+    group=0
+    mode=644
+    state=present
+    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port 22'
+  notify: partial pf flush
+
+...
