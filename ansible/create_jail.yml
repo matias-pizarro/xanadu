@@ -5,6 +5,7 @@
   vars_files:
     - '../../ansible_variables/{{ hostname }}.yml'
     - '../../ansible_variables/jails/{{ jail }}/main.yml'
+    - 'roles/jail/variables/jails/main.yml'
   roles:
     - jail
 

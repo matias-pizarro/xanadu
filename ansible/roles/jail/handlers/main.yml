@@ -1,5 +1,8 @@
 ---
 
+- name: start jail
+  shell: ezjail-admin start {{ jail_name }}
+
 - name: restart jail
   shell: ezjail-admin restart {{ jail_name }}
 

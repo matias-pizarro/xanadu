@@ -1,0 +1,8 @@
+---
+
+jail_ssh_port: "{{ service_jails_base_port }}{{ jail_index }}"
+jail_ipv4:
+  interface: "{{ jails_if }}"
+  address: "{{ service_jails_base_ip }}.{{ jail_index }}"
+
+...

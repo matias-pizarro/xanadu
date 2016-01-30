@@ -1,0 +1,10 @@
+---
+
+jail_name: mysql
+jail_hostname: mysql02.example.net
+jail_fqdn: mysql02.example.net
+jail_timezone: Europe/Amsterdam
+jail_index: 2
+jail_autorun: true
+
+...

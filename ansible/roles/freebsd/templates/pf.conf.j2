@@ -13,8 +13,8 @@
 
   ### Interfaces ###
     ext_if = "{{ ipv4.interface }}"
-    loopback_if = "lo0"
-    jails_if = "lo1"
+    loopback_if = "{{ loopback_if }}"
+    jails_if = "{{ jails_if }}"
     unfiltered  = "{" $loopback_if "}"
 
   ### Host classes ###
@@ -22,6 +22,7 @@
 
   ### Hosts ###
     host_ipv4        = "{{ ipv4.address }}"
+
 
 ################ Tables ###################################
 
@@ -56,11 +57,15 @@
 
 
 ################ Translation ###############################
+
   no nat on $unfiltered from any to any
   no rdr on $unfiltered from any to any
 
-# Allows nat to specified addresses
-nat on $ext_if from {lo1:network} to any      -> $host_ipv4
+  # Allows nat to specified addresses
+  nat on $ext_if from {lo1:network} to any      -> $host_ipv4
+
+  # redirects ssh to jails
+  include "/etc/pf/ssh.rdr.conf"
 
 
 ################ Filtering #################################
