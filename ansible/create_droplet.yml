@@ -20,5 +20,7 @@
     - '../../ansible_variables/digital_ocean/{{ droplet_file }}.yml'
   roles:
     - { role: f500.dumpall, dumpall_host_destination: 'examine/{{ droplet_name }}/' }
+  handlers:
+  - include: handlers/sshd.yml
 
 ...

@@ -8,5 +8,8 @@
     - 'roles/jail/variables/jails/main.yml'
   roles:
     - jail
+  handlers:
+  - include: handlers/ezjail.yml
+  - include: handlers/pf.yml
 
 ...

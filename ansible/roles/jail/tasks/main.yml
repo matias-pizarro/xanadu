@@ -13,6 +13,7 @@
 - name: create jail {{ jail_name }} on {{ hostname }}
   shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }}'
   when: jail_exists.stdout == "0" and directory.stat.exists == false
+  register: jail_created
   notify: start jail
 
 - name: set jail {{ jail_name }} autorun to 'run' on {{ hostname }}
@@ -26,7 +27,7 @@
 - name: replace jail name in hostname configuration
   replace:
     dest=/usr/local/etc/ezjail/{{ jail_name }}
-    regexp='^(export jail\_{{ jail_name }}\_hostname="){{ jail_name }}(")$'
+    regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
     replace='\1{{ jail_hostname }}\2'
   notify: restart jail
 

@@ -1,8 +1,5 @@
 ---
 
-- name: restart ntpd
-  service: name=ntpd state=restarted
-
 - name: parse pf rules
   shell: /sbin/pfctl -nf /etc/pf.conf
 
@@ -26,14 +23,5 @@
 
 - name: disable pf
   shell: /sbin/pfctl -d
-
-- name: restart sshguard
-  service: name=sshguard state=restarted
-
-- name: start ezjail
-  service: name=ezjail state=started
-
-- name: reload sshd
-  service: name=sshd state=reloaded
 
 ...
