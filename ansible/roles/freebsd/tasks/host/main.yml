@@ -1,5 +1,7 @@
 ---
 
+- include: hostname.yml
+
 - include: pf.yml
 
 - include: ntp.yml

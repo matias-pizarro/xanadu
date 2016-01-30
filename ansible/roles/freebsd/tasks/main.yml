@@ -6,13 +6,11 @@
 
 - include: rc_conf.yml
 
-- include: hostname.yml
-
 - include: settings.yml
 
 - include: sshd_config.yml
 
-- include: host/tasks.yml
+- include: host/main.yml
   when: is_jail == false
 
 # keep this the last to avoid ${} substitution
