@@ -3,7 +3,7 @@
 - hosts: freebsd
   sudo: yes
   vars_files:
-    - '../../ansible_variables/{{ hostname }}.yml'
+    - '../../ansible_variables/hosts/{{ hostname }}.yml'
   roles:
     - freebsd
   handlers:
