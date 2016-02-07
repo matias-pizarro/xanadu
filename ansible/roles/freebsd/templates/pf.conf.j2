@@ -18,7 +18,7 @@
     unfiltered  = "{" $loopback_if "}"
 
   ### Host classes ###
-    jailnet = "{$jails_if:network}"
+    jailnet = "{" $jails_if:network "}"
 
   ### Hosts ###
     host_ipv4        = "{{ ipv4.address }}"
@@ -62,7 +62,7 @@
   no rdr on $unfiltered from any to any
 
   # Allows nat to specified addresses
-  nat on $ext_if from {lo1:network} to any      -> $host_ipv4
+  nat on $ext_if from $jailnet to any      -> $host_ipv4
 
   # redirects ssh to jails
   include "/etc/pf/ssh.rdr.conf"
