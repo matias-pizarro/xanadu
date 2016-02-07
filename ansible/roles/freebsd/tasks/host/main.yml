@@ -12,4 +12,7 @@
 
 - include: utils.yml
 
+# keep this the last to avoid ${} substitution
+- include: network.yml
+
 ...

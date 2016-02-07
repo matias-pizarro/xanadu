@@ -13,7 +13,4 @@
 - include: host/main.yml
   when: host_type == "jail_host"
 
-# keep this the last to avoid ${} substitution
-- include: network.yml
-
 ...
