@@ -2,7 +2,7 @@
 
 hostname: droplet01.example.net
 timezone: Europe/Amsterdam
-is_jail: false
+host_type: jail_host
 
 ipv4:
   interface: vtnet0

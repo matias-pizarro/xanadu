@@ -3,13 +3,13 @@
 - name: create rc.conf
   template: src=rc.conf.j2
     dest=/etc/rc.conf owner=0 group=0 mode=0644
-  when: is_jail == false
+  when: host_type == "jail_host"
   tags: rc.conf
 
 - name: create jail rc.conf
   template: src=jail_rc.conf.j2
     dest=/etc/rc.conf owner=0 group=0 mode=0644
-  when: is_jail == true
+  when: host_type == "jailed_host"
   tags: rc.conf
 
 ...

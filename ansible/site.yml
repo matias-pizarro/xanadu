@@ -1,6 +1,10 @@
 ---
 
-- hosts: freebsd
+- hosts: all
+  tasks:
+  - group_by: key={{ host_type }}
+
+- hosts: plain:jail_host
   sudo: yes
   roles:
     - freebsd

@@ -11,7 +11,7 @@
 - include: sshd_config.yml
 
 - include: host/main.yml
-  when: is_jail == false
+  when: host_type == "jail_host"
 
 # keep this the last to avoid ${} substitution
 - include: network.yml

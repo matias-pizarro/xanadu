@@ -2,12 +2,12 @@
 
 - name: install bsdstats
   shell: yes '' | /usr/sbin/pkg install -y bsdstats
-  when: is_jail == false
+  when: host_type == "jail_host"
   tags: utils
 
 - name: enable bsdstats
   command: /usr/sbin/sysrc bsdstats_enable="YES"
-  when: is_jail == false
+  when: host_type == "jail_host"
   tags: utils
 
 ...
