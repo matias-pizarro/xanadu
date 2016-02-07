@@ -8,7 +8,9 @@
 - name: start jail {{ jail_name }} on {{ hostname }}
   command: /usr/bin/true
   when: jail_started.stdout == "0"
-  notify: start jail
+  notify:
+    - start jail
+    - partial pf flush
   tags: start_jails
 
 ...
