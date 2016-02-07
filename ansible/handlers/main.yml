@@ -1,5 +1,27 @@
 ---
 
+# ntpd
+- name: restart ntpd
+  service: name=ntpd state=restarted
+
+# sshd
+- name: reload sshd
+  service: name=sshd state=reloaded
+
+# sshguard
+- name: restart sshguard
+  service: name=sshguard state=restarted
+
+# ezjail
+- name: start ezjail
+  service: name=ezjail state=started
+
+- name: start jail
+  shell: ezjail-admin start {{ jail_name }}
+
+- name: restart jail
+  shell: ezjail-admin restart {{ jail_name }}
+
 # pf
 - name: parse pf rules
   shell: /sbin/pfctl -nf /etc/pf.conf
@@ -24,27 +46,5 @@
 
 - name: disable pf
   shell: /sbin/pfctl -d
-
-# ntpd
-- name: restart ntpd
-  service: name=ntpd state=restarted
-
-# sshd
-- name: reload sshd
-  service: name=sshd state=reloaded
-
-# sshguard
-- name: restart sshguard
-  service: name=sshguard state=restarted
-
-# ezjail
-- name: start ezjail
-  service: name=ezjail state=started
-
-- name: start jail
-  shell: ezjail-admin start {{ jail_name }}
-
-- name: restart jail
-  shell: ezjail-admin restart {{ jail_name }}
 
 ...
