@@ -1,15 +1,11 @@
 ---
 
-- hosts: "{{ hostname }}"
+- hosts: "{{ jail_host }}"
   sudo: yes
   vars_files:
-    - '../../ansible_variables/{{ hostname }}.yml'
-    - '../../ansible_variables/jails/{{ jail }}/main.yml'
+    - 'host_vars/{{ jail }}.yml'
     - 'roles/jail/variables/jails/main.yml'
   roles:
     - jail
-  handlers:
-  - include: handlers/ezjail.yml
-  - include: handlers/pf.yml
 
 ...

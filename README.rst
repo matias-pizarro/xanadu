@@ -25,5 +25,5 @@ ansible-playbook --extra-vars "droplet_name=droplet01 droplet_file=freebsd dropl
 .. apply configs to all hosts
 ansible-playbook site.yml
 
-.. create jail iredmail on droplet01.docbase.net
-ansible-playbook --extra-vars "hostname=droplet01.docbase.net jail=iredmail" create_jail.yml
+.. create jail mail02.docbase.net on droplet01.docbase.net
+ansible-playbook --extra-vars "jail_host=droplet01.docbase.net jail=mail02.docbase.net" create_jail.yml
