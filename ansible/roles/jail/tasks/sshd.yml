@@ -1,4 +1,3 @@
-
 ---
 
 - name: add pf config to allow direct ssh connection

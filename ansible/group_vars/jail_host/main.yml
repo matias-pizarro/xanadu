@@ -1,5 +1,11 @@
 ---
 
+loopback_if: lo0
+jails_if: lo1
+service_jails_base_ip: 10.0.1
+web_jails_base_ip: 10.0.2
+service_jails_base_port: 400
+web_jails_base_port: 500
 jail_ssh_port: "{{ service_jails_base_port }}{{ jail_index }}"
 jail_ipv4:
   interface: "{{ jails_if }}"

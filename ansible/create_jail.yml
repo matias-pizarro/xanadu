@@ -1,10 +1,13 @@
 ---
 
+- hosts: all
+  tasks:
+  - group_by: key={{ host_type }}
+
 - hosts: "{{ jail_host }}"
   sudo: yes
   vars_files:
     - 'host_vars/{{ jail }}.yml'
-    - 'roles/jail/variables/jails/main.yml'
   roles:
     - jail
 
