@@ -9,7 +9,9 @@
 - include: settings.yml
 
 - include: sshd.yml
-    ssh_port={{ ansible_ssh_port }}
+    host_ssh_port={{ ansible_ssh_port }}
+    host_ipv4={{ ipv4 }}
+    host_ipv6={{ ipv6 }}
 
 - include: host/main.yml
   when: host_type == "jail_host"

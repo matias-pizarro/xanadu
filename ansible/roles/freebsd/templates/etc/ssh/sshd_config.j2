@@ -14,10 +14,10 @@
 # Note that some of FreeBSD's defaults differ from OpenBSD's, and
 # FreeBSD has a few additional options.
 
-Port {{ ansible_ssh_port }}
+Port {{ host_ssh_port }}
 #AddressFamily any
-ListenAddress {{ ipv4.address }}
-ListenAddress {{ ipv6.address }}
+ListenAddress {{ host_ipv4.address }}
+ListenAddress {{ host_ipv6.address }}
 
 # The default requires explicit activation of protocol 1
 #Protocol 2

@@ -8,7 +8,7 @@
     group=0
     mode=0644
     state=present
-    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port 22'
+    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port {{ host_ssh_port }}'
   notify: partial pf flush
 
 - name: configure jail /etc/ssh/sshd_config

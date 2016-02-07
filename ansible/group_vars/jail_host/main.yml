@@ -3,13 +3,18 @@
 loopback_if: lo0
 jails_if: lo1
 lo_base_ip: 10.0.0
-service_jails_base_ip: 10.0.1
-web_jails_base_ip: 10.0.2
+service_jails_base_ipv4: 10.0.1
+service_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:1"
+web_jails_base_ipv4: 10.0.2
+web_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:2"
 service_jails_base_port: 400
 web_jails_base_port: 500
 jail_ssh_port: "{{ service_jails_base_port }}{{ jail_index }}"
 jail_ipv4:
   interface: "{{ jails_if }}"
-  address: "{{ service_jails_base_ip }}.{{ jail_index }}"
+  address: "{{ service_jails_base_ipv4 }}.{{ jail_index }}"
+jail_ipv6:
+  interface: "{{ jails_if }}"
+  address: "{{ service_jails_base_ipv6 }}:{{ jail_index }}"
 
 ...
