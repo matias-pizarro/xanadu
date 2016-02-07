@@ -6,7 +6,7 @@
     state=directory
     owner=0
     group=0
-    mode=755
+    mode=0755
 
 - name: Create /etc/pf/ssh.rdr.conf
   file:
@@ -14,11 +14,14 @@
     state=touch
     owner=0
     group=0
-    mode=644
+    mode=0644
 
 - name: configure pf rules
   template: src=etc/pf.conf.j2
-    dest=/etc/pf.conf owner=0 group=0 mode=0644
+    dest=/etc/pf.conf
+    owner=0
+    group=0
+    mode=0644
     validate='/sbin/pfctl -nf %s'
   tags: pf
   notify:
