@@ -1,16 +1,2 @@
-[hetzner]
-hetzner.example.net
-
-[digital_ocean]
-droplet01.example.net
-
-[desktops]
-mpizarro
-
-[servers:children]
-hetzner
-digital_ocean
-
 [freebsd]
-# hetzner.example.net
 droplet01.example.net

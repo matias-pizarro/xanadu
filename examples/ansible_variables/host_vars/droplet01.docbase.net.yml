@@ -2,7 +2,15 @@
 
 hostname: droplet01.example.net
 timezone: Europe/Amsterdam
+os: freebsd
+type: server
+hosting: digital_ocean
 host_type: jail_host
+
+droplet_name: droplet01
+droplet_size: 512mb
+droplet_image: freebsd-10-2-x64
+droplet_region: ams2
 
 ipv4:
   interface: vtnet0
@@ -15,12 +23,5 @@ ipv6:
   address: AAAA:BBBB:0000:0000:0000:0000:0000:9999
   netmask: 64
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
-
-loopback_if: lo0
-jails_if: lo1
-service_jails_base_ip: 10.0.1
-web_jails_base_ip: 10.0.2
-service_jails_base_port: 400
-web_jails_base_port: 500
 
 ...

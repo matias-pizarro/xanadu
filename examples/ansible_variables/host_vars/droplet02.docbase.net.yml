@@ -1,0 +1,27 @@
+---
+
+hostname: droplet02.example.net
+timezone: Europe/Amsterdam
+os: freebsd
+type: server
+hosting: digital_ocean
+host_type: jail_host
+
+droplet_name: droplet02
+droplet_size: 512mb
+droplet_image: freebsd-10-2-x64
+droplet_region: ams2
+
+ipv4:
+  interface: vtnet0
+  address: 111.222.333.444
+  netmask: 255.255.255.0
+  gateway: 111.222.333.1
+
+ipv6:
+  interface: vtnet0
+  address: AAAA:BBBB:0000:0000:0000:0000:0000:9999
+  netmask: 64
+  gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
+
+...

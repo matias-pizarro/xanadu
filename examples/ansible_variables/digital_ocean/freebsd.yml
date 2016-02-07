@@ -1,7 +1,0 @@
----
-
-droplet_image: freebsd-10-2-x64
-droplet_region: ams2
-droplet_ssh_keys: 111111,222222,333333
-
-...

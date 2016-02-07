@@ -1,0 +1,14 @@
+---
+
+hostname: mail02.example.net
+timezone: Europe/Amsterdam
+os: freebsd
+type: service_jail
+hosting: none
+host_type: jailed_host
+
+jail_name: iredmail
+jail_index: 1
+jail_autorun: true
+
+...
