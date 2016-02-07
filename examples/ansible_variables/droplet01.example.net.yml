@@ -1,7 +1,6 @@
 ---
 
-hostname: droplet01
-fqdn: droplet01.example.net
+hostname: droplet01.example.net
 timezone: Europe/Amsterdam
 is_jail: false
 
