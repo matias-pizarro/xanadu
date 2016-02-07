@@ -11,11 +11,10 @@
   sudo: yes
   roles:
     - freebsd
-  handlers:
-    - include: handlers/pf.yml
-    - include: handlers/ntpd.yml
-    - include: handlers/sshd.yml
-    - include: handlers/sshguard.yml
-    - include: handlers/ezjail.yml
+
+# - hosts: jailed_host
+#   sudo: yes
+#   roles:
+#     - freebsd
 
 ...

@@ -6,7 +6,11 @@
 
 - include: config.yml
 
+- include: rc_conf.yml
+
 - include: sshd.yml
+    ssh_port={{ ansible_ssh_port }}
+    ipv4={{ jail_ipv4 }}
 
 - include: start.yml
 

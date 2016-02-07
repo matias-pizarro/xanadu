@@ -14,7 +14,7 @@
 # Note that some of FreeBSD's defaults differ from OpenBSD's, and
 # FreeBSD has a few additional options.
 
-#Port 22
+Port {{ ansible_ssh_port }}
 #AddressFamily any
 ListenAddress {{ ipv4.address }}
 ListenAddress {{ ipv6.address }}

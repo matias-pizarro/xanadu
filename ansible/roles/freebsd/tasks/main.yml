@@ -8,7 +8,8 @@
 
 - include: settings.yml
 
-- include: sshd_config.yml
+- include: sshd.yml
+    ssh_port={{ ansible_ssh_port }}
 
 - include: host/main.yml
   when: host_type == "jail_host"

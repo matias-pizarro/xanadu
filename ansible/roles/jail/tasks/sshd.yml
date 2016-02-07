@@ -11,4 +11,15 @@
     line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port 22'
   notify: partial pf flush
 
+- name: configure jail /etc/ssh/sshd_config
+  template: src=roles/freebsd/templates/etc/ssh/sshd_config.j2
+    dest=/usr/jails/{{ jail_name }}/etc/ssh/sshd_config
+    owner=0
+    group=0
+    mode=0644
+  tags: sshd_config
+
+- name: copy host's root ssh keys to {{ jail_name }}'s root
+  shell: cp -Rp /root/.ssh /usr/jails/{{ jail_name }}/root/
+
 ...
