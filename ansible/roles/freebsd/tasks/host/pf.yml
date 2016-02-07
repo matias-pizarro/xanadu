@@ -17,7 +17,7 @@
     mode=644
 
 - name: configure pf rules
-  template: src=pf.conf.j2
+  template: src=etc/pf.conf.j2
     dest=/etc/pf.conf owner=0 group=0 mode=0644
     validate='/sbin/pfctl -nf %s'
   tags: pf
