@@ -10,6 +10,11 @@
   tags:
     - ezjail
 
+- name: make sure the cloned interface has an ip address
+  command: ifconfig "{{ jails_if }}" inet {{ lo_base_ip }}.1 netmask 255.255.255.0
+  tags:
+    - ezjail
+
 - name: install ezjail
   pkgng: name=sysutils/ezjail state=present
   register: ezjail_installed
