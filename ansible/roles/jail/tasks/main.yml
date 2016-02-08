@@ -1,14 +1,6 @@
 ---
 
-- name: Define Variable
-  set_fact:
-     jail_ssh_port: "{{ jail_ssh_port[jail_type] }}"
-     jail_ipv4:
-        interface: "{{ jail_ipv4.interface }}"
-        address: "{{ jail_ipv4[jail_type] }}"
-     jail_ipv6:
-        interface: "{{ jail_ipv6.interface }}"
-        address: "{{ jail_ipv6[jail_type] }}"
+- include: set_facts.yml
 
 - include: create.yml
 
@@ -24,5 +16,7 @@
     host_ipv6={{ jail_ipv6 }}
 
 - include: start.yml
+
+- include: utils.yml
 
 ...

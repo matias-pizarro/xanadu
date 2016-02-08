@@ -1,0 +1,9 @@
+---
+
+- name: install python and bash-static on jail {{ jail_name }} on {{ hostname }}
+  shell: jexec {{ jail_name }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static
+
+- name: set root shell on jail {{ jail_name }} on {{ hostname }}
+  shell: jexec {{ jail_name }} pw usermod root -s /usr/local/bin/bash
+
+...
