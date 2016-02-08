@@ -4,7 +4,6 @@ hostname: mysql02.example.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: service_jail
-hosting: none
 host_type: jailed_host
 
 jail_name: mysql
