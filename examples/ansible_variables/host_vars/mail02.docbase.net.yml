@@ -9,6 +9,7 @@ host_type: jailed_host
 
 jail_name: iredmail
 jail_index: 1
+jail_type: service
 jail_autorun: true
 
 ...

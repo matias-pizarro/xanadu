@@ -9,6 +9,7 @@ host_type: jailed_host
 
 jail_name: mysql
 jail_index: 2
+jail_type: service
 jail_autorun: true
 
 ...
