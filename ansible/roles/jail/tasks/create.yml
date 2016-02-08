@@ -10,7 +10,9 @@
   register: directory
 
 - name: create jail {{ jail_name }} on {{ hostname }}
-  shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }},{{ jail_ipv6.interface }}|{{ jail_ipv6.address }}'
+  # currently not working
+  # shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }},{{ jail_ipv6.interface }}|{{ jail_ipv6.address }}'
+  shell: ezjail-admin create {{ jail_name }} '{{ jail_ipv4.interface }}|{{ jail_ipv4.address }}'
   when: jail_exists.stdout == "0" and directory.stat.exists == false
   register: jail_created
   notify: start jail
