@@ -1,5 +1,7 @@
 ---
 
+- include: debug.yml
+
 - include: users.yml
 
 - include: rc_conf.yml

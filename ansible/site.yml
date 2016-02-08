@@ -4,7 +4,7 @@
   tasks:
   - group_by: key={{ os }}
   - group_by: key={{ type }}
-  - group_by: key={{ hosting }}
+  - group_by: key={{ hosting if false else hostname }}
   - group_by: key={{ host_type }}
 
 - hosts: plain:jail_host
@@ -12,9 +12,9 @@
   roles:
     - freebsd
 
-# - hosts: jailed_host
-#   sudo: yes
-#   roles:
-#     - freebsd
+- hosts: jailed_host
+  sudo: yes
+  roles:
+    - freebsd
 
 ...

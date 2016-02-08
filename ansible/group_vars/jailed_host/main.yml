@@ -1,16 +1,15 @@
 ---
 
-loopback_if: lo0
-jails_if: lo1
-lo_base_ip: 10.0.0
-service_jails_base_ipv4: 10.0.1
-service_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:1"
-web_jails_base_ipv4: 10.0.2
-web_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:2"
-jails_ipv4_netmask: "255.255.255.0"
-jails_ipv6_prefixlen: "64"
-service_jails_base_port: 400
-web_jails_base_port: 500
+hosting: "{{ hostvars[jail_host]['hosting'] }}"
+jails_if: "{{ hostvars[jail_host]['jails_if'] }}"
+service_jails_base_ipv4: "{{ hostvars[jail_host]['service_jails_base_ipv4'] }}"
+service_jails_base_ipv6: "{{ hostvars[jail_host]['service_jails_base_ipv6'] }}"
+web_jails_base_ipv4: "{{ hostvars[jail_host]['web_jails_base_ipv4'] }}"
+web_jails_base_ipv6: "{{ hostvars[jail_host]['web_jails_base_ipv6'] }}"
+jails_ipv4_netmask: "{{ hostvars[jail_host]['jails_ipv4_netmask'] }}"
+jails_ipv6_prefixlen: "{{ hostvars[jail_host]['jails_ipv6_prefixlen'] }}"
+service_jails_base_port: "{{ hostvars[jail_host]['service_jails_base_port'] }}"
+web_jails_base_port: "{{ hostvars[jail_host]['web_jails_base_port'] }}"
 proto_jail_ssh_port:
   service: "{{ service_jails_base_port }}{{ jail_index }}"
   web: "{{ web_jails_base_port }}{{ jail_index }}"
@@ -26,12 +25,12 @@ proto_jail_ipv6:
     service: "{{ service_jails_base_ipv6 }}:{{ jail_index }}"
     web: "{{ web_jails_base_ipv6 }}:{{ jail_index }}"
   prefixlen: "{{ jails_ipv6_prefixlen }}"
-jail_ssh_port: "{{ proto_jail_ssh_port[jail_type] }}"
-jail_ipv4:
+ansible_ssh_port: "{{ proto_jail_ssh_port[jail_type] }}"
+ipv4:
   interface: "{{ proto_jail_ipv4.interface }}"
   address: "{{ proto_jail_ipv4.address[jail_type] }}"
   netmask: "{{ proto_jail_ipv4.netmask }}"
-jail_ipv6:
+ipv6:
   interface: "{{ proto_jail_ipv6.interface }}"
   address: "{{ proto_jail_ipv6.address[jail_type] }}"
   prefixlen: "{{ proto_jail_ipv6.prefixlen }}"

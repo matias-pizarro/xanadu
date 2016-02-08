@@ -1,0 +1,13 @@
+---
+
+- debug: var=host_type
+
+- debug: var=hosting
+
+- debug: var=ansible_ssh_port
+
+- debug: var=ipv4
+
+- debug: var=ipv6
+
+...

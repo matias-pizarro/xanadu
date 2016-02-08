@@ -21,7 +21,7 @@ ipv4:
 ipv6:
   interface: vtnet0
   address: AAAA:BBBB:0000:0000:0000:0000:0000:9999
-  netmask: 64
+  prefixlen: 64
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
 
 ...

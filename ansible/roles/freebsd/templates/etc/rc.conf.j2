@@ -57,5 +57,5 @@ ifconfig_{{ ipv4.interface }}_ipv4="inet {{ ipv4.address }} netmask {{ ipv4.netm
 defaultrouter="{{ ipv4.gateway }}"
 
 # IPv6
-ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
+ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"

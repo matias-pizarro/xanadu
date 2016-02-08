@@ -1,7 +1,5 @@
 ---
 
-- include: set_facts.yml
-
 - include: create.yml
 
 - include: hostname.yml
