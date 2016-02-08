@@ -2,13 +2,13 @@
 	"folders":
 	[
 		{
-			"path": "/home/mlpizarro/projects/ansible_variables"
+			"path": "~/projects/ansible_variables"
 		},
 		{
-			"path": "/home/mlpizarro/projects/xanadu"
+			"path": "~/projects/xanadu"
 		},
 		{
-			"path": "/usr/local/etc/ansible"
+			"path": "/data/os/BSD/FreeBSD/scripts/1.3/ansible"
 		}
 	]
 }
