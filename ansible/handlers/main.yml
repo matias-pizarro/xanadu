@@ -16,6 +16,9 @@
 - name: start ezjail
   service: name=ezjail state=started
 
+- name: restart ezjail
+  service: name=ezjail state=restarted
+
 - name: start jail
   shell: ezjail-admin start {{ jail_name | quote }}
 
@@ -34,6 +37,8 @@
 
 - name: partial pf flush
   shell: /sbin/pfctl -F nat -F queue -F rules -F Sources -F info -F Tables -F osfp -f /etc/pf.conf
+  notify:
+    - restart ezjail
 
 - name: start pf
   service: name=pf state=started
