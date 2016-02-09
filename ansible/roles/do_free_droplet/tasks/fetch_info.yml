@@ -1,10 +1,10 @@
 ---
 
 - stat: path=/etc/rc.digitalocean.d/droplet.conf
-  register: droplet_conf
+  register: droplet_conf_exists
 
 - name: fetch /etc/rc.digitalocean.d/droplet.conf
-  when: droplet_conf.stat.exists == true
+  when: droplet_conf_exists|succeeded
   fetch:
     flat=yes
     src=/etc/rc.digitalocean.d/droplet.conf

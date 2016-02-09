@@ -7,6 +7,13 @@
     owner=0
     group=0
     mode=0755
+  notify:
+    - start pf
+
+- name: check whether /etc/pf/ssh.rdr.conf exists
+  stat:
+    path=/etc/pf/ssh.rdr.conf
+  register: ssh_rdr_conf_exists
 
 - name: Create /etc/pf/ssh.rdr.conf
   file:
@@ -15,6 +22,9 @@
     owner=0
     group=0
     mode=0644
+  when: ssh_rdr_conf_exists|failed
+  notify:
+    - partial pf flush
 
 - name: configure pf rules
   template: src=etc/pf.conf.j2
@@ -25,21 +35,6 @@
     validate='/sbin/pfctl -nf %s'
   tags: pf
   notify:
-    - start pf
-    - load pf rules
     - partial pf flush
-
-- name: enable pf
-  command: /usr/sbin/sysrc pf_enable=YES
-  tags: pf
-  notify:
-    - start pf
-    - partial pf flush
-
-- name: enable pflog
-  command: /usr/sbin/sysrc pflog_enable=YES
-  tags: pf
-  notify:
-    - start pflog
 
 ...

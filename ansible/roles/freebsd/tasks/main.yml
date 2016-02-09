@@ -6,6 +6,8 @@
 
 - include: rc_conf.yml
 
+- include: ntp.yml
+
 - include: settings.yml
 
 - include: sshd.yml

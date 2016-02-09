@@ -17,10 +17,10 @@
   service: name=ezjail state=started
 
 - name: start jail
-  shell: ezjail-admin start {{ jail_name }}
+  shell: ezjail-admin start {{ jail_name | quote }}
 
 - name: restart jail
-  shell: ezjail-admin restart {{ jail_name }}
+  shell: ezjail-admin restart {{ jail_name | quote }}
 
 # pf
 - name: parse pf rules

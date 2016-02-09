@@ -6,13 +6,6 @@
 
 - include: pf.yml
 
-- include: ntp.yml
-
-- include: sshguard.yml
-
 - include: utils.yml
-
-# keep this the last to avoid ${} substitution
-- include: network.yml
 
 ...

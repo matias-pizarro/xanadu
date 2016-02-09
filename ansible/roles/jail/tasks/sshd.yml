@@ -20,6 +20,6 @@
   tags: sshd_config
 
 - name: copy host's root ssh keys to {{ jail_name }}'s root
-  shell: cp -Rp /root/.ssh /usr/jails/{{ jail_name }}/root/
+  shell: cp -Rp /root/.ssh /usr/jails/{{ jail_name | quote }}/root/
 
 ...

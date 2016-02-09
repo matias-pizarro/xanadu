@@ -8,14 +8,14 @@ zfs_enable="NO"
 sshd_enable="YES"
 
 # pf
-pf_enable="NO"
-pflog_enable="NO"
+pf_enable="YES"
+pflog_enable="YES"
 
 # sshguard
-sshguard_enable="NO"
-sshguard_safety_thresh="0"
-sshguard_pardon_min_interval="0"
-sshguard_prescribe_interval="0"
+sshguard_enable="YES"
+sshguard_safety_thresh="30"
+sshguard_pardon_min_interval="600"
+sshguard_prescribe_interval="7200"
 
 # sendmail
 sendmail_enable="NO"
@@ -24,18 +24,18 @@ sendmail_outbound_enable="NO"
 sendmail_msp_queue_enable="NO"
 
 # misc
-linux_enable="NO"
-bsdstats_enable="NO"
+linux_enable="YES"
+bsdstats_enable="YES"
 
 # ntpd
-ntpd_enable="NO"
-ntpd_sync_on_start="NO"
+ntpd_enable="YES"
+ntpd_sync_on_start="YES"
 
 # S.M.A.R.T. monitoring (sysutils/smartmontools)
 smartd_enable="NO"
 
 # ezjail
-ezjail_enable="NO"
+ezjail_enable="YES"
 
 # Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
 dumpdev="NO"
@@ -43,13 +43,13 @@ dumpdev="NO"
 syslogd_flags="-s -b localhost"
 
 # FSCK Enhancements
-fsck_y_enable="NO"
+fsck_y_enable="YES"
 
 # Network options
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
-ipv6_activate_all_interfaces="NO"
+ipv6_activate_all_interfaces="YES"
 ipv6_default_interface="{{ ipv6.interface }}"
-ip6addrctl_enable="NO"
+ip6addrctl_enable="YES"
 ip6addrctl_policy="ipv4_prefer"
 
 # IPv4

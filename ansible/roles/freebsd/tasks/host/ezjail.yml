@@ -1,17 +1,28 @@
 ---
 
-- name: enable cloned interface
-  command: /usr/sbin/sysrc cloned_interfaces="{{ jails_if }}"
+- name: check whether {{ jails_if }} is up
+  shell: ifconfig | grep {{ jails_if | quote }} | wc -l | sed -e 's/^[ \t]*//'
+  register: jails_if_up
+  changed_when: False
   tags:
-    - ezjail
+    - install_ezjail
 
 - name: bring up cloned interface
   command: service netif cloneup
+  when: jails_if_up.stdout == "0"
+  tags:
+    - install_ezjail
+
+- name: check whether {{ jails_if }} has an ip
+  shell: ifconfig {{ jails_if | quote }} | grep inet | wc -l | sed -e 's/^[ \t]*//'
+  register: jails_if_ip
+  changed_when: False
   tags:
     - ezjail
 
 - name: make sure the cloned interface has an ip address
-  command: ifconfig "{{ jails_if }}" inet {{ lo_base_ip }}.1 netmask 255.255.255.0
+  command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip }}.1 netmask 255.255.255.0
+  when: jails_if_ip.stdout == "0"
   tags:
     - ezjail
 
@@ -19,18 +30,13 @@
   pkgng: name=sysutils/ezjail state=present
   register: ezjail_installed
   tags:
-    - ezjail
-
-- name: enable ezjail
-  command: /usr/sbin/sysrc ezjail_enable="YES"
-  tags:
-    - ezjail
+    - install_ezjail
 
 - name: create base jail
   command: ezjail-admin install
-  when: ezjail_installed.changed == true
+  when: ezjail_installed|failed
   tags:
-    - ezjail
+    - install_ezjail
   notify:
     - start ezjail
 

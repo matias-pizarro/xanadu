@@ -1,0 +1,14 @@
+---
+
+- name: check whether /var/db/zoneinfo exists
+  stat: path=/var/db/zoneinfo
+  register: zoneinfo_exists
+
+- name: set timezone
+  command: /usr/sbin/tzsetup -s {{ timezone | quote }}
+  when: zoneinfo_exists|failed
+  tags: ntp
+  notify:
+    - restart ntpd
+
+...

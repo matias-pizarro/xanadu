@@ -14,7 +14,4 @@
     line='export jail_{{ jail_name }}_hostname="{{ hostname }}"'
   notify: restart jail
 
-- name: set jail hostname
-  command: /usr/sbin/sysrc -f /usr/jails/{{ jail_name }}/etc/rc.conf hostname="{{ hostname }}"
-
 ...

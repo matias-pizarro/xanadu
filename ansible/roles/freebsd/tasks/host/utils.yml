@@ -1,13 +1,17 @@
 ---
 
+- name: check whether /usr/local/bin/bsdstats-send exists
+  stat:
+    path=/usr/local/bin/bsdstats-send
+  register: bsdstats_send
+
 - name: install bsdstats
   shell: yes '' | /usr/sbin/pkg install -y bsdstats
-  when: host_type == "jail_host"
+  when: bsdstats_send|failed
   tags: utils
 
-- name: enable bsdstats
-  command: /usr/sbin/sysrc bsdstats_enable="YES"
-  when: host_type == "jail_host"
-  tags: utils
+- name: install sshguard
+  pkgng: name=sshguard-pf state=present
+  tags: pf
 
 ...

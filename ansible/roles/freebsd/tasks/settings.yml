@@ -1,26 +1,6 @@
 ---
 
-- name: disable crash dumps
-  when: host_type == "jail_host"
-  command: /usr/sbin/sysrc dumpdev="NO"
-
-- name: enable fsck improvements
-  when: host_type == "jail_host"
-  command: /usr/sbin/sysrc fsck_y_enable="YES"
-
 - name: stop sendmail
   service: name=sendmail state=stopped
-
-- name: disable sendmail service
-  command: /usr/sbin/sysrc sendmail_enable=NO
-
-- name: disable sendmail submit
-  command: /usr/sbin/sysrc sendmail_submit_enable=NO
-
-- name: disable sendmail outbound
-  command: /usr/sbin/sysrc sendmail_outbound_enable=NO
-
-- name: disable sendmail queue
-  command: /usr/sbin/sysrc sendmail_msp_queue_enable=NO
 
 ...
