@@ -1,6 +1,5 @@
 ---
 
-hosting: "{{ hostvars[jail_host]['hosting'] }}"
 jails_if: "{{ hostvars[jail_host]['jails_if'] }}"
 service_jails_base_ipv4: "{{ hostvars[jail_host]['service_jails_base_ipv4'] }}"
 service_jails_base_ipv6: "{{ hostvars[jail_host]['service_jails_base_ipv6'] }}"
