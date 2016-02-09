@@ -3,6 +3,7 @@
 - name: check whether jail {{ jail_name }} exists on {{ hostname }}
   shell: ezjail-admin list | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jail_exists
+  changed_when: False
 
 - name: check whether directory /usr/jails/{{ jail_name }} exists on {{ hostname }}
   stat:

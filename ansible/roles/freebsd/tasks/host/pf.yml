@@ -9,11 +9,15 @@
     mode=0755
   notify:
     - start pf
+  tags:
+    - install_pf
 
 - name: check whether /etc/pf/ssh.rdr.conf exists
   stat:
     path=/etc/pf/ssh.rdr.conf
   register: ssh_rdr_conf_exists
+  tags:
+    - install_pf
 
 - name: Create /etc/pf/ssh.rdr.conf
   file:
@@ -25,6 +29,8 @@
   when: ssh_rdr_conf_exists|failed
   notify:
     - partial pf flush
+  tags:
+    - install_pf
 
 - name: configure pf rules
   template: src=etc/pf.conf.j2
@@ -36,5 +42,7 @@
   tags: pf
   notify:
     - partial pf flush
+  tags:
+    - config_pf
 
 ...

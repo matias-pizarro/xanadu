@@ -4,7 +4,7 @@
   register: droplet_conf_exists
 
 - name: fetch /etc/rc.digitalocean.d/droplet.conf
-  when: droplet_conf_exists|succeeded
+  when: droplet_conf_exists.stat.exists == true
   fetch:
     flat=yes
     src=/etc/rc.digitalocean.d/droplet.conf
