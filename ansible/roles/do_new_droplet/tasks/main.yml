@@ -36,6 +36,7 @@
     groups: new_droplets
     ansible_python_interpreter: /usr/local/bin/python2
   when: new_droplet.droplet is defined
+  changed_when: False
   tags: create_droplet
 
 - name: Wait for port 22 to become available
