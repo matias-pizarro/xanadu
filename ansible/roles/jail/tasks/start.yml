@@ -1,12 +1,12 @@
 ---
 
-- name: check whether jail {{ jail_name }} is started on {{ hostname }}
+- name: check whether jail is started
   shell: jls | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jail_started
   changed_when: False
   tags: start_jails
 
-- name: start jail {{ jail_name }} on {{ hostname }}
+- name: start jail
   command: /usr/bin/true
   when: jail_started.stdout == "0"
   notify:

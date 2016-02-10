@@ -1,6 +1,6 @@
 ---
 
-- name: replace jail name in hostname configuration for {{ jail_name }} on {{ hostname }}
+- name: replace jail name in hostname configuration
   replace:
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
@@ -8,7 +8,7 @@
   notify: restart jail
   tags: set_hostname
 
-- name: ensure jail hostname is correctly configured for {{ jail_name }} on {{ hostname }}
+- name: ensure jail hostname is correctly configured
   lineinfile:
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     state=present

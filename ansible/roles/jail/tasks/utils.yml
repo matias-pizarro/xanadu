@@ -1,6 +1,6 @@
 ---
 
-- name: install python and bash-static on jail {{ jail_name }} on {{ hostname }}
+- name: install python and bash-static on jail
   shell: jexec {{ jail_name | quote }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static
   tags:
     - install_python

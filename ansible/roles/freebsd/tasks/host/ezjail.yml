@@ -1,33 +1,33 @@
 ---
 
-- name: check whether {{ jails_if }} is up on {{ hostname }}
+- name: check whether jails_if is up
   shell: ifconfig | grep {{ jails_if | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_up
   changed_when: False
   tags: install_ezjail
 
-- name: bring up cloned interface on {{ hostname }}
+- name: bring up cloned interface
   command: service netif cloneup
   when: jails_if_up.stdout == "0"
   tags: install_ezjail
 
-- name: check whether {{ jails_if }} on {{ hostname }} has an ip
+- name: check whether jails_if has an ip
   shell: ifconfig {{ jails_if | quote }} | grep inet | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_ip
   changed_when: False
   tags: ezjail_config
 
-- name: make sure the cloned interface on {{ hostname }} has an ip address
+- name: make sure the cloned interface has an ip address
   command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip | quotes }}.1 netmask 255.255.255.0
   when: jails_if_ip.stdout == "0"
   tags: ezjail_config
 
-- name: install ezjail on {{ hostname }}
+- name: install ezjail
   pkgng: name=sysutils/ezjail state=present
   register: ezjail_installed
   tags: install_ezjail
 
-- name: create base jail on {{ hostname }}
+- name: create base jail
   command: ezjail-admin install
   when: ezjail_installed|failed
   tags: install_ezjail

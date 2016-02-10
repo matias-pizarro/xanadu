@@ -1,11 +1,11 @@
 ---
 
-- name: check whether /etc/rc.digitalocean.d/droplet.conf exists on {{ hostname }}
+- name: check whether /etc/rc.digitalocean.d/droplet.conf exists
   stat: path=/etc/rc.digitalocean.d/droplet.conf
   register: droplet_conf_exists
   tags: fetch_info
 
-- name: fetch /etc/rc.digitalocean.d/droplet.conf from  {{ hostname }}
+- name: fetch /etc/rc.digitalocean.d/droplet.conf
   when: droplet_conf_exists.stat.exists == true
   fetch:
     flat=yes

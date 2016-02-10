@@ -1,6 +1,6 @@
 ---
 
-- name: set root user shell to bash on {{ hostname }}
+- name: set root user shell to bash
   raw: pw usermod root -s /usr/local/bin/bash
   tags: bash_as_shell
 

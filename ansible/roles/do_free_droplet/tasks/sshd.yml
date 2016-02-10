@@ -1,6 +1,6 @@
 ---
 
-- name: delete 'Match User root' from sshd_config on {{ hostname }}
+- name: delete 'Match User root' from sshd_config
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=absent
@@ -8,7 +8,7 @@
   notify: reload sshd
   tags: allow_root_login
 
-- name: delete ForceCommand from sshd_config on {{ hostname }}
+- name: delete ForceCommand from sshd_config
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=absent
@@ -16,7 +16,7 @@
   notify: reload sshd
   tags: allow_root_login
 
-- name: allow freebsd and root login on {{ hostname }}
+- name: allow freebsd and root login
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=present

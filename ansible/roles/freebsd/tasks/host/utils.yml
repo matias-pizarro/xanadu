@@ -1,17 +1,17 @@
 ---
 
-- name: check whether /usr/local/bin/bsdstats-send exists on {{ hostname }}
+- name: check whether /usr/local/bin/bsdstats-send exists
   stat:
     path=/usr/local/bin/bsdstats-send
   register: bsdstats_send
   tags: install_bsdstats
 
-- name: install bsdstats on {{ hostname }}
+- name: install bsdstats
   shell: yes '' | /usr/sbin/pkg install -y bsdstats
   when: bsdstats_send|failed
   tags: install_bsdstats
 
-- name: install sshguard on {{ hostname }}
+- name: install sshguard
   pkgng: name=sshguard-pf state=present
   tags: install_sshguard
 

@@ -1,6 +1,6 @@
 ---
 
-- name: create new droplet on {{ hostname }}
+- name: create new droplet
   digital_ocean:
     state: present
     command: droplet
@@ -20,17 +20,17 @@
   register: new_droplet
   tags: create_droplet
 
-- name: new droplet ID for {{ hostname }}
+- name: new droplet ID
   debug:
     msg="ID is {{ new_droplet.droplet.id }}"
   tags: create_droplet
 
-- name: new droplet IP for {{ hostname }}
+- name: new droplet IP
   debug:
     msg="IP is {{ new_droplet.droplet.ip_address }}"
   tags: create_droplet
 
-- name: Add {{ hostname }} to our inventory
+- name: Add new droplet to our inventory
   add_host:
     name: "{{new_droplet.droplet.ip_address}}"
     groups: new_droplets
@@ -38,7 +38,7 @@
   when: new_droplet.droplet is defined
   tags: create_droplet
 
-- name: Wait for port 22 to become available on {{ hostname }}
+- name: Wait for port 22 to become available
   local_action: "wait_for port=22 host={{new_droplet.droplet.ip_address}}"
   tags: create_droplet
 
