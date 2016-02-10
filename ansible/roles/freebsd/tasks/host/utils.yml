@@ -8,7 +8,7 @@
 
 - name: install bsdstats
   shell: yes '' | /usr/sbin/pkg install -y bsdstats
-  when: bsdstats_send|failed
+  when: bsdstats_send.stat.exists == false
   tags: install_bsdstats
 
 - name: install sshguard

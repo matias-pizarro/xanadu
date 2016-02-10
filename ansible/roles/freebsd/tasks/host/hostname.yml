@@ -3,7 +3,7 @@
 - name: check the hostname
   shell: hostname
   register: hostname_value
-  changed_when: False
+  changed_when: false
   tags: set_hostname
 
 - name: set hostname
@@ -14,7 +14,7 @@
 - name: check the hostname in /etc/rc.conf
   shell: cat /etc/rc.conf | grep {{ hostname | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: hostname_present
-  changed_when: False
+  changed_when: false
   tags: set_hostname
 
 - name: persist hostname on /etc/rc.conf

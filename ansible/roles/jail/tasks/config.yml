@@ -13,18 +13,25 @@
 
 - name: set jail autorun to 'norun'
   shell: ezjail-admin config -r norun {{ jail_name | quote }}
-  when: not jail_autorun and jail_norun|failed
+  when: not jail_autorun and jail_norun.stat.exists == false
+  tags: jail_config
+
+- name: check whether jail's /etc/resolv.conf exists
+  stat:
+    path=/usr/jails/{{ jail_name }}/etc/resolv.conf
+  register: etc_resolv_conf_exists
   tags: jail_config
 
 - name: check jail and host /etc/resolv.conf are the same
   shell: diff /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/resolv.conf
+  when: etc_resolv_conf_exists.stat.exists == true
   register: similar_etc_resolv_conf
-  changed_when: False
+  changed_when: false
   tags: jail_config
 
 - name: copy host's /etc/resolv.conf to jail
   shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
-  when: similar_etc_resolv_conf.stdout|length == "0"
+  when: etc_resolv_conf_exists.stat.exists == false or similar_etc_resolv_conf.stdout == ""
   tags: jail_config
 
 ...

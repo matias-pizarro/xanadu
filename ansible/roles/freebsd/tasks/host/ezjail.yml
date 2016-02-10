@@ -1,9 +1,9 @@
 ---
 
-- name: check whether jails_if is up
+- name: check whether cloned interface is up
   shell: ifconfig | grep {{ jails_if | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_up
-  changed_when: False
+  changed_when: false
   tags: install_ezjail
 
 - name: bring up cloned interface
@@ -11,14 +11,14 @@
   when: jails_if_up.stdout == "0"
   tags: install_ezjail
 
-- name: check whether jails_if has an ip
+- name: check whether cloned interface has an ip
   shell: ifconfig {{ jails_if | quote }} | grep inet | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_ip
-  changed_when: False
+  changed_when: false
   tags: ezjail_config
 
 - name: make sure the cloned interface has an ip address
-  command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip | quotes }}.1 netmask 255.255.255.0
+  command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip | quote }}.1 netmask 255.255.255.0
   when: jails_if_ip.stdout == "0"
   tags: ezjail_config
 
@@ -27,10 +27,16 @@
   register: ezjail_installed
   tags: install_ezjail
 
+- name: check whether /usr/jails/basejail exists
+  stat:
+    path=/usr/jails/basejail
+  register: basejail_exists
+  tags: install_ezjail
+
 - name: create base jail
   command: ezjail-admin install
-  when: ezjail_installed|failed
-  tags: install_ezjail
+  when: basejail_exists.stat.exists == false
   notify: start ezjail
+  tags: install_ezjail
 
 ...

@@ -7,7 +7,7 @@
 
 - name: set timezone
   command: /usr/sbin/tzsetup -s {{ timezone | quote }}
-  when: zoneinfo_exists|failed
+  when: zoneinfo_exists.stat.exists == false
   notify: restart ntpd
   tags: install_ntpd
 

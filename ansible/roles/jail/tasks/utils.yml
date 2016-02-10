@@ -1,17 +1,20 @@
 ---
 
-- name: check whether bash and python are installed
-  shell: jexec {{ jail_name | quote }} which python && which bash
-  register: python_bash_installed
-  changed_when: False
-  tags:
-    - install_bash
-    - install_python
-    - utils
+- name: check whether bash is installed on jail
+  stat:
+    path=/usr/jails/{{ jail_name }}/usr/local/bin/bash
+  register: bash_exists
+  tags: install_bash
+
+- name: check whether python is installed on jail
+  stat:
+    path=/usr/jails/{{ jail_name }}/usr/local/bin/python
+  register: python_exists
+  tags: install_python
 
 - name: install python and bash-static on jail
   shell: jexec {{ jail_name | quote }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static
-  when: python_bash_installed.stdout|length == "0"
+  when: bash_exists.stat.exists == false or python_exists.stat.exists == false
   tags:
     - install_bash
     - install_python
