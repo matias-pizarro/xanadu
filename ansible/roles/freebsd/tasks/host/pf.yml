@@ -1,25 +1,22 @@
 ---
 
-- name: Create /etc/pf directory
+- name: Create /etc/pf directory on {{ hostname }}
   file:
     path=/etc/pf
     state=directory
     owner=0
     group=0
     mode=0755
-  notify:
-    - start pf
-  tags:
-    - install_pf
+  notify: start pf
+  tags: install_pf
 
-- name: check whether /etc/pf/ssh.rdr.conf exists
+- name: check whether /etc/pf/ssh.rdr.conf exists on {{ hostname }}
   stat:
     path=/etc/pf/ssh.rdr.conf
   register: ssh_rdr_conf_exists
-  tags:
-    - install_pf
+  tags: install_pf
 
-- name: Create /etc/pf/ssh.rdr.conf
+- name: Create /etc/pf/ssh.rdr.conf on {{ hostname }}
   file:
     path=/etc/pf/ssh.rdr.conf
     state=touch
@@ -27,22 +24,17 @@
     group=0
     mode=0644
   when: ssh_rdr_conf_exists|failed
-  notify:
-    - partial pf flush
-  tags:
-    - install_pf
+  notify: partial pf flush
+  tags: install_pf
 
-- name: configure pf rules
+- name: configure pf rules on {{ hostname }}
   template: src=etc/pf.conf.j2
     dest=/etc/pf.conf
     owner=0
     group=0
     mode=0644
     validate='/sbin/pfctl -nf %s'
-  tags: pf
-  notify:
-    - partial pf flush
-  tags:
-    - config_pf
+  notify: partial pf flush
+  tags: config_pf
 
 ...

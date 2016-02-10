@@ -1,10 +1,10 @@
 ---
 
-- include: python.yml
+- include: utils.yml
 
 - include: users.yml
 
-- include: sshd_config.yml
+- include: sshd.yml
 
 - include: fetch_info.yml
 

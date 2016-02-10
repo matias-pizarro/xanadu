@@ -1,29 +1,25 @@
 ---
 
-- name: check the hostname
+- name: check the hostname on {{ hostname }}
   shell: hostname
   register: hostname_value
   changed_when: False
-  tags:
-    - set_hostname
+  tags: set_hostname
 
-- name: set hostname
+- name: set hostname on {{ hostname }}
   command: hostname {{ hostname | quote }}
   when: hostname_value.stdout != hostname
-  tags:
-    - set_hostname
+  tags: set_hostname
 
-- name: check the hostname
+- name: check the hostname in /etc/rc.conf on {{ hostname }}
   shell: cat /etc/rc.conf | grep {{ hostname | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: hostname_present
   changed_when: False
-  tags:
-    - set_hostname
+  tags: set_hostname
 
-- name: persist hostname
+- name: persist hostname on /etc/rc.conf on {{ hostname }}
   command: /usr/sbin/sysrc hostname="{{ hostname | quote }}"
   when: hostname_present.stdout == "0"
-  tags:
-    - set_hostname
+  tags: set_hostname
 
 ...

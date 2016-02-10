@@ -1,0 +1,7 @@
+---
+
+- name: set root shell on jail {{ jail_name }} on {{ hostname }}
+  shell: jexec {{ jail_name | quote }} pw usermod root -s /usr/local/bin/bash
+  tags: bash_as_shell
+
+...

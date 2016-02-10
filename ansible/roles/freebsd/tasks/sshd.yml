@@ -1,12 +1,12 @@
 ---
 
-- name: configure /etc/ssh/sshd_config
+- name: configure /etc/ssh/sshd_config on {{ hostname }}
   template: src=etc/ssh/sshd_config.j2
     dest=/etc/ssh/sshd_config
     owner=0
     group=0
     mode=0644
-  tags: sshd_config
   notify: reload sshd
+  tags: sshd_config
 
 ...

@@ -1,6 +1,6 @@
 ---
 
-- name: check whether jail {{ jail_name }} is started
+- name: check whether jail {{ jail_name }} is started on {{ hostname }}
   shell: jls | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jail_started
   changed_when: False

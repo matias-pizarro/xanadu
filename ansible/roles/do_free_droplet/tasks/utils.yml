@@ -1,6 +1,7 @@
 ---
 
-- name: install python
+- name: install python on {{ hostname }}
   raw: env ASSUME_ALWAYS_YES=YES pkg install python bash-static
+  tags: install_python
 
 ...

@@ -1,9 +1,11 @@
 ---
 
-- name: set root user shell to bash
+- name: set root user shell to bash on {{ hostname }}
   raw: pw usermod root -s /usr/local/bin/bash
+  tags: bash_as_shell
 
-- name: set freebsd user shell to bash
+- name: set freebsd user shell to bash on {{ hostname }}
   raw: pw usermod freebsd -s /usr/local/bin/bash
+  tags: bash_as_shell
 
 ...

@@ -1,6 +1,6 @@
 ---
 
-- name: create new Droplet
+- name: create new droplet on {{ hostname }}
   digital_ocean:
     state: present
     command: droplet
@@ -18,23 +18,28 @@
     wait: yes
     wait_timeout: 500
   register: new_droplet
+  tags: create_droplet
 
-- name: new droplet ID 
+- name: new droplet ID for {{ hostname }}
   debug:
     msg="ID is {{ new_droplet.droplet.id }}"
+  tags: create_droplet
 
-- name: new droplet IP
+- name: new droplet IP for {{ hostname }}
   debug:
     msg="IP is {{ new_droplet.droplet.ip_address }}"
+  tags: create_droplet
 
-- name: Add new host to our inventory.
+- name: Add {{ hostname }} to our inventory
   add_host:
     name: "{{new_droplet.droplet.ip_address}}"
     groups: new_droplets
     ansible_python_interpreter: /usr/local/bin/python2
   when: new_droplet.droplet is defined
+  tags: create_droplet
 
-- name: Wait for port 22 to become available.
+- name: Wait for port 22 to become available on {{ hostname }}
   local_action: "wait_for port=22 host={{new_droplet.droplet.ip_address}}"
+  tags: create_droplet
 
 ...

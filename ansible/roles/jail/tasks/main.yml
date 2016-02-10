@@ -17,4 +17,6 @@
 
 - include: utils.yml
 
+- include: users.yml
+
 ...

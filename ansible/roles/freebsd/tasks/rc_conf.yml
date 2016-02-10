@@ -1,21 +1,21 @@
 ---
 
-- name: create rc.conf
+- name: create rc.conf on {{ hostname }}
   template: src=etc/rc.conf.j2
     dest=/etc/rc.conf
     owner=0
     group=0
     mode=0644
   when: host_type == "jail_host"
-  tags: rc.conf
+  tags: rc_conf
 
-- name: create jail rc.conf
+- name: create jail rc.conf on {{ hostname }}
   template: src=etc/jail_rc.conf.j2
     dest=/etc/rc.conf
     owner=0
     group=0
     mode=0644
   when: host_type == "jailed_host"
-  tags: rc.conf
+  tags: rc_conf
 
 ...

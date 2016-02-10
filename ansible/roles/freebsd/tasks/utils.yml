@@ -1,15 +1,21 @@
 ---
 
-- name: install python
+- name: install python on {{ hostname }}
   pkgng: name=python state=present
-  tags: utils
+  tags:
+    - install_python
+    - utils
 
-- name: install bash-static
+- name: install bash-static on {{ hostname }}
   pkgng: name=bash-static state=present
-  tags: utils
+  tags:
+    - install_bash
+    - utils
 
-- name: install rsync
+- name: install rsync on {{ hostname }}
   pkgng: name=rsync state=present
-  tags: utils
+  tags:
+    - install_rsync
+    - utils
 
 ...

@@ -1,26 +1,27 @@
 ---
 
-- name: delete 'Match User root'
+- name: delete 'Match User root' from sshd_config on {{ hostname }}
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=absent
     line='Match User root'
+  notify: reload sshd
+  tags: allow_root_login
 
-- name: delete ForceCommand
+- name: delete ForceCommand from sshd_config on {{ hostname }}
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=absent
     regexp='^.*ForceCommand echo "Please use the freebsd@ user to access this droplet."'
+  notify: reload sshd
+  tags: allow_root_login
 
-- name: allow freebsd and root login
+- name: allow freebsd and root login on {{ hostname }}
   lineinfile:
     dest=/etc/ssh/sshd_config
     state=present
     line='AllowUsers root freebsd'
-
-- name: reload sshd
-  command: /usr/bin/true
   notify: reload sshd
-  tags: reload_sshd
+  tags: allow_root_login
 
 ...

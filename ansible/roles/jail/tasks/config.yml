@@ -4,24 +4,20 @@
   stat:
     path=/usr/local/etc/ezjail/{{ jail_name }}.norun
   register: jail_norun
-  tags:
-    - jail_config
+  tags: jail_config
 
 - name: set jail {{ jail_name }} autorun to 'run' on {{ hostname }}
   shell: ezjail-admin config -r run {{ jail_name | quote }}
   when: jail_autorun and jail_norun.stat.exists == true
-  tags:
-    - jail_config
+  tags: jail_config
 
 - name: set jail {{ jail_name }} autorun to 'norun' on {{ hostname }}
   shell: ezjail-admin config -r norun {{ jail_name | quote }}
   when: not jail_autorun and jail_norun|failed
-  tags:
-    - jail_config
+  tags: jail_config
 
 - name: copy host's /etc/resolv.conf to jail {{ jail_name }} on {{ hostname }}
   shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
-  tags:
-    - jail_config
+  tags: jail_config
 
 ...

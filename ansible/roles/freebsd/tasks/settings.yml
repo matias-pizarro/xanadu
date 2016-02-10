@@ -1,6 +1,7 @@
 ---
 
-- name: stop sendmail
+- name: stop sendmail on {{ hostname }}
   service: name=sendmail state=stopped
+  tags: stop_sendmail
 
 ...
