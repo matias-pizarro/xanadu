@@ -4,10 +4,10 @@
   connection: local
   gather_facts: no
   tasks:
-  - group_by: key={{ os }}
-  - group_by: key={{ type }}
-  - group_by: key={{ hosting }}
-  - group_by: key={{ host_type }}
+    - group_by: key={{ os }}
+    - group_by: key={{ type }}
+    - group_by: key={{ hosting }}
+    - group_by: key={{ host_type }}
 
 - hosts: "{{ jail_host }}"
   sudo: yes

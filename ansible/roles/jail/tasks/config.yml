@@ -16,8 +16,15 @@
   when: not jail_autorun and jail_norun|failed
   tags: jail_config
 
+- name: check jail and host /etc/resolv.conf are the same
+  shell: diff /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/resolv.conf
+  register: similar_etc_resolv_conf
+  changed_when: False
+  tags: jail_config
+
 - name: copy host's /etc/resolv.conf to jail
   shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
+  when: similar_etc_resolv_conf.stdout|length == "0"
   tags: jail_config
 
 ...

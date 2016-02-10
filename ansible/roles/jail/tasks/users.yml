@@ -1,7 +1,14 @@
 ---
 
+- name: check whether bash is jail root's shell
+  shell: jexec {{ jail_name | quote }} echo $BASH
+  register: bash_as_shell
+  changed_when: False
+  tags: bash_as_shell
+
 - name: set root shell on jail
-  shell: jexec {{ jail_name | quote }} pw usermod root -s /usr/local/bin/bash
+  command: jexec {{ jail_name | quote }} pw usermod root -s /usr/local/bin/bash
+  when: bash_as_shell.stdout|length == "0"
   tags: bash_as_shell
 
 ...

@@ -1,7 +1,14 @@
 ---
 
+- name: check whether bash is root's shell
+  shell: echo $BASH
+  register: bash_as_shell
+  changed_when: False
+  tags: bash_as_shell
+
 - name: set root user shell to bash
-  raw: pw usermod root -s /usr/local/bin/bash
+  command: pw usermod root -s /usr/local/bin/bash
+  when: bash_as_shell.stdout|length == "0"
   tags: bash_as_shell
 
 ...
