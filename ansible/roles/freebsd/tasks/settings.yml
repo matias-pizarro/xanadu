@@ -4,4 +4,46 @@
   service: name=sendmail state=stopped
   tags: stop_sendmail
 
+- name: check encoding patch
+  shell: cat /etc/login.conf | grep  -e ':lang={{ host_locale | quote }}:$' | wc -l | sed -e 's/^[ \t]*//'
+  register: patch_present
+  changed_when: false
+  tags: encoding
+
+- set_fact:
+    mkdb_file: /etc/login.conf
+  changed_when: false
+  when: patch_present.stdout == "0"
+  tags: encoding
+
+- name: change charset
+  patch: >
+    src=files/patches/etc_login_conf_encoding.patch.j2
+    dest=/etc/login.conf
+  when: patch_present.stdout == "0"
+  notify: rebuild db
+  tags: encoding
+
+- name: delete ForceCommand from sshd_config
+  lineinfile:
+    dest=/etc/login.conf
+    state=present
+    regexp="^(.*)<HOST_CHARSET>(.*)$"
+    line="\1{{ host_charset }}\2"
+    backrefs=yes
+  when: patch_present.stdout == "0"
+  notify: rebuild db
+  tags: encoding
+
+- name: delete ForceCommand from sshd_config
+  lineinfile:
+    dest=/etc/login.conf
+    state=present
+    regexp="^(.*)<HOST_LOCALE>(.*)$"
+    line="\1{{ host_locale }}\2"
+    backrefs=yes
+  when: patch_present.stdout == "0"
+  notify: rebuild db
+  tags: encoding
+
 ...

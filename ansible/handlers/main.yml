@@ -1,5 +1,9 @@
 ---
 
+# db
+- name: rebuild db
+  shell: /usr/bin/cap_mkdb {{ mkdb_file }}
+
 # openntpd
 - name: start openntpd
   service: name=openntpd state=started
