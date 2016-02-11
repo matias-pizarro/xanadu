@@ -12,16 +12,35 @@
 ################ Macros ###################################
 
   ### Interfaces ###
-    ext_if = "{{ ipv4.interface }}"
-    loopback_if = "{{ loopback_if }}"
-    jails_if = "{{ jails_if }}"
-    unfiltered  = "{" $loopback_if "}"
+    ext_if              = "{{ ipv4.interface }}"
+    lo_if               = "{{ loopback_if }}"
+    jails_if            = "{{ jails_if }}"
+    unfiltered          = "{" $lo_if "}"
 
   ### Host classes ###
-    jailnet = "{" $jails_if:network "}"
+    jailnet             = "{" $jails_if:network "}"
 
   ### Hosts ###
-    host_ipv4        = "{{ ipv4.address }}"
+    host_ipv4           = "{{ ipv4.address }}"
+    host_ipv6           = "{{ ipv6.address }}"
+
+  ### Ports ###
+    ssh                 = "22"
+    http                = "{ 80 443 }"
+    ntp                 = "{ 123 }"
+    whois               = "43"
+    dns                 = "{ 53 5353 }"
+    dhcp                = "{ 67 68 }"
+    nfs                 = "{ 111 2049 775 776 777 }"
+    samba_udp           = "{ 137 138 }"
+    samba_tcp           = "{ 139 445 }"
+    mysql               = "3306"
+    postgresql          = "5432"
+    multicast_dns       = "5353"
+    # npp               = "4045"
+    github              = "9418"
+    services_tcp        = "{ ssh, submission, domain, auth, www, pop3, > 1024 }"
+    services_tcp        = "{ ssh, submission, domain, auth }"
 
 
 ################ Tables ###################################
@@ -70,7 +89,25 @@
 
 ################ Filtering #################################
 
-  # antispoof quick for lo
+  antispoof quick for $lo_if
 
-  block in quick proto tcp from <sshguard> to any port 22 label "ssh bruteforce"
-  pass all
+  block in quick proto tcp from <sshguard> to any port $ssh label "ssh bruteforce"
+
+  # block all incoming packets but allow ssh, pass all outgoing tcp and udp
+  # connections and keep state, logging blocked packets.
+  block in log all
+
+  # nmap
+  block in log quick on $ext_if inet proto tcp from any to any flags FUP/FUP
+
+  # icmp, ping etc
+  pass in on $ext_if proto icmp all
+  pass in on $ext_if proto icmp6 all
+
+  pass in on $ext_if proto tcp from any to any port $ssh
+
+  # allow anything outbound
+  pass out on $ext_if proto { tcp, udp, icmp } all keep state
+
+  # allow anything on loopback interface
+  pass on $lo_if all

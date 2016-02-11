@@ -35,7 +35,9 @@
     mode=0644
     validate='/sbin/pfctl -nf %s'
   notify: partial pf flush
-  tags: pf
+  tags:
+    - pf
+    - pf_rules
 
 - name: start pf if it is not running
   service: name=pf state=running enabled=yes
