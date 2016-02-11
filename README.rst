@@ -43,3 +43,6 @@ ansible-playbook --extra-vars "jail_host=droplet01.example.net jail=mail02.examp
 
 .. configure all hosts, including jail mail02.example.net
 ansible-playbook site.yml
+
+.. run group when specifying tags
+ansible-playbook --tags="group,openntpd" site.yml

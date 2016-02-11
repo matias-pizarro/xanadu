@@ -2,6 +2,8 @@
 
 - include: hostname.yml
 
+- include: openntpd.yml
+
 - include: ezjail.yml
 
 - include: pf.yml

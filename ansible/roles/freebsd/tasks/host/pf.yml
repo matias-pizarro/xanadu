@@ -8,13 +8,13 @@
     group=0
     mode=0755
   notify: start pf
-  tags: install_pf
+  tags: pf
 
 - name: check whether /etc/pf/ssh.rdr.conf exists
   stat:
     path=/etc/pf/ssh.rdr.conf
   register: ssh_rdr_conf_exists
-  tags: install_pf
+  tags: pf
 
 - name: Create /etc/pf/ssh.rdr.conf
   file:
@@ -25,7 +25,7 @@
     mode=0644
   when: ssh_rdr_conf_exists.stat.exists == false
   notify: partial pf flush
-  tags: install_pf
+  tags: pf
 
 - name: configure pf rules
   template: src=etc/pf.conf.j2
@@ -35,30 +35,10 @@
     mode=0644
     validate='/sbin/pfctl -nf %s'
   notify: partial pf flush
-  tags: config_pf
+  tags: pf
 
-- name: check whether /dev/pf exists
-  stat:
-    path=/dev/pf
-  register: dev_pf_exists
-  tags: install_pf
+- name: start pf if it is not running
+  service: name=pf state=running enabled=yes
+  tags: pf
 
-- name: check whether pf is running
-  shell: pfctl -s info | grep Disabled | wc -l | sed -e 's/^[ \t]*//'
-  when: dev_pf_exists.stat.exists == true
-  changed_when: false
-  register: pf_is_running
-  tags: config_pf
-
-- name: restart pf if it is not running
-  command: /usr/bin/true
-  when: dev_pf_exists.stat.exists == true and pf_is_running.stdout == "1"
-  tags: config_pf
-
-- name: start pf
-  command: /usr/bin/true
-  when: dev_pf_exists.stat.exists == false
-  notify:
-    - start pf
-  tags: install_pf
 ...

@@ -3,12 +3,12 @@
 - name: check whether /var/db/zoneinfo exists
   stat: path=/var/db/zoneinfo
   register: zoneinfo_exists
-  tags: install_ntpd
+  tags: tz_setup
 
 - name: set timezone
   command: /usr/sbin/tzsetup -s {{ timezone | quote }}
   when: zoneinfo_exists.stat.exists == false
-  notify: restart ntpd
-  tags: install_ntpd
+  notify: restart openntpd
+  tags: tz_setup
 
 ...

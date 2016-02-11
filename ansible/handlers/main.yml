@@ -1,8 +1,11 @@
 ---
 
-# ntpd
-- name: restart ntpd
-  service: name=ntpd state=restarted
+# openntpd
+- name: start openntpd
+  service: name=openntpd state=started
+
+- name: restart openntpd
+  service: name=openntpd state=restarted
 
 # sshd
 - name: reload sshd

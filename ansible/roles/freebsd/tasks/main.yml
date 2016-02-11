@@ -2,11 +2,11 @@
 
 # - include: debug.yml
 
+- include: tz.yml
+
 - include: users.yml
 
 - include: rc_conf.yml
-
-- include: ntp.yml
 
 - include: settings.yml
 

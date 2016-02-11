@@ -1,0 +1,24 @@
+---
+
+- name: stop ntpd if it is running
+  service: name=ntpd state=stopped enabled=no
+  tags: openntpd
+
+- name: install openntpd
+  pkgng: name=net/openntpd state=present
+  tags: openntpd
+
+- name: start openntpd if it is not running
+  service: name=openntpd state=running enabled=yes
+  tags: openntpd
+
+- name: configure openntpd
+  template: src=usr/local/etc/openntpd.conf.j2
+    dest=/usr/local/etc/openntpd.conf.j2
+    owner=0
+    group=0
+    mode=0644
+  notify: restart openntpd
+  tags: openntpd
+
+...
