@@ -4,6 +4,7 @@
   shell: ifconfig | grep {{ jails_if | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_up
   changed_when: false
+  always_run: yes
   tags: install_ezjail
 
 - name: bring up cloned interface
@@ -15,6 +16,7 @@
   shell: ifconfig {{ jails_if | quote }} | grep inet | wc -l | sed -e 's/^[ \t]*//'
   register: jails_if_ip
   changed_when: false
+  always_run: yes
   tags: ezjail_config
 
 - name: make sure the cloned interface has an ip address

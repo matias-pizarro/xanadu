@@ -4,6 +4,7 @@
   shell: jls | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jail_started
   changed_when: false
+  always_run: yes
   tags: start_jails
 
 - name: start jail

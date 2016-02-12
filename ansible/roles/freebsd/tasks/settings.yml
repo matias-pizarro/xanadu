@@ -8,6 +8,7 @@
   shell: cat /etc/login.conf | grep  -e ':lang={{ host_locale | quote }}:$' | wc -l | sed -e 's/^[ \t]*//'
   register: patch_present
   changed_when: false
+  always_run: yes
   tags: encoding
 
 - set_fact:

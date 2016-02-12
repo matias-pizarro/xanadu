@@ -4,6 +4,7 @@
   shell: hostname
   register: hostname_value
   changed_when: false
+  always_run: yes
   tags: set_hostname
 
 - name: set hostname
@@ -15,6 +16,7 @@
   shell: cat /etc/rc.conf | grep {{ hostname | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: hostname_present
   changed_when: false
+  always_run: yes
   tags: set_hostname
 
 - name: persist hostname on /etc/rc.conf

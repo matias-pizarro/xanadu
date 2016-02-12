@@ -46,3 +46,6 @@ ansible-playbook site.yml
 
 .. run group when specifying tags
 ansible-playbook --tags="group,openntpd" site.yml
+
+.. You can dry-run a diffed playbook limited to a specific host
+ansible-playbook site.yml --check --diff --limit droplet01.example.net

@@ -4,6 +4,7 @@
   shell: ezjail-admin list | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
   register: jail_exists
   changed_when: false
+  always_run: yes
   tags: create_jail
 
 - name: check whether directory /usr/jails/--jail_name-- exists
