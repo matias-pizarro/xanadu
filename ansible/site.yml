@@ -6,7 +6,7 @@
   tasks:
     - group_by: key={{ os }}
     - group_by: key={{ type }}
-    - group_by: key={{ hosting if false else hostname }}
+    - group_by: key={{ hosting }}
     - group_by: key={{ host_type }}
   tags: group
 
