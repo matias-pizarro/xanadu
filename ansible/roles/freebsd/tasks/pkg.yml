@@ -1,0 +1,94 @@
+---
+
+- name: Create /usr/local/etc/pkg/repos directory
+  file:
+    path=/usr/local/etc/pkg/repos
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+  tags:
+    - pkg
+    - repo_config
+
+- name: copy pkg fingerprints
+  copy:
+    src=files/usr/local/etc/pkg/fingerprints
+    dest=/usr/local/etc/pkg
+    owner=0
+    group=0
+    mode=0644
+  tags:
+    - pkg
+    - repo_config
+
+- name: enable pkg repos
+  copy:
+    src=files/usr/local/etc/pkg/repos/{{ item }}.conf
+    dest=/usr/local/etc/pkg/repos/{{ item }}.conf
+    owner=0
+    group=0
+    mode=0644
+  with_items: pkg_repos | default([])
+  when: item != "FreeBSD"
+  tags:
+    - pkg
+    - repo_config
+
+- name: find obsolete repo configs
+  find:
+    paths="/usr/local/etc/pkg/repos"
+  register: repo_list
+  tags:
+    - pkg
+    - repo_config
+
+- name: delete obsolete repo configs
+  file:
+    path={{ item.path }}
+    state=absent
+  with_items: repo_list.files
+  when: (([(item.path|basename|splitext).0]|difference(pkg_repos)|length)==1 and (item.path|basename != 'FreeBSD.conf'))
+  tags:
+    - pkg
+    - repo_config
+
+- set_fact:
+    FreeBSD: "FreeBSD"
+  tags:
+    - pkg
+    - repo_config
+
+- name: disable pkg.FreeBSD.org repo
+  shell: 'echo "FreeBSD: { enabled: no }" > /usr/local/etc/pkg/repos/FreeBSD.conf'
+  changed_when: false
+  when: FreeBSD not in pkg_repos
+  tags:
+    - pkg
+    - repo_config
+
+- name: check /usr/local/etc/pkg/repos/FreeBSD.conf properties
+  file:
+    path=/usr/local/etc/pkg/repos/FreeBSD.conf
+    state=file
+    owner=0
+    group=0
+    mode=0644
+  when: FreeBSD not in pkg_repos
+  tags:
+    - pkg
+    - repo_config
+
+- name: enable pkg.FreeBSD.org repo
+  file:
+    path=/usr/local/etc/pkg/repos/FreeBSD.conf
+    state=absent
+    owner=0
+    group=0
+    mode=0644
+  when: FreeBSD in pkg_repos
+  tags:
+    - pkg
+    - repo_config
+
+...

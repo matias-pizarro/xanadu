@@ -19,7 +19,7 @@
 
 - name: change charset
   patch: >
-    src=files/patches/etc_login_conf_encoding.patch.j2
+    src=files/usr/local/share/patches/etc_login_conf_encoding.patch.j2
     dest=/etc/login.conf
   when: patch_present.stdout == "0"
   notify: rebuild db
