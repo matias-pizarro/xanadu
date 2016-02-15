@@ -3,7 +3,7 @@
 pkg_conf: []
 
 pkg_repos:
-  - server_nox_local
+  # - server_nox_local
   - server_nox
   - FreeBSD
 
