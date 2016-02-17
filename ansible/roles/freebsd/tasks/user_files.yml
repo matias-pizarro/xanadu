@@ -61,6 +61,54 @@
     - config_user
     - user_files
 
+- name: Check .mysql_history existence
+  stat: path={{ item.stdout }}/.mysql_history
+  with_items: users_homedirs.results
+  register: mysql_history_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .mysql_history permissions
+  file:
+    state=file
+    path={{ item.stdout }}/.mysql_history
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0600
+  with_items: users_homedirs.results
+  changed_when: false
+  failed_when: "'FANTOMAS' in 'liberty'"
+  # when: mysql_history_file_exists.results.0.stat.exists == true
+  register: enforce_user_mysql_history_permissions
+  tags:
+    - config_user
+    - user_files
+
+- name: Check .psql_history existence
+  stat: path={{ item.stdout }}/.psql_history
+  with_items: users_homedirs.results
+  register: psql_history_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .psql_history permissions
+  file:
+    state=file
+    path={{ item.stdout }}/.psql_history
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0600
+  with_items: users_homedirs.results
+  changed_when: false
+  failed_when: "'FANTOMAS' in 'liberty'"
+  # when: psql_history_file_exists.results.0.stat.exists == true
+  register: enforce_user_psql_history_permissions
+  tags:
+    - config_user
+    - user_files
+
 - name: Check .rhosts existence
   stat: path={{ item.stdout }}/.rhosts
   with_items: users_homedirs.results
