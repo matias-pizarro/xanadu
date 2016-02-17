@@ -1,0 +1,86 @@
+---
+
+- name: copy user files
+  copy:
+    src=files/users/{{ item.item.name }}/
+    dest={{ item.stdout }}
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0644
+  with_items: users_homedirs.results
+  changed_when: false
+  tags:
+    - config_user
+    - user_files
+
+- name: Check . history existence
+  stat: path={{ item.stdout }}/.history
+  with_items: users_homedirs.results
+  register: history_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .history permissions
+  file:
+    state=file
+    path={{ item.stdout }}/.history
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0600
+  with_items: users_homedirs.results
+  changed_when: false
+  failed_when: "'FANTOMAS' in 'liberty'"
+  # when: history_file_exists.results.0.stat.exists == true
+  register: enforce_user_history_permissions
+  tags:
+    - config_user
+    - user_files
+
+- name: Check .bash_history existence
+  stat: path={{ item.stdout }}/.bash_history
+  with_items: users_homedirs.results
+  register: bash_history_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .bash_history permissions
+  file:
+    state=file
+    path={{ item.stdout }}/.bash_history
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0600
+  with_items: users_homedirs.results
+  changed_when: false
+  failed_when: "'FANTOMAS' in 'liberty'"
+  # when: bash_history_file_exists.results.0.stat.exists == true
+  register: enforce_user_bash_history_permissions
+  tags:
+    - config_user
+    - user_files
+
+- name: Check .rhosts existence
+  stat: path={{ item.stdout }}/.rhosts
+  with_items: users_homedirs.results
+  register: rhosts_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .rhosts permissions
+  file:
+    state=file
+    path={{ item.stdout }}/.rhosts
+    owner={{ item.item.uid }}
+    group={{ item.item.gid }}
+    mode=0600
+  with_items: users_homedirs.results
+  changed_when: false
+  failed_when: "'FANTOMAS' in 'liberty'"
+  # when: rhosts_file_exists.results.0.stat.exists == true
+  register: enforce_user_rhosts_permissions
+  tags:
+    - config_user
+    - user_files

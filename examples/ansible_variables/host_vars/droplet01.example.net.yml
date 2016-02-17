@@ -24,4 +24,8 @@ ipv6:
   prefixlen: 64
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
 
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.user1 }}"
+
 ...

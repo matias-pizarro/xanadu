@@ -1,0 +1,34 @@
+---
+
+users: {
+    'root': {
+        'uid': 0,
+        'gid': 0,
+        'name': 'root',
+        'comment': 'Charlie\ &',
+        'shell': '/usr/local/bin/bash',
+        'groups': 'wheel,operator',
+        'pubkeys': [
+            files/pubkeys/user1/user1@example.pub,
+            files/pubkeys/user1/user1@other.example.pub
+        ],
+        'charset': 'UTF-8',
+        'locale': 'en_GB.UTF-8'
+    },
+    'user1': {
+        'uid': 1000,
+        'gid': 1000,
+        'name': 'user1',
+        'comment': 'John\ Doe',
+        'shell': '/usr/local/bin/bash',
+        'groups': 'wheel,operator',
+        'pubkeys': [
+            files/pubkeys/user1/user1@example.pub,
+            files/pubkeys/user1/user1@other.example.pub
+        ],
+        'charset': 'UTF-8',
+        'locale': 'en_GB.UTF-8'
+    }
+}
+
+...

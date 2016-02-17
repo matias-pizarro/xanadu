@@ -12,4 +12,33 @@
   when: bash_as_shell.stdout == "0"
   tags: bash_as_shell
 
+# TBD Add gid support to user module
+# gid={{ item.gid }}
+- name: user creation
+  user:
+    uid={{ item.uid }}
+    name={{ item.name }}
+    comment={{ item.comment }}
+    shell={{ item.shell }}
+    state=present
+    groups={{ item.groups }}
+    append=yes
+  with_items: installed_users | default([])
+  register: users_created
+  tags:
+    - ssh_in
+    - config_user
+    - user_files
+
+- name: store home directories
+  shell: 'pw usershow -u {{ item.uid }} | cut -d ":" -f 9'
+  with_items: installed_users | default([])
+  register: users_homedirs
+  changed_when: false
+  tags:
+    - config_user
+    - user_files
+
+- include: user_files.yml
+
 ...
