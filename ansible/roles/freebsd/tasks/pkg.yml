@@ -91,4 +91,16 @@
     - pkg
     - repo_config
 
+- name: packages installation
+  pkgng:
+    name={{ item.1 }}
+    state=present
+  when: item.0.group in group_names
+  with_subelements:
+     - pkg_list
+     - pkg
+  tags:
+    - pkg
+    - pkg_install
+
 ...

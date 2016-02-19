@@ -1,0 +1,19 @@
+---
+
+pkg_list:
+  - group: freebsd
+    pkg:
+      - 'ftp/wget'
+      - 'lang/python2' # so Ansible can work
+      - 'net/rsync'
+      - 'security/ca_root_nss' # so we can verify pkg repos certificates
+      - 'shells/bash-static'
+  - group: jail_host
+    pkg:
+      - 'sysutils/ezjail'
+  - group: jailed_host
+    pkg: []
+  - group: desktop
+    pkg: []
+
+...
