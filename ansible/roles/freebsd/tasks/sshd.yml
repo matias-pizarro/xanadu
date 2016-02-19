@@ -9,4 +9,15 @@
   notify: reload sshd
   tags: sshd_config
 
+- name: authorized keys deployment
+  authorized_key: 
+    user={{ item.0.name }}
+    key='{{ lookup('file', item.1) }}'
+    state=present
+  with_subelements:
+    - sshd_config_allow_users | default([])
+    - pubkeys
+  register: authkeys_set
+  tags: sshd_config
+
 ...

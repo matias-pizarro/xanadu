@@ -17,4 +17,8 @@ installed_users:
   - "{{ users.root }}"
   - "{{ users.user1 }}"
 
+sshd_config_allow_users:
+  - "{{ users.root }}"
+  - "{{ users.user1 }}"
+
 ...
