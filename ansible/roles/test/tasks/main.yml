@@ -1,0 +1,10 @@
+---
+
+- set_fact:
+    test:
+      - aaaa
+      - bbbb
+
+- debug: var=test
+
+...
