@@ -15,5 +15,7 @@ pkg_list:
     pkg: []
   - group: desktop
     pkg: []
+  - group: server
+    pkg: []
 
 ...
