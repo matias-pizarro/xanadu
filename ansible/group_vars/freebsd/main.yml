@@ -2,5 +2,6 @@
 
 ansible_python_interpreter: /usr/local/bin/python2
 ansible_connection: ssh
+passwd_format: blf
 
 ...

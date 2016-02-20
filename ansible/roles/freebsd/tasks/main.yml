@@ -6,11 +6,11 @@
 
 - include: tz.yml
 
+- include: settings.yml
+
 - include: users.yml
 
 - include: rc_conf.yml
-
-- include: settings.yml
 
 - include: sshd.yml
     host_ssh_port={{ ssh_port }}
