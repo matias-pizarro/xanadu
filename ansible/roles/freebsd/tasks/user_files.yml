@@ -6,7 +6,7 @@
     dest={{ item.stdout }}
     owner={{ item.item.uid }}
     group={{ item.item.gid }}
-    mode=0644
+    mode=0600
   with_items: users_homedirs.results
   changed_when: false
   tags:
@@ -115,7 +115,7 @@
     path={{ item.stat.path }}
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
-    mode=0644
+    mode=0600
   with_items: rhosts_file_exists.results
   when: item.stat.exists == true
   register: enforce_user_rhosts_permissions
