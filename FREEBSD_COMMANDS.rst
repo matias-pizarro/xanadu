@@ -3,6 +3,7 @@
 .. NETWORK
 .. list open IPv46 sockets
 sockstat -46
+systat -ifstat 1
 
 
 .. PF

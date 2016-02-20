@@ -35,6 +35,7 @@
   with_items: installed_users | default([])
   register: users_homedirs
   changed_when: false
+  always_run: yes
   tags:
     - config_user
     - user_files
