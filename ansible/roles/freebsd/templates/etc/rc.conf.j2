@@ -1,6 +1,10 @@
 hostname="{{ hostname }}"
 keymap="us.iso.acc"
 
+# Enable 'securelevel' kernel security / See init(8)
+kern_securelevel_enable="YES"
+kern_securelevel="0"
+
 # zfs
 zfs_enable="NO"
 
