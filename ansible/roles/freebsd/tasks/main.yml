@@ -12,6 +12,8 @@
 
 - include: rc_conf.yml
 
+- include: sysctl_conf.yml
+
 - include: sshd.yml
     host_ssh_port={{ ssh_port }}
     host_ipv4={{ ipv4 }}
