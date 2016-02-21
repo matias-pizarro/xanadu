@@ -25,7 +25,7 @@
     host_ipv6           = "{{ ipv6.address }}"
 
   ### Ports ###
-    ssh                 = "22"
+    ssh                 = "{{ ansible_ssh_port }}"
     http                = "{ 80 443 }"
     ntp                 = "{ 123 }"
     whois               = "43"

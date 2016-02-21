@@ -15,7 +15,7 @@
 - include: sysctl_conf.yml
 
 - include: sshd.yml
-    host_ssh_port={{ ssh_port }}
+    host_ssh_port={{ ansible_ssh_port }}
     host_ipv4={{ ipv4 }}
     host_ipv6={{ ipv6 }}
 
