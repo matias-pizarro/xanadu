@@ -8,6 +8,8 @@ pkg_list:
       - 'net/rsync'
       - 'security/ca_root_nss' # so we can verify pkg repos certificates
       - 'shells/bash-static'
+      - 'sysutils/lsof'
+      - 'sysutils/ncdu'
   - group: jail_host
     pkg:
       - 'sysutils/ezjail'
