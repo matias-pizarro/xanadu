@@ -40,7 +40,7 @@ Retrieve dependencies from Ansible Galaxy: ::
 
 Deploy variables safely and keep sensitive values version-controlled in a separate repository:
 
-[*see xanadu/examples/ansible_variables/ for an example of variables layout*] ::
+[*see* `examples/ansible_variables <https://github.com/rebost/xanadu/tree/master/examples/ansible_variables>`_ *for an example of variables layout*] ::
 
     cp -Rp examples/ansible_variables ../
 
@@ -106,6 +106,11 @@ You can now access mail02.example.net with: ::
 Configure all hosts, including jail mail02.example.net: ::
 
     ansible-playbook playbooks/site.yml
+
+
+
+Common usage
+============
 
 Remember to run **'group'** when specifying tags: ::
 
