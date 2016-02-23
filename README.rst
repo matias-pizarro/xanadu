@@ -57,7 +57,7 @@ Store api-related info in environment variables: ::
     export DO_API_VERSION='2'
     export DO_API_TOKEN='<YOUR_API_TOKEN_HERE>'
 
-Display Digital Ocean account details: ::
+Display Digital Ocean account details (useful in particular to retrieve ssh keys hashes): ::
 
     ./do_account.sh
 
@@ -80,11 +80,13 @@ comment the ipv6 parameter in* `playbooks/roles/do_new_droplet/tasks/main.yml, l
 
 Add droplet01.example.net to your inventory file: ::
 
-   echo droplet01.example.net >> ../../ansible_variables/hosts
+   echo droplet01.example.net >> <path_to_your_hosts_file_dir>hosts
 
 You can now access droplet01.example.net with: ::
 
     ssh -Ap 123 root@droplet01.example.net
+
+**Agent forwarding should be enabled with caution** (`man ssh_config <https://www.freebsd.org/cgi/man.cgi?query=ssh_config&sektion=5&n=1>`_)
 
 Configure droplet01.example.net: ::
 
@@ -97,11 +99,13 @@ Create jail mail02.example.net on droplet01.example.net: ::
 
 Add mail02.example.net to your inventory file: ::
 
-   echo mail02.example.net >> ../../ansible_variables/hosts
+   echo mail02.example.net >> <path_to_your_hosts_file_dir>hosts
 
 You can now access mail02.example.net with: ::
 
     ssh -Ap 4001 root@mail02.example.net
+
+**Agent forwarding should be enabled with caution** (`man ssh_config <https://www.freebsd.org/cgi/man.cgi?query=ssh_config&sektion=5&n=1>`_)
 
 Configure all hosts, including jail mail02.example.net: ::
 
