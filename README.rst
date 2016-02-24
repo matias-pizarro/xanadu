@@ -14,9 +14,9 @@ Free software: BSD license
     .. | Read the Docs: http://pybsd.readthedocs.org/
 
 
-`USEFUL FREEBSD COMMANDS <https://github.com/rebost/xanadu/blob/master/FREEBSD_COMMANDS.rst>`
+`USEFUL FREEBSD COMMANDS <https://github.com/rebost/xanadu/blob/master/FREEBSD_COMMANDS.rst>`_
 
-`BIBLIOGRAPHY <https://github.com/rebost/xanadu/blob/master/BIBLIOGRAPHY.rst>`
+`BIBLIOGRAPHY <https://github.com/rebost/xanadu/blob/master/BIBLIOGRAPHY.rst>`_
 
 
 Installation
