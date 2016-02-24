@@ -7,4 +7,20 @@
 
 - debug: var=test
 
+- name: add jail ssh port to ssh ports in pf
+  shell: cat playbooks/roles/test/files/test2.txt | grep -E '^(.*{ [0-9 ]*)111( }.*)$' | wc -l | sed -e 's/^[ \t]*//'
+  register: ssh_port_registered
+  changed_when: false
+  always_run: yes
+
+- name: add jail ssh port to ssh ports in pf
+  lineinfile:
+    dest=playbooks/roles/test/files/test2.txt
+    create=yes
+    state=present
+    regexp="^(.*\{ [0-9 ]*)( \}.*)$"
+    line="\1 111\2"
+    backrefs=yes
+  when: ssh_port_registered.stdout == "0"
+
 ...
