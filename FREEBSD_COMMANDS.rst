@@ -14,7 +14,7 @@ list open IPv46 sockets: ::
 `systat <https://www.freebsd.org/cgi/man.cgi?query=systat&apropos=0&sektion=0&manpath=FreeBSD+10.2-RELEASE&arch=default&format=html>`_
 ======
 
-display system statistics
+**display system statistics**
 
 Network connections: ::
 
@@ -62,6 +62,7 @@ To send a SIGHUP to the processes that have /var/run/log open, use: ::
 
 `pf <https://www.freebsd.org/cgi/man.cgi?query=pfctl&sektion=8&apropos=0&manpath=FreeBSD+10.2-RELEASE>`_
 ==
+
 show pf info: ::
 
     pfctl -s info
