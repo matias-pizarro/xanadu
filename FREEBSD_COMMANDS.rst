@@ -61,7 +61,7 @@ To send a SIGHUP to the processes that have /var/run/log open, use: ::
 
 
 `pf <https://www.freebsd.org/cgi/man.cgi?query=pfctl&sektion=8&apropos=0&manpath=FreeBSD+10.2-RELEASE>`_
-==
+====
 
 show pf info: ::
 
