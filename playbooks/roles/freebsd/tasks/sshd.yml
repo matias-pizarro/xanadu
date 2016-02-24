@@ -21,7 +21,7 @@
   tags: sshd_config
 
 - name: checks whether jail ssh port is amongst ssh ports in pf
-  shell: "cat /etc/pf.conf | grep -E '^(.*ssh.*{[0-9 ]*){{ ansible_ssh_port }}([0-9 ]*}.*)$' | wc -l | sed -e 's/^[ \t]*//'"
+  shell: "cat /etc/pf/jail_macros.conf | grep -E '^ *jail_ssh_ports = \"[0-9 ]*{{ ansible_ssh_port }}[0-9 ]* \"' | wc -l | sed -e 's/^[ \t]*//'"
   register: ssh_port_registered
   changed_when: false
   always_run: yes
@@ -31,10 +31,13 @@
 
 - name: add jail ssh port to ssh ports in pf
   lineinfile:
-    dest=/etc/pf.conf
+    dest=/etc/pf/jail_macros.conf
     create=yes
+    owner=0
+    group=0
+    mode=0644
     state=present
-    regexp="^(.*ssh.*\{[0-9 ]*)( \}.*)$"
+    regexp="^( *jail_ssh_ports = \"[0-9 ]*)( \")$"
     line="\1 {{ ansible_ssh_port }}\2"
     backrefs=yes
   when: host_type == "jailed_host" and ssh_port_registered.stdout == "0"
