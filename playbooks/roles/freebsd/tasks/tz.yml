@@ -7,8 +7,13 @@
 
 - name: set timezone
   command: /usr/sbin/tzsetup -s {{ timezone | quote }}
-  when: zoneinfo_exists.stat.exists == false
+  when: zoneinfo_exists.stat.exists == false and host_type == "jail_host"
   notify: restart openntpd
+  tags: tz_setup
+
+- name: set timezone
+  command: /usr/sbin/tzsetup -s {{ timezone | quote }}
+  when: zoneinfo_exists.stat.exists == false and host_type == "jailed_host"
   tags: tz_setup
 
 ...
