@@ -12,12 +12,18 @@
   register: python_exists
   tags: install_python
 
-- name: install python and bash-static on jail
-  shell: jexec {{ jail_name | quote }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static
-  when: bash_exists.stat.exists == false or python_exists.stat.exists == false
+- name: check whether ca_root_nss is installed on jail
+  stat:
+    path=/usr/jails/{{ jail_name }}/usr/local/share/certs/ca-root-nss.crt
+  register: ca_root_nss_exists
+  tags: install_ca_root_nss
+  
+- name: install bash-static, python and ca_root_nss on jail
+  shell: jexec {{ jail_name | quote }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static security/ca_root_nss
+  when: bash_exists.stat.exists == false or python_exists.stat.exists == false or ca_root_nss_exists.stat.exists == false
   tags:
     - install_bash
     - install_python
-    - utils
+    - install_ca_root_nss
 
 ...
