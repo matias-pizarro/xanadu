@@ -9,7 +9,7 @@
 - include: rc_conf.yml
 
 - include: sshd.yml
-    host_ssh_port={{ ansible_ssh_port }}
+    host_ssh_port={{ jail_ssh_port }}
     host_ipv4={{ jail_ipv4 }}
     host_ipv6={{ jail_ipv6 }}
 

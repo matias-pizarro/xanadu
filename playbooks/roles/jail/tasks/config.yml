@@ -32,6 +32,7 @@
 - name: copy host's /etc/resolv.conf to jail
   shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
   when: etc_resolv_conf_exists.stat.exists == false or similar_etc_resolv_conf.stdout == ""
+  changed_when: false
   tags: jail_config
 
 ...

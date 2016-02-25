@@ -20,22 +20,16 @@
     mode=0644
   tags: sshd_config
 
-- name: check whether jail's /root/.ssh/authorized_keys exists
-  stat:
-    path=/usr/jails/{{ jail_name }}/root/.ssh/authorized_keys
-  register: authorized_keys_exists
-  tags: sshd_config
-
-- name: check jail and host /root/.ssh/authorized_keys are the same
-  shell: diff /root/.ssh/authorized_keys /usr/jails/{{ jail_name | quote }}/root/.ssh/authorized_keys
-  when: authorized_keys_exists.stat.exists == true
-  register: similar_authorized_keys
-  always_run: yes
-  tags: sshd_config
-
-- name: copy host's root ssh keys to jail's root
-  shell: cp -Rp /root/.ssh /usr/jails/{{ jail_name | quote }}/root/
-  when: authorized_keys_exists.stat.exists == false or similar_authorized_keys.stdout == ""
+- name: authorized keys deployment
+  authorized_key: 
+    user={{ item.0.name }}
+    key='{{ lookup('file', item.1) }}'
+    state=present
+    manage_dir=yes
+  with_subelements:
+    - sshd_config_allow_users | default([])
+    - pubkeys
+  register: authkeys_set
   tags: sshd_config
 
 ...
