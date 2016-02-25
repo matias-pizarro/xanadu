@@ -13,8 +13,8 @@
   tags: openntpd
 
 - name: configure openntpd
-  template: src=usr/local/etc/openntpd.conf.j2
-    dest=/usr/local/etc/openntpd.conf.j2
+  template: src=usr/local/etc/ntpd.conf.j2
+    dest=/usr/local/etc/ntpd.conf
     owner=0
     group=0
     mode=0644

@@ -94,3 +94,12 @@ load pf rules and flush nat and rules: ::
 live capture of pf activity: ::
 
     tcpdump -netttti pflog0
+
+
+
+`ntpctl <https://calomel.org/ntpd.html>`_
+====
+
+print out each ntp peer including their next polling time as well as the offset, delay and jitter in milliseconds: ::
+
+    ntpctl -sa
