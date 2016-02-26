@@ -103,3 +103,36 @@ live capture of pf activity: ::
 print out each ntp peer including their next polling time as well as the offset, delay and jitter in milliseconds: ::
 
     ntpctl -sa
+
+
+
+`dtrace <https://www.freebsd.org/cgi/man.cgi?query=dtrace&apropos=0&sektion=0&manpath=FreeBSD+10.2-RELEASE&arch=default&format=html>`_
+======
+
+load kernel modules: ::
+
+    kldload dtrace
+    kldload dtraceall
+
+examples: ::
+
+    dtrace -n 'syscall:::'
+    dtrace -n 'syscall:::entry'
+    dtrace -n ':::entry'
+
+
+
+`truss <https://www.freebsd.org/cgi/man.cgi?query=truss&sektion=>`_
+=====
+
+Follow the system calls used in echoing "hello": ::
+
+    truss /bin/echo hello
+
+Do the same, but put the output into a file: ::
+
+    truss -o /tmp/truss.out /bin/echo hello
+
+Follow an already-running process: ::
+
+    truss -p 34

@@ -3,6 +3,7 @@ BIBLIOGRAPHY
 ============
 
 
+
 INSTALLATION
 ============
 
@@ -18,6 +19,24 @@ INSTALLATION
 
 `http://ramsdenj.com/server/2016/01/01/FreeNAS-Server-Build.html <http://ramsdenj.com/server/2016/01/01/FreeNAS-Server-Build.html>`_
 
+`https://calomel.org/zfs_freebsd_root_install.html <https://calomel.org/zfs_freebsd_root_install.html>`_
+
+
+
+NTP
+===
+
+`https://calomel.org/ntpd.html <https://calomel.org/ntpd.html>`_
+
+`browse Public NTP servers <http://support.ntp.org/bin/view/Servers/WebHome#Finding_A_Time_Server>`_
+
+
+
+DNS
+===
+
+
+`https://calomel.org/unbound_dns.html <https://calomel.org/unbound_dns.html>`_
 
 
 
@@ -44,7 +63,6 @@ JAILS
 
 
 
-
 SSL
 ===
 `https://wiki.mozilla.org/Security/Server_Side_TLS <https://wiki.mozilla.org/Security/Server_Side_TLS>`_
@@ -61,6 +79,7 @@ SSL
 
 `http://savagedlight.me/2015/11/24/lets-encrypt-on-a-freebsd-nginx-reverse-proxy/ <http://savagedlight.me/2015/11/24/lets-encrypt-on-a-freebsd-nginx-reverse-proxy/>`_
 
+`https://calomel.org/lets_encrypt_client.html <https://calomel.org/lets_encrypt_client.html>`_
 
 
 
@@ -72,3 +91,18 @@ MONITORING
 `http://www.boxever.com/push-vs-pull-for-monitoring <http://www.boxever.com/push-vs-pull-for-monitoring>`_
 
 `https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my/ <https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my/>`_
+
+
+
+PROFILING / DEBUGGING
+=====================
+
+`http://www.cyberciti.biz/tips/ktrace-freebsd-macosx-tool-howto.html <http://www.cyberciti.biz/tips/ktrace-freebsd-macosx-tool-howto.html>`_
+
+`https://www.freebsd.org/cgi/man.cgi?query=truss&sektion= <https://www.freebsd.org/cgi/man.cgi?query=truss&sektion=>`_
+
+`https://wiki.freebsd.org/DTrace/Tutorial <https://wiki.freebsd.org/DTrace/Tutorial>`_
+
+`https://wiki.freebsd.org/DTrace/One-Liners <https://wiki.freebsd.org/DTrace/One-Liners>`_
+
+`http://chadfowler.com/blog/2014/01/26/the-magic-of-strace/ <http://chadfowler.com/blog/2014/01/26/the-magic-of-strace/>`_
