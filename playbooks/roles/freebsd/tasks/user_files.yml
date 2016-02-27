@@ -122,3 +122,25 @@
   tags:
     - config_user
     - user_files
+
+- name: check .ssh/known_hosts existence
+  stat: path={{ item.stdout }}/.ssh/known_hosts
+  with_items: users_homedirs.results
+  register: known_hosts_file_exists
+  tags:
+    - config_user
+    - user_files
+
+- name: enforce .ssh/known_hosts permissions
+  file:
+    state=file
+    path={{ item.stat.path }}
+    owner={{ item.item.item.uid }}
+    group={{ item.item.item.gid }}
+    mode=0600
+  with_items: known_hosts_file_exists.results
+  when: item.stat.exists == true
+  register: enforce_user_rhosts_permissions
+  tags:
+    - config_user
+    - user_files
