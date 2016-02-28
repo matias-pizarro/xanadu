@@ -26,6 +26,8 @@
   ### Hosts ###
     host_ipv4           = "{{ ipv4.address }}"
     host_ipv6           = "{{ ipv6.address }}"
+    host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
+    rproxy              = "rproxy"
 
   ### Ports ###
     ssh                 = "{ {{ ansible_ssh_port }} " $jail_ssh_ports "}"
@@ -86,7 +88,10 @@
   # Allows nat to specified addresses
   nat on $ext_if from $jailnet to any      -> $host_ipv4
 
-  # redirects ssh to jails
+  # redirect http traffic to reverse-proxy
+  rdr on $ext_if proto {tcp udp} to $host_ipv46 port $http -> $rproxy
+
+  # redirect ssh to jails
   include "/etc/pf/ssh.rdr.conf"
 
 
@@ -107,10 +112,13 @@
   pass in on $ext_if proto icmp all
   pass in on $ext_if proto icmp6 all
 
-  pass in on $ext_if proto tcp from any to any port $ssh
+  pass in on $ext_if proto {tcp udp} from any to any port $ssh
+
+  # Allows HTTP incoming traffic to host
+  pass in on $ext_if proto {tcp udp} from any to $rproxy port $http keep state
 
   # allow anything outbound
-  pass out on $ext_if proto { tcp, udp, icmp } all keep state
+  pass out on $ext_if proto { tcp udp icmp icmp6 } all keep state
 
   # allow anything on loopback interface
   pass on $lo_if all
