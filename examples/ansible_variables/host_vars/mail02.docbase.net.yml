@@ -1,6 +1,6 @@
 ---
 
-hostname: mail02.example.net
+hostname: mail02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: iredmail
@@ -8,7 +8,6 @@ hosting: "{{ hostvars[jail_host]['hosting'] }}"
 host_type: jailed_host
 
 jail_name: iredmail
-jail_host: droplet01.example.net
 jail_index: 1
 jail_type: service
 jail_autorun: true

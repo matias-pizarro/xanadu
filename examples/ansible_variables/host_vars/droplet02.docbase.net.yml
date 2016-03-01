@@ -1,13 +1,23 @@
 ---
 
-hostname: droplet02.example.net
+hostname: droplet02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: server
 hosting: digital_ocean
 host_type: jail_host
+jails:
+  - rproxy02.docbase.net
 
-droplet_name: droplet02
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.user1 }}"
+
+sshd_config_allow_users:
+    - "{{ users.root }}"
+    - "{{ users.user1 }}"
+
+droplet_name: droplet01
 droplet_size: 512mb
 droplet_image: freebsd-10-2-x64
 droplet_region: ams2
@@ -25,13 +35,5 @@ ipv6:
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
 
 ansible_ssh_port: 123
-
-installed_users:
-  - "{{ users.root }}"
-  - "{{ users.user1 }}"
-
-sshd_config_allow_users:
-  - "{{ users.root }}"
-  - "{{ users.user1 }}"
 
 ...

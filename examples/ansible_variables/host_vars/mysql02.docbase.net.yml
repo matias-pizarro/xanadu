@@ -1,6 +1,6 @@
 ---
 
-hostname: mysql02.example.net
+hostname: mysql02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: mysql
@@ -8,7 +8,6 @@ hosting: "{{ hostvars[jail_host]['hosting'] }}"
 host_type: jailed_host
 
 jail_name: mysql
-jail_host: droplet01.example.net
 jail_index: 2
 jail_type: service
 jail_autorun: true
