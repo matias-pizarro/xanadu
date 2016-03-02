@@ -14,6 +14,8 @@
 
 - include: sysctl_conf.yml
 
+- include: cron.yml
+
 - include: sshd.yml
     host_ssh_port={{ ansible_ssh_port }}
     host_ipv4={{ ipv4 }}

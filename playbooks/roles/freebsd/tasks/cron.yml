@@ -1,0 +1,11 @@
+---
+
+- name: create /etc/crontab
+  template: src=etc/crontab.j2
+    dest=/etc/crontab
+    owner=0
+    group=0
+    mode=0644
+  tags: crontab
+
+...
