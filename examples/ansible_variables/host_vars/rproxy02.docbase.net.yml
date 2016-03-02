@@ -1,9 +1,9 @@
 ---
 
-hostname: mail02.docbase.net
+hostname: rproxy02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
-type: iredmail
+type: nginx_proxy
 host_type: jailed_host
 
 installed_users:
@@ -12,7 +12,7 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: test
+jail_name: rproxy
 jail_index: 1
 jail_type: service
 jail_autorun: true

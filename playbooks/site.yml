@@ -8,15 +8,9 @@
     - group_by: key={{ type }}
     - group_by: key={{ hosting }}
     - group_by: key={{ host_type }}
-  tags: group
+  tags: set_properties
 
-- hosts: plain:jail_host
-  sudo: yes
-  gather_facts: no
-  roles:
-    - freebsd
-
-- hosts: jailed_host
+- hosts: all
   sudo: yes
   gather_facts: no
   roles:

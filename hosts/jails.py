@@ -24,20 +24,24 @@ if not os.path.exists(playbook_path):
     sys.exit()
 
 inventory.set_playbook_basedir(os.path.dirname(playbook_path))
-jails = set()
+
+jails = {
+    "jails": {
+        "hosts": []
+    },
+    "_meta": {
+       "hostvars" : {}
+    }
+}
+
 for host in inventory.get_hosts():
     host_vars = inventory.get_host_vars(host)
     jails_list = host_vars.get('jails', [])
     if not isinstance(jails_list, list):
         jails_list = list(jails_list)
     for jail in jails_list:
-        jails.add(jail)
+        jails['jails']['hosts'].append(jail)
+        jails['_meta']['hostvars'][jail] = {'jail_host': host.name, 'hosting': host_vars.get('hosting', '')}
 
-# hostvars = HostVars(
-#             inventory=inventory,
-#             variable_manager=variable_manager,
-#             loader=loader,
-#         )
-
-print(json.dumps({"hosts": list(jails)}))
+print(json.dumps(jails))
 
