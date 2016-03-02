@@ -120,9 +120,9 @@ Configure all hosts, including jail mail02.example.net: ::
 Common usage
 ============
 
-Remember to run **'group'** when specifying tags: ::
+Remember to run **'set_properties'** when specifying tags: ::
 
-    ansible-playbook --tags="group,openntpd" site.yml
+    ansible-playbook --tags="set_properties,openntpd" site.yml
 
 You can dry-run a diff'ed playbook limited to a specific host: ::
 

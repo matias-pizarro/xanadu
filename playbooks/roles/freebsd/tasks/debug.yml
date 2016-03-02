@@ -16,4 +16,7 @@
 
 - debug: var=jail_ipv6
 
+- debug: var=hostvars[hostname]
+  tags: set_properties
+
 ...

@@ -1,8 +1,8 @@
 ---
 
-pkg_list:
+properties:
   - group: freebsd
-    pkg:
+    packages:
       - 'ftp/wget'
       - 'lang/python2' # so Ansible can work
       - 'net/rsync'
@@ -10,14 +10,26 @@ pkg_list:
       - 'shells/bash-static'
       - 'sysutils/lsof'
       - 'sysutils/ncdu'
+      - 'sysutils/pftop'
+    services: []
   - group: jail_host
-    pkg:
+    packages:
       - 'sysutils/ezjail'
+    services:
+      - 'ezjail'
   - group: jailed_host
-    pkg: []
+    packages: []
+    services: []
+  - group: nginx_proxy
+    packages:
+      - 'www/nginx'
+    services:
+      - 'nginx'
   - group: desktop
-    pkg: []
+    packages: []
+    services: []
   - group: server
-    pkg: []
+    packages: []
+    services: []
 
 ...

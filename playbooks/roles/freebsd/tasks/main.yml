@@ -2,6 +2,8 @@
 
 # - include: debug.yml
 
+- include: set_properties.yml
+
 - include: pkg.yml
 
 - include: tz.yml

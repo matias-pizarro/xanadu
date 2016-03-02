@@ -93,12 +93,9 @@
 
 - name: packages installation
   pkgng:
-    name={{ item.1 }}
+    name={{ item }}
     state=present
-  when: item.0.group in group_names
-  with_subelements:
-     - pkg_list
-     - pkg
+  with_items: "{{ packages }}"
   tags:
     - pkg
     - pkg_install
