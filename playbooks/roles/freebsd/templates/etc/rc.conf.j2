@@ -41,9 +41,6 @@ openntpd_flags="-sv"
 # S.M.A.R.T. monitoring (sysutils/smartmontools)
 smartd_enable="NO"
 
-# ezjail
-ezjail_enable="YES"
-
 # Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
 dumpdev="NO"
 
@@ -66,3 +63,8 @@ defaultrouter="{{ ipv4.gateway }}"
 # IPv6
 ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
+{% for service in services %}
+
+# {{ service }}
+{{ service }}_enable="YES"
+{% endfor %}
