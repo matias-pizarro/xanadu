@@ -2,16 +2,19 @@
 	"folders":
 	[
 		{
-			"path": "/home/mpizarro/projects/ansible_variables"
+			"path": "~/projects/ansible_variables"
 		},
 		{
-			"path": "/home/mpizarro/projects/xanadu"
+			"path": "~/projects/xanadu"
 		},
 		{
 			"path": "/data/os/BSD/FreeBSD/scripts/1.3/ansible"
 		},
 		{
-			"path": "/home/mpizarro/projects/iredmail"
+			"path": "~/projects/iredmail"
+		},
+		{
+			"path": "~/.virtualenvs/xanadu/lib/python2.7/site-packages/ansible"
 		}
 	]
 }
