@@ -23,7 +23,7 @@
     state=present
     groups={{ item.groups }}
     append=yes
-  with_items: installed_users | default([])
+  with_items: "{{ installed_users | default([]) }}"
   register: users_created
   tags:
     - ssh_in
@@ -32,7 +32,7 @@
 
 - name: store home directories
   shell: 'pw usershow -u {{ item.uid }} | cut -d ":" -f 9'
-  with_items: installed_users | default([])
+  with_items: "{{ installed_users | default([]) }}"
   register: users_homedirs
   changed_when: false
   always_run: yes

@@ -29,7 +29,7 @@
     owner=0
     group=0
     mode=0644
-  with_items: pkg_repos | default([])
+  with_items: "{{ pkg_repos | default([]) }}"
   when: item != "FreeBSD"
   tags:
     - pkg
@@ -47,7 +47,7 @@
   file:
     path={{ item.path }}
     state=absent
-  with_items: repo_list.files
+  with_items: "{{ repo_list.files }}"
   when: (([(item.path|basename|splitext).0]|difference(pkg_repos)|length)==1 and (item.path|basename != 'FreeBSD.conf'))
   tags:
     - pkg

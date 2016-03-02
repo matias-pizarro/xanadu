@@ -7,7 +7,7 @@
     owner={{ item.item.uid }}
     group={{ item.item.gid }}
     mode=0600
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   changed_when: false
   tags:
     - config_user
@@ -15,7 +15,7 @@
 
 - name: check .history existence
   stat: path={{ item.stdout }}/.history
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: history_file_exists
   tags:
     - config_user
@@ -28,7 +28,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: history_file_exists.results
+  with_items: "{{ history_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_history_permissions
   tags:
@@ -37,7 +37,7 @@
 
 - name: check .bash_history existence
   stat: path={{ item.stdout }}/.bash_history
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: bash_history_file_exists
   tags:
     - config_user
@@ -50,7 +50,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: bash_history_file_exists.results
+  with_items: "{{ bash_history_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_bash_history_permissions
   tags:
@@ -59,7 +59,7 @@
 
 - name: check .mysql_history existence
   stat: path={{ item.stdout }}/.mysql_history
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: mysql_history_file_exists
   tags:
     - config_user
@@ -72,7 +72,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: mysql_history_file_exists.results
+  with_items: "{{ mysql_history_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_mysql_history_permissions
   tags:
@@ -81,7 +81,7 @@
 
 - name: check .psql_history existence
   stat: path={{ item.stdout }}/.psql_history
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: psql_history_file_exists
   tags:
     - config_user
@@ -94,7 +94,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: psql_history_file_exists.results
+  with_items: "{{ psql_history_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_psql_history_permissions
   tags:
@@ -103,7 +103,7 @@
 
 - name: check .rhosts existence
   stat: path={{ item.stdout }}/.rhosts
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: rhosts_file_exists
   tags:
     - config_user
@@ -116,7 +116,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: rhosts_file_exists.results
+  with_items: "{{ rhosts_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_rhosts_permissions
   tags:
@@ -125,7 +125,7 @@
 
 - name: check .ssh/known_hosts existence
   stat: path={{ item.stdout }}/.ssh/known_hosts
-  with_items: users_homedirs.results
+  with_items: "{{ users_homedirs.results }}"
   register: known_hosts_file_exists
   tags:
     - config_user
@@ -138,7 +138,7 @@
     owner={{ item.item.item.uid }}
     group={{ item.item.item.gid }}
     mode=0600
-  with_items: known_hosts_file_exists.results
+  with_items: "{{ known_hosts_file_exists.results }}"
   when: item.stat.exists == true
   register: enforce_user_rhosts_permissions
   tags:
