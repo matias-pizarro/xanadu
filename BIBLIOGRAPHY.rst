@@ -45,6 +45,10 @@ SECURITY
 
 `https://www.freebsd.org/doc/handbook/security-intro.html <https://www.freebsd.org/doc/handbook/security-intro.html>`_
 
+`https://sysconfig.org.uk/two-factor-authentication-with-ssh.html <https://sysconfig.org.uk/two-factor-authentication-with-ssh.html>`_
+
+`https://calomel.org/ids_mtree.html <https://calomel.org/ids_mtree.html>`_
+
 `http://arstechnica.com/security/2015/08/how-security-flaws-work-the-buffer-overflow/ <http://arstechnica.com/security/2015/08/how-security-flaws-work-the-buffer-overflow/>`_
 
 
@@ -86,11 +90,17 @@ SSL
 MONITORING
 ==========
 
+`https://blog.gufi.org/2016/02/15/elk-first-part/ <https://blog.gufi.org/2016/02/15/elk-first-part/>`_
+
+`https://blog.gufi.org/2016/02/23/elk-stack-elasticsearch-logstash-and-kibana-on-freebsd-part-2/ <https://blog.gufi.org/2016/02/23/elk-stack-elasticsearch-logstash-and-kibana-on-freebsd-part-2/>`_
+
 `https://prometheus.io/docs/concepts/metric_types/ <https://prometheus.io/docs/concepts/metric_types/>`_
 
 `http://www.boxever.com/push-vs-pull-for-monitoring <http://www.boxever.com/push-vs-pull-for-monitoring>`_
 
 `https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my/ <https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my/>`_
+
+`https://sensuapp.org/download <https://sensuapp.org/download>`_
 
 
 
@@ -106,3 +116,45 @@ PROFILING / DEBUGGING
 `https://wiki.freebsd.org/DTrace/One-Liners <https://wiki.freebsd.org/DTrace/One-Liners>`_
 
 `http://chadfowler.com/blog/2014/01/26/the-magic-of-strace/ <http://chadfowler.com/blog/2014/01/26/the-magic-of-strace/>`_
+
+
+
+ADVOCACY
+========
+
+`http://blog.pascalj.com/article/you-should-try-freebsd/ <http://blog.pascalj.com/article/you-should-try-freebsd/>`_
+
+`Case Study: Switching from Linux to FreeBSD <https://www.youtube.com/watch?v=A5rmG2j4Lk8>`_
+
+`https://www.over-yonder.net/~fullermd/rants/bsd4linux/01 <https://www.over-yonder.net/~fullermd/rants/bsd4linux/01>`_
+
+`http://nileshgr.com/2013/06/07/the-move-from-linux-to-freebsd <http://nileshgr.com/2013/06/07/the-move-from-linux-to-freebsd>`_
+
+`http://www.aikchar.me/blog/why-freebsd.html <http://www.aikchar.me/blog/why-freebsd.html>`_
+
+
+
+ASTERISK
+========
+
+`https://www.freebsdnews.com/2016/02/19/freebsd-asterisk-test-between-2-extensions/ <https://www.freebsdnews.com/2016/02/19/freebsd-asterisk-test-between-2-extensions/>`_
+
+
+
+HOSTING
+========
+
+`https://sysconfig.org.uk/who-offers-freebsd-hosting.html <https://sysconfig.org.uk/who-offers-freebsd-hosting.html>`_
+
+`https://sysconfig.org.uk/official-freebsd-amis-for-aws.html <https://sysconfig.org.uk/official-freebsd-amis-for-aws.html>`_
+
+
+
+PROXY
+=====
+
+
+`https://calomel.org/squid.html <https://calomel.org/squid.html>`_
+
+`https://calomel.org/squid_adservers.html <https://calomel.org/squid_adservers.html>`_
+
