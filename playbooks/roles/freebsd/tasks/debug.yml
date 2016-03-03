@@ -1,21 +1,5 @@
 ---
 
-- debug: var=host_type
-
-- debug: var=hosting
-
-- debug: var=ansible_ssh_port
-
-- debug: var=ansible_ssh_port
-
-- debug: var=ipv4
-
-- debug: var=ipv6
-
-- debug: var=jail_ipv4
-
-- debug: var=jail_ipv6
-
 - debug: var=hostvars[hostname]
   tags: set_properties
 
