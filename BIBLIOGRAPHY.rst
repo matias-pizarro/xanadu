@@ -148,6 +148,8 @@ HOSTING
 
 `https://sysconfig.org.uk/official-freebsd-amis-for-aws.html <https://sysconfig.org.uk/official-freebsd-amis-for-aws.html>`_
 
+`https://sysconfig.org.uk/official-freebsd-amis-for-aws.html <https://sysconfig.org.uk/official-freebsd-amis-for-aws.html>`_
+
 
 
 PROXY
@@ -157,4 +159,3 @@ PROXY
 `https://calomel.org/squid.html <https://calomel.org/squid.html>`_
 
 `https://calomel.org/squid_adservers.html <https://calomel.org/squid_adservers.html>`_
-
