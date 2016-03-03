@@ -42,7 +42,7 @@ def first_run(inventory):
         if len(hosts) > len(inventory.get_hosts()):
             return subprocess.check_output(["hosts/jails.py", "flatlist", json.dumps(hosts)])
         else:
-            return ''
+            return "{}"
 
 
 def second_run(inventory):
