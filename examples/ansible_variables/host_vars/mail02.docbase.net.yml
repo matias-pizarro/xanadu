@@ -12,9 +12,14 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: test
+jail_name: iredmail
 jail_index: 1
 jail_type: service
 jail_autorun: true
+
+features:
+  - sshd
+  - iredmail
+  - mail_server
 
 ...

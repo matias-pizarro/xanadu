@@ -1,8 +1,8 @@
 ---
 
-# - include: debug.yml
-
 - include: set_properties.yml
+
+# - include: debug.yml
 
 - include: pkg.yml
 

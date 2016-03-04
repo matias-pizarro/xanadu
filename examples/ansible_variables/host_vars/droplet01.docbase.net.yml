@@ -9,6 +9,11 @@ host_type: jail_host
 jails:
   - rproxy02.docbase.net
 
+features:
+  - sshd
+  - ntpd
+  - ezjail
+
 installed_users:
   - "{{ users.root }}"
   - "{{ users.user1 }}"

@@ -17,4 +17,10 @@ jail_index: 1
 jail_type: service
 jail_autorun: true
 
+features:
+  - sshd
+  - reverse_proxy
+  - nginx_proxy
+  - nginx
+
 ...

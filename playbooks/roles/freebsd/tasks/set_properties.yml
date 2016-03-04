@@ -14,4 +14,11 @@
   with_items: "{{ properties }}"
   tags: set_properties
 
+- name: retrieve jail facts
+  set_fact:
+    features: "{{ features | union(hostvars[item].features) | unique }}"
+  when: host_type == "jail_host" and jails|length > 0
+  with_items: "{{ jails }}"
+  tags: set_properties
+
 ...
