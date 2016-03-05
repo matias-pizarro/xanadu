@@ -1,19 +1,41 @@
 ---
 
 - name: check whether /var/db/zoneinfo exists
+  set_fact:
+    current_timezone:
+      stdout: ''
+  register: zoneinfo_exists
+  tags: tz_setup
+
+- name: check whether /var/db/zoneinfo exists
   stat: path=/var/db/zoneinfo
   register: zoneinfo_exists
   tags: tz_setup
 
-- name: set timezone
-  command: /usr/sbin/tzsetup -s {{ timezone | quote }}
-  when: zoneinfo_exists.stat.exists == false and host_type == "jail_host"
-  notify: restart openntpd
+- name: check whether the correct timezone is set
+  command: cat /var/db/zoneinfo
+  when: zoneinfo_exists.stat.exists == true
+  changed_when: false
+  always_run: yes
+  register: current_timezone
   tags: tz_setup
 
 - name: set timezone
   command: /usr/sbin/tzsetup -s {{ timezone | quote }}
-  when: zoneinfo_exists.stat.exists == false and host_type == "jailed_host"
+  when: current_timezone.stdout != timezone
+  register: timezone_changed
+  tags: tz_setup
+
+- name: restart openntpd
+  command: /usr/bin/true
+  when: timezone_changed.changed == true and "openntpd" in features
+  notify: restart openntpd
+  tags: tz_setup
+
+- name: restart ntpd
+  command: /usr/bin/true
+  when: timezone_changed.changed == true and "ntpd" in features
+  notify: restart ntpd
   tags: tz_setup
 
 ...
