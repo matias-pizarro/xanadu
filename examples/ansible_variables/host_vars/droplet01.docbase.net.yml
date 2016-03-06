@@ -5,14 +5,17 @@ timezone: Europe/Amsterdam
 os: freebsd
 type: server
 hosting: digital_ocean
-host_type: jail_host
 jails:
   - rproxy02.docbase.net
 
 features:
   - sshd
-  - ntpd
+  - pf
+  - openntpd
   - ezjail
+  - sshguard
+  - smartd
+  - bsdstats
 
 installed_users:
   - "{{ users.root }}"

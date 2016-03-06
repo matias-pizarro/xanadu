@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 endpoints=(account/keys account)
 for i in "${endpoints[@]}"; do
   url=`printf "https://api.digitalocean.com/v2/%s" $i`

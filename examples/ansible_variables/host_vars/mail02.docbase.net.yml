@@ -4,7 +4,6 @@ hostname: mail02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: iredmail
-host_type: jailed_host
 
 installed_users:
   - "{{ users.root }}"

@@ -6,16 +6,6 @@
     owner=0
     group=0
     mode=0644
-  when: host_type == "jail_host"
-  tags: rc_conf
-
-- name: create jail rc.conf
-  template: src=etc/jail_rc.conf.j2
-    dest=/etc/rc.conf
-    owner=0
-    group=0
-    mode=0644
-  when: host_type == "jailed_host"
   tags: rc_conf
 
 ...

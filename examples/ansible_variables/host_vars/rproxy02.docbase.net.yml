@@ -4,7 +4,6 @@ hostname: rproxy02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
 type: nginx_proxy
-host_type: jailed_host
 
 installed_users:
   - "{{ users.root }}"

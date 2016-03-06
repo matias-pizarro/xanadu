@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import collections
 import json
 import os
 import subprocess
@@ -12,8 +13,14 @@ from ansible.inventory import Inventory
 from ansible.vars.hostvars import HostVars
 
 PLAYBOOK_PATH = './playbooks/site.yml'
-STATIC_HOSTS_PATH = './hosts/static_hosts'
+STATIC_HOSTS_PATH = './static_hosts'
 
+
+def tree():
+    return collections.defaultdict(tree)
+
+def group():
+    return collections.defaultdict(dict, {"hosts": []})
 
 def state_of_the_union():
     """On the first run HOSTS_LIST resolves to the path containing all static
@@ -48,27 +55,31 @@ def first_run(inventory):
 def second_run(inventory):
     """On its second run this script has access to both host and jail vars. Any suitable logic
     to programmatically parametrize jails can be inserted here."""
-    jails = {
-        "jails": {
-            "hosts": []
-        },
-        "_meta": {
-           "hostvars" : {}
-        }
+    output = {
+        "jail_hosts": group(),
+        "jails": group(),
+        "_meta": {"hostvars": tree()}
     }
 
     for host in inventory.get_hosts():
         host_vars = inventory.get_host_vars(host)
-        if host_vars['host_type'] == 'jail_host':
-            jails_list = host_vars.get('jails', [])
+        jails_list = host_vars.get('jails', [])
+        if len(jails_list):
+            output['jail_hosts']['hosts'].append(host.name)
+            output['_meta']['hostvars'][host.name]['host_type'] = 'first_class'
+            output['_meta']['hostvars'][host.name]['loopback_if'] = host_vars.get('loopback_if', 'lo0')
+            output['_meta']['hostvars'][host.name]['jails_if'] = host_vars.get('jails_if', 'lo1')
+            output['_meta']['hostvars'][host.name]['jails_if_ipv4'] = host_vars.get('jails_if_ip', '10.0.x.y')
             for jail_name in jails_list:
                 jail = inventory.get_host(jail_name)
                 jail_vars = inventory.get_host_vars(jail)
-                jails['jails']['hosts'].append(jail.name)
-                hosting = host_vars.get('hosting', '')
-                jails['_meta']['hostvars'][jail.name] = {'jail_host': host.name,
-                                                         'hosting': hosting}
-    return json.dumps(jails)
+                output['jails']['hosts'].append(jail.name)
+                output['_meta']['hostvars'][jail.name]['host_type'] = 'jail'
+                output['_meta']['hostvars'][jail.name]['jail_host'] = host.name
+                output['_meta']['hostvars'][jail.name]['hosting'] = host_vars.get('hosting', '')
+        for feature in host_vars.get('features', []):
+            output['_meta']['hostvars'][host.name]['has_' + feature] = True
+    return json.dumps(output)
 
 
 def main():

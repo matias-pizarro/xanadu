@@ -4,50 +4,25 @@ keymap="us.iso.acc"
 # Enable 'securelevel' kernel security / See init(8)
 kern_securelevel_enable="YES"
 kern_securelevel="0"
+{% if has_zfs %}
 
 # zfs
-zfs_enable="NO"
-
-# sshd
-sshd_enable="YES"
-
-# pf
-pf_enable="YES"
-pflog_enable="YES"
-
-# sshguard
-sshguard_enable="YES"
-sshguard_safety_thresh="30"
-sshguard_pardon_min_interval="600"
-sshguard_prescribe_interval="7200"
-
-# sendmail
-sendmail_enable="NO"
-sendmail_submit_enable="NO"
-sendmail_outbound_enable="NO"
-sendmail_msp_queue_enable="NO"
-
-# misc
-linux_enable="YES"
-bsdstats_enable="YES"
-
-# ntpd
-ntpd_enable="NO"
-
-# openntpd
-openntpd_enable="YES"
-openntpd_flags="-sv"
-
-# S.M.A.R.T. monitoring (sysutils/smartmontools)
-smartd_enable="NO"
+zfs_enable="YES"
+{% endif %}
 
 # Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
 dumpdev="NO"
 
-syslogd_flags="-s -b localhost"
-
 # FSCK Enhancements
 fsck_y_enable="YES"
+
+# tmp
+clear_tmp_enable="YES"
+{% if 'has_linuxulator' %}
+
+linux_enable="YES"
+{% endif %}
+{% if host_type == 'first_class' %}
 
 # Network options
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
@@ -63,8 +38,67 @@ defaultrouter="{{ ipv4.gateway }}"
 # IPv6
 ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
-{% for service in services %}
+{% endif %}
+{% if 'has_sshd' %}
 
-# {{ service }}
-{{ service }}_enable="YES"
-{% endfor %}
+# sshd
+sshd_enable="YES"
+{% endif %}
+{% if 'has_pf' %}
+
+# pf
+pf_enable="YES"
+pflog_enable="YES"
+{% endif %}
+
+# sendmail
+# sendmail_enable="NONE"
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+
+# syslog
+syslogd_flags="-s -b localhost"
+{% if host_type == 'jail' %}
+
+# Prevent lots of jails running cron jobs at the same time
+cron_flags="$cron_flags -J 15"
+{% endif %}
+{% if host_type == 'jail' %}
+
+# rpc
+rpcbind_enable="NO"
+{% endif %}
+{% if 'has_ezjail' %}
+
+# ezjail
+ezjail_enable="YES"
+{% endif %}
+{% if 'has_openntpd' %}
+
+# ntpd
+ntpd_enable="NO"
+
+# openntpd
+openntpd_enable="YES"
+openntpd_flags="-sv"
+{% endif %}
+{% if 'has_smartd' %}
+
+# S.M.A.R.T. monitoring (sysutils/smartmontools)
+smartd_enable="YES"
+{% endif %}
+{% if 'has_sshguard' %}
+
+# sshguard
+sshguard_enable="YES"
+sshguard_safety_thresh="30"
+sshguard_pardon_min_interval="600"
+sshguard_prescribe_interval="7200"
+{% endif %}
+{% if 'has_bsdstats' %}
+
+bsdstats_enable="YES"
+{% endif %}
+

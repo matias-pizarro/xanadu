@@ -4,12 +4,52 @@ keymap="us.iso.acc"
 # Enable 'securelevel' kernel security / See init(8)
 kern_securelevel_enable="YES"
 kern_securelevel="3"
+{% if 'zfs' in features %}
+
+# zfs
+zfs_enable="YES"
+{% endif %}
+
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="NO"
+
+# FSCK Enhancements
+fsck_y_enable="YES"
+
+# tmp
+clear_tmp_enable="YES"
+{% if 'linuxulator' in features %}
+
+linux_enable="YES"
+{% endif %}
+{% if host_type == 'first_class' %}
+
+# Network options
+cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
+ipv6_activate_all_interfaces="YES"
+ipv6_default_interface="{{ ipv6.interface }}"
+ip6addrctl_enable="YES"
+ip6addrctl_policy="ipv4_prefer"
+
+# IPv4
+ifconfig_{{ ipv4.interface }}_ipv4="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
+defaultrouter="{{ ipv4.gateway }}"
+
+# IPv6
+ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
+ipv6_defaultrouter="{{ ipv6.gateway }}"
+{% endif %}
+{% if 'sshd' in features %}
 
 # sshd
 sshd_enable="YES"
+{% endif %}
+{% if 'pf' in features %}
 
-# ntpd
-ntpd_enable="NO"
+# pf
+pf_enable="YES"
+pflog_enable="YES"
+{% endif %}
 
 # sendmail
 # sendmail_enable="NONE"
@@ -18,19 +58,47 @@ sendmail_submit_enable="NO"
 sendmail_outbound_enable="NO"
 sendmail_msp_queue_enable="NO"
 
-# rpc
-rpcbind_enable="NO"
-
-# tmp
-clear_tmp_enable="YES"
-
 # syslog
 syslogd_flags="-ss"
+{% if host_type == 'jail' %}
 
 # Prevent lots of jails running cron jobs at the same time
 cron_flags="$cron_flags -J 15"
-{% for service in services %}
+{% endif %}
+{% if host_type == 'jail' %}
 
-# {{ service }}
-{{ service }}_enable="YES"
-{% endfor %}
+# rpc
+rpcbind_enable="NO"
+{% endif %}
+{% if 'ezjail' in features %}
+
+# ezjail
+ezjail_enable="YES"
+{% endif %}
+{% if 'openntpd' in features %}
+
+# ntpd
+ntpd_enable="NO"
+
+# openntpd
+openntpd_enable="YES"
+openntpd_flags="-sv"
+{% endif %}
+{% if 'smartd' in features %}
+
+# S.M.A.R.T. monitoring (sysutils/smartmontools)
+smartd_enable="YES"
+{% endif %}
+{% if 'sshguard' in features %}
+
+# sshguard
+sshguard_enable="YES"
+sshguard_safety_thresh="30"
+sshguard_pardon_min_interval="600"
+sshguard_prescribe_interval="7200"
+{% endif %}
+{% if 'bsdstats' in features %}
+
+bsdstats_enable="YES"
+{% endif %}
+

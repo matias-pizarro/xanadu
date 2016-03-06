@@ -5,7 +5,6 @@ timezone: Europe/Amsterdam
 os: freebsd
 type: server
 hosting: digital_ocean
-host_type: jail_host
 jails:
   - rproxy02.docbase.net
 
