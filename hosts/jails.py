@@ -55,6 +55,10 @@ def first_run(inventory):
 def second_run(inventory):
     """On its second run this script has access to both host and jail vars. Any suitable logic
     to programmatically parametrize jails can be inserted here."""
+    dynamic_inventory = FreeBSDInventory(inventory)
+    for host in inventory.host_list:
+        host = dynamic_inventory.add_host('droplet01.docbase.net')
+    import ipdb; ipdb.set_trace()
     output = {
         "jail_hosts": group(),
         "jails": group(),
@@ -100,6 +104,57 @@ def main():
 
     output = first_run(inventory) if RUN == 1 else second_run(inventory)
     print(output)
+
+
+class Host(object):
+
+    def __init__(self, inventory, name):
+        self.inventory = inventory
+        self.static_host = self.inventory.static_inventory.get_host(name)
+        self.static_vars = self.inventory.static_inventory.get_host_vars(self.static_host)
+        self.vars = self.inventory.data['_meta']['hostvars'][name]
+
+    def override(self, key, value):
+        pass
+
+    def reconcile(self, key, value):
+        pass
+
+
+
+class FreeBSDInventory(object):
+
+    def __init__(self, static_inventory):
+
+        # Inventory data
+        self.hosts = tree()
+        self.groups = tree()
+        self.data = {"_meta": {"hostvars": tree()}}
+        self.static_inventory = static_inventory
+        self.build_inventory()
+
+
+    def build_inventory(self):
+        '''Build Ansible inventory'''
+        pass
+
+
+    def add_host(self, name):
+        '''Build Ansible inventory'''
+        host = Host(self, name)
+        self.hosts[name] = host
+        return host
+
+
+    def output(self):
+        '''Print Ansible inventory'''
+        json_data = self.inventory
+
+        # if self.args.pretty:
+        #     print(json.dumps(json_data, sort_keys=True, indent=2))
+        # else:
+        #     print(json.dumps(json_data))
+        print(json.dumps(json_data))
 
 
 if __name__ == "__main__":
