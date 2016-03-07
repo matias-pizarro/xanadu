@@ -42,12 +42,11 @@ def first_run(inventory):
         hosts = []
         for host in inventory.get_hosts():
             hosts.append(host.name)
-            host_vars = inventory.get_host_vars(host)
-            jails_list = host_vars.get('jails', [])
+            jails_list = host.vars.get('jails', [])
             for jail_name in jails_list:
                 hosts.append(jail_name)
         if len(hosts) > len(inventory.get_hosts()):
-            return subprocess.check_output(["hosts/jails.py", "flatlist", json.dumps(hosts)])
+            return subprocess.check_output(["hosts/site.py", "flatlist", json.dumps(hosts)])
         else:
             return "{}"
 
@@ -62,23 +61,24 @@ def second_run(inventory):
     }
 
     for host in inventory.get_hosts():
-        host_vars = inventory.get_host_vars(host)
-        jails_list = host_vars.get('jails', [])
+        jails_list = host.vars.get('jails', [])
         if len(jails_list):
             output['jail_hosts']['hosts'].append(host.name)
-            output['_meta']['hostvars'][host.name]['host_type'] = 'first_class'
-            output['_meta']['hostvars'][host.name]['loopback_if'] = host_vars.get('loopback_if', 'lo0')
-            output['_meta']['hostvars'][host.name]['jails_if'] = host_vars.get('jails_if', 'lo1')
-            output['_meta']['hostvars'][host.name]['jails_if_ipv4'] = host_vars.get('jails_if_ip', '10.0.x.y')
+            host.vars['host_type'] = 'first_class'
+            host.vars['loopback_if'] = host.vars.get('loopback_if', 'lo0')
+            host.vars['jails_if'] = host.vars.get('jails_if', 'lo1')
+            host.vars['jails_if_ipv4'] = host.vars.get('jails_if_ip', '10.0.x.y')
+            host.vars['jails_if_ipv6'] = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['x', 'y'])
             for jail_name in jails_list:
                 jail = inventory.get_host(jail_name)
-                jail_vars = inventory.get_host_vars(jail)
                 output['jails']['hosts'].append(jail.name)
-                output['_meta']['hostvars'][jail.name]['host_type'] = 'jail'
-                output['_meta']['hostvars'][jail.name]['jail_host'] = host.name
-                output['_meta']['hostvars'][jail.name]['hosting'] = host_vars.get('hosting', '')
-        for feature in host_vars.get('features', []):
-            output['_meta']['hostvars'][host.name]['has_' + feature] = True
+                jail.vars['host_type'] = 'jail'
+                jail.vars['jail_host'] = host.name
+                jail.vars['hosting'] = host.vars.get('hosting', '')
+                output['_meta']['hostvars'][jail.name] = jail.vars
+        for feature in host.vars.get('features', []):
+            host.vars['has_' + feature] = True
+        output['_meta']['hostvars'][host.name] = host.vars
     return json.dumps(output)
 
 

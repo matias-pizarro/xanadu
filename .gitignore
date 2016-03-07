@@ -2,3 +2,4 @@ playbooks/examine
 *.sublime-workspace
 *.cache
 *.retry
+*.pyc
