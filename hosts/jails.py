@@ -9,7 +9,8 @@ import sys
 
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
-from ansible.inventory import Inventory
+from ansible.inventory import Inventory as AnsibleInventory
+from ansible.inventory.host import Host as AnsibleHost
 from ansible.vars.hostvars import HostVars
 
 PLAYBOOK_PATH = './playbooks/site.yml'
@@ -55,9 +56,9 @@ def first_run(inventory):
 def second_run(inventory):
     """On its second run this script has access to both host and jail vars. Any suitable logic
     to programmatically parametrize jails can be inserted here."""
-    dynamic_inventory = FreeBSDInventory(inventory)
-    for host in inventory.host_list:
-        host = dynamic_inventory.add_host('droplet01.docbase.net')
+    dynamic_inventory = Inventory(inventory)
+    for host in inventory.get_hosts():
+        host = dynamic_inventory.add_host(host)
     import ipdb; ipdb.set_trace()
     output = {
         "jail_hosts": group(),
@@ -93,7 +94,7 @@ def main():
     variable_manager = VariableManager()
     variable_manager.get_vars(loader=loader)
 
-    inventory = Inventory(loader=loader, variable_manager=variable_manager, host_list=HOSTS_LIST)
+    inventory = AnsibleInventory(loader=loader, variable_manager=variable_manager, host_list=HOSTS_LIST)
     variable_manager.set_inventory(inventory)
 
     if not os.path.exists(PLAYBOOK_PATH):
@@ -106,23 +107,17 @@ def main():
     print(output)
 
 
-class Host(object):
+def override(self, key, value):
+    self.key = value
 
-    def __init__(self, inventory, name):
-        self.inventory = inventory
-        self.static_host = self.inventory.static_inventory.get_host(name)
-        self.static_vars = self.inventory.static_inventory.get_host_vars(self.static_host)
-        self.vars = self.inventory.data['_meta']['hostvars'][name]
+def reconcile(self, key, value):
+    pass
 
-    def override(self, key, value):
-        pass
-
-    def reconcile(self, key, value):
-        pass
+from types import MethodType
+AnsibleHost.override = MethodType(override, None, AnsibleHost)
 
 
-
-class FreeBSDInventory(object):
+class Inventory(object):
 
     def __init__(self, static_inventory):
 
@@ -139,11 +134,10 @@ class FreeBSDInventory(object):
         pass
 
 
-    def add_host(self, name):
+    def add_host(self, host):
         '''Build Ansible inventory'''
-        host = Host(self, name)
-        self.hosts[name] = host
-        return host
+        host.override = override
+        self.hosts[host.name] = host
 
 
     def output(self):
