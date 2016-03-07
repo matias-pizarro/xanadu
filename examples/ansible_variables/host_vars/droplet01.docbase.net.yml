@@ -14,7 +14,8 @@ features:
   - openntpd
   - ezjail
   - sshguard
-  - smartd
+  # - linuxulator
+  # - smartd
   - bsdstats
 
 installed_users:
