@@ -3,7 +3,6 @@
 ansible_python_interpreter: /usr/local/bin/python2
 ansible_connection: ssh
 passwd_format: blf
-default_loopback_if: lo0
-default_jails_if: lo1
+loopback_if: lo0
 
 ...
