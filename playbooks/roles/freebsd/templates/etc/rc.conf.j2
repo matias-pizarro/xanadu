@@ -22,7 +22,7 @@ clear_tmp_enable="YES"
 
 linux_enable="YES"
 {% endif %}
-{% if host_type == 'first_class' %}
+{% if is_first_class_host %}
 
 # Network options
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"

@@ -24,6 +24,6 @@
     host_ipv6={{ ipv6 }}
 
 - include: host/main.yml
-  when: host_type == "jail_host"
+  when: is_first_class_host
 
 ...

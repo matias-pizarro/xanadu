@@ -12,12 +12,12 @@ properties:
       - 'sysutils/ncdu'
       - 'sysutils/pftop'
     services: []
-  - group: jail_host
+  - group: jail_hosts
     packages:
       - 'sysutils/ezjail'
     services:
       - 'ezjail'
-  - group: jailed_host
+  - group: jails
     packages: []
     services: []
   - group: nginx_proxy

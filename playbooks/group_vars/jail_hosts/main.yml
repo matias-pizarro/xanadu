@@ -1,7 +1,7 @@
 ---
 
 jails_if: lo1
-lo_base_ip: 10.0.0
+lo_base_ip: '10.0'
 service_jails_base_ipv4: 10.0.1
 service_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:1"
 web_jails_base_ipv4: 10.0.2
