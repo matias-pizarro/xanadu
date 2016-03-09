@@ -1,38 +1,8 @@
 ---
 
 jails_if: lo1
-lo_base_ip: '10.0'
-service_jails_base_ipv4: 10.0.1
-service_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:1"
-web_jails_base_ipv4: 10.0.2
-web_jails_base_ipv6: "{{ ipv6.address.split(':')[0:-2] | join(':') }}:2"
+jails_base_ipv4: '10.0.{type_idx}.{jail_idx}'
 jails_ipv4_netmask: "255.255.255.0"
 jails_ipv6_prefixlen: "64"
-service_jails_base_port: 400
-web_jails_base_port: 500
-proto_jail_ssh_port:
-  service: "{{ service_jails_base_port }}{{ jail_index }}"
-  web: "{{ web_jails_base_port }}{{ jail_index }}"
-proto_jail_ipv4:
-  interface: "{{ jails_if }}"
-  address:
-    service: "{{ service_jails_base_ipv4 }}.{{ jail_index }}"
-    web: "{{ web_jails_base_ipv4 }}.{{ jail_index }}"
-  netmask: "{{ jails_ipv4_netmask }}"
-proto_jail_ipv6:
-  interface: "{{ jails_if }}"
-  address:
-    service: "{{ service_jails_base_ipv6 }}:{{ jail_index }}"
-    web: "{{ web_jails_base_ipv6 }}:{{ jail_index }}"
-  prefixlen: "{{ jails_ipv6_prefixlen }}"
-jail_ssh_port: "{{ proto_jail_ssh_port[jail_type] }}"
-jail_ipv4:
-  interface: "{{ proto_jail_ipv4.interface }}"
-  address: "{{ proto_jail_ipv4.address[jail_type] }}"
-  netmask: "{{ proto_jail_ipv4.netmask }}"
-jail_ipv6:
-  interface: "{{ proto_jail_ipv6.interface }}"
-  address: "{{ proto_jail_ipv6.address[jail_type] }}"
-  prefixlen: "{{ proto_jail_ipv6.prefixlen }}"
 
 ...

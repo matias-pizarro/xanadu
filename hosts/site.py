@@ -63,8 +63,6 @@ def set_vars(inventory):
         host.vars['is_first_class_host'] = True
         host.vars['is_jail'] = False
         host.vars['has_jails'] = len(jails_list) > 0
-        host.vars['jails_if_ipv4'] = host.vars.get('lo_base_ip') + '.x.y'
-        host.vars['jails_if_ipv6'] = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['x', 'y'])
         for jail_name in jails_list:
             jail = inventory.get_host(jail_name)
             jail.vars = combine_vars(jail.get_group_vars(), jail.vars)
@@ -72,8 +70,30 @@ def set_vars(inventory):
             jail.vars['is_jail'] = True
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
+            set_ips(host, jail)
         for feature in host.vars.get('features', []):
             host.vars['has_' + feature] = True
+
+
+def set_ips(host, jail):
+    ipv4_pattern = host.vars.get('jails_base_ipv4')
+    ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
+    type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
+    jail_idx = jail.vars['jail_index']
+    port = str((type_idx + 3) * 1000 + jail_idx)
+    type_idx = str(type_idx)
+    jail_idx = str(jail_idx)
+    jail.vars['ipv4'] = {
+        'interface': host.vars['jails_if'],
+        'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+        'netmask': host.vars['jails_ipv4_netmask'],
+    }
+    jail.vars['ipv6'] = {
+        'interface': host.vars['jails_if'],
+        'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+        'prefixlen': host.vars['jails_ipv6_prefixlen'],
+    }
+    jail.vars['ansible_ssh_port'] = port
 
 
 def output_dict(inventory):
