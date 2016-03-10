@@ -24,11 +24,6 @@
   when: jails_if_ip.stdout == "0"
   tags: ezjail_config
 
-- name: install ezjail
-  pkgng: name=sysutils/ezjail state=present
-  register: ezjail_installed
-  tags: install_ezjail
-
 - name: check whether /usr/jails/basejail exists
   stat:
     path=/usr/jails/basejail

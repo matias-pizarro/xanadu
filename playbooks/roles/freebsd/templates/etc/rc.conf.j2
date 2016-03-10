@@ -3,7 +3,7 @@ keymap="us.iso.acc"
 
 # Enable 'securelevel' kernel security / See init(8)
 kern_securelevel_enable="YES"
-kern_securelevel="0"
+kern_securelevel="{{ kern_securelevel }}"
 {% if has_zfs %}
 
 # zfs
@@ -18,7 +18,7 @@ fsck_y_enable="YES"
 
 # tmp
 clear_tmp_enable="YES"
-{% if 'has_linuxulator' %}
+{% if has_linuxulator %}
 
 linux_enable="YES"
 {% endif %}
@@ -39,12 +39,12 @@ defaultrouter="{{ ipv4.gateway }}"
 ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
-{% if 'has_sshd' %}
+{% if has_sshd %}
 
 # sshd
 sshd_enable="YES"
 {% endif %}
-{% if 'has_pf' %}
+{% if has_pf %}
 
 # pf
 pf_enable="YES"
@@ -59,7 +59,7 @@ sendmail_outbound_enable="NO"
 sendmail_msp_queue_enable="NO"
 
 # syslog
-syslogd_flags="-s -b localhost"
+syslogd_flags="{{ syslogd_flags }}"
 {% if is_jail %}
 
 # Prevent lots of jails running cron jobs at the same time
@@ -70,12 +70,12 @@ cron_flags="$cron_flags -J 15"
 # rpc
 rpcbind_enable="NO"
 {% endif %}
-{% if 'has_ezjail' %}
+{% if has_ezjail %}
 
 # ezjail
 ezjail_enable="YES"
 {% endif %}
-{% if 'has_openntpd' %}
+{% if has_openntpd %}
 
 # ntpd
 ntpd_enable="NO"
@@ -84,12 +84,12 @@ ntpd_enable="NO"
 openntpd_enable="YES"
 openntpd_flags="-sv"
 {% endif %}
-{% if 'has_smartd' %}
+{% if has_smartd %}
 
 # S.M.A.R.T. monitoring (sysutils/smartmontools)
 smartd_enable="YES"
 {% endif %}
-{% if 'has_sshguard' %}
+{% if has_sshguard %}
 
 # sshguard
 sshguard_enable="YES"
@@ -97,8 +97,7 @@ sshguard_safety_thresh="30"
 sshguard_pardon_min_interval="600"
 sshguard_prescribe_interval="7200"
 {% endif %}
-{% if 'has_bsdstats' %}
+{% if has_bsdstats %}
 
 bsdstats_enable="YES"
 {% endif %}
-

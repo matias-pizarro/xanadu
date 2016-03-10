@@ -1,0 +1,16 @@
+---
+
+- name: check the hostname
+  shell: hostname
+  register: hostname_value
+  when: is_not_jail
+  changed_when: false
+  always_run: yes
+  tags: set_hostname
+
+- name: set hostname
+  command: hostname {{ hostname | quote }}
+  when: is_not_jail and hostname_value.stdout != hostname
+  tags: set_hostname
+
+...

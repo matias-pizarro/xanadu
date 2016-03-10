@@ -2,7 +2,7 @@
 
 - include: set_properties.yml
 
-- include: debug.yml
+# - include: debug.yml
 
 - include: pkg.yml
 
@@ -25,7 +25,17 @@
     host_ipv4={{ ipv4 }}
     host_ipv6={{ ipv6 }}
 
-- include: host/main.yml
-  when: is_first_class_host
+- include: hostname.yml
+
+- include: openntpd.yml
+  when: has_openntpd
+
+- include: ezjail.yml
+  when: has_ezjail
+
+- include: pf.yml
+  when: has_pf
+
+- include: utils.yml
 
 ...

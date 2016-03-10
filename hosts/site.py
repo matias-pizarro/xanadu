@@ -31,6 +31,7 @@ def update_hosts(inventory, list_path):
     then refreshes the inventory"""
 
     hosts = set()
+    first_class_hosts = set()
     jail_hosts = set()
     jails = set()
     for host in inventory.get_hosts():
@@ -38,9 +39,13 @@ def update_hosts(inventory, list_path):
         if len(host.vars.get('jails', [])):
             jail_hosts.update([host.name])
             jails.update(host.vars.get('jails', []))
+    first_class_hosts = hosts.copy()
     hosts.update(jails)
     with open(list_path, 'ab') as host_list:
         for host in hosts:
+            host_list.write(host + '\n')
+        host_list.write('[first_class_hosts]\n')
+        for host in first_class_hosts:
             host_list.write(host + '\n')
         host_list.write('[jail_hosts]\n')
         for host in jail_hosts:
@@ -74,6 +79,7 @@ def update_vars(inventory):
         host.vars = combine_vars(host.get_group_vars(), host.vars)
         host.vars['is_first_class_host'] = True
         host.vars['is_jail'] = False
+        host.vars['is_not_jail'] = True
         host.vars['has_jails'] = len(jails_list) > 0
         set_features(inventory, host)
         set_packages(host)
@@ -82,6 +88,7 @@ def update_vars(inventory):
             jail.vars = combine_vars(jail.get_group_vars(), jail.vars)
             jail.vars['is_first_class_host'] = False
             jail.vars['is_jail'] = True
+            jail.vars['is_not_jail'] = False
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
             set_ips(host, jail)
