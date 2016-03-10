@@ -1,7 +1,7 @@
 ---
 
 - name: create jail rc.conf
-  template: src=roles/freebsd/templates/etc/jail_rc.conf.j2
+  template: src=roles/freebsd/templates/etc/rc.conf.j2
     dest=/usr/jails/{{ jail_name }}/etc/rc.conf
     owner=0
     group=0
