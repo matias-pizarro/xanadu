@@ -20,4 +20,13 @@ packages:
   - 'sysutils/ncdu'
   - 'sysutils/pftop'
 
+security_bsd_see_other_uids: 0
+net_inet_tcp_blackhole: 2
+net_inet_udp_blackhole: 1
+net_inet_icmp_drop_redirect: 1
+net_inet_ip_redirect: 0
+net_inet_ip_sourceroute: 0
+net_inet_ip_accept_sourceroute: 0
+net_inet_icmp_bmcastecho: 0
+
 ...

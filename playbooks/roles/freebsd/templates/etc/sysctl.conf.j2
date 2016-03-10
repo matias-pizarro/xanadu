@@ -6,12 +6,12 @@
 
 # Uncomment this to prevent users from seeing information about processes that
 # are being run under another UID.
-security.bsd.see_other_uids=0
+security.bsd.see_other_uids={{ security_bsd_see_other_uids }}
 # see https://www.freebsd.org/doc/handbook/security-intro.html
-net.inet.tcp.blackhole=2
-net.inet.udp.blackhole=1
-net.inet.icmp.drop_redirect=1
-net.inet.ip.redirect=0
-net.inet.ip.sourceroute=0
-net.inet.ip.accept_sourceroute=0
-net.inet.icmp.bmcastecho=0
+net.inet.tcp.blackhole={{ net_inet_tcp_blackhole }}
+net.inet.udp.blackhole={{ net_inet_udp_blackhole }}
+net.inet.icmp.drop_redirect={{ net_inet_icmp_drop_redirect }}
+net.inet.ip.redirect={{ net_inet_ip_redirect }}
+net.inet.ip.sourceroute={{ net_inet_ip_sourceroute }}
+net.inet.ip.accept_sourceroute={{ net_inet_ip_accept_sourceroute }}
+net.inet.icmp.bmcastecho={{ net_inet_icmp_bmcastecho }}
