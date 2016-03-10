@@ -17,7 +17,8 @@ jail_type: service
 jail_autorun: true
 
 features:
-  - sshd
+  - ipv6
   - nginx
+  - sshd
 
 ...

@@ -1,6 +1,6 @@
 ---
 
 - debug: var=hostvars[hostname]
-  tags: set_properties
+  tags: debug
 
 ...

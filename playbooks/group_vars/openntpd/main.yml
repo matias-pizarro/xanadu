@@ -1,5 +1,6 @@
 ---
 
+openntpd_flags: "-sv"
 packages:
   - 'net/openntpd'
 

@@ -1,5 +1,10 @@
 ---
 
+sshguard_enable: true
+sshguard_safety_thresh: 30
+sshguard_pardon_min_interval: 600
+sshguard_prescribe_interval: 7200
+
 packages:
   - 'security/sshguard-pf'
 

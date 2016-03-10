@@ -1,5 +1,8 @@
+# BASE SYSTEM #
+###############
+
 hostname="{{ hostname }}"
-keymap="us.iso.acc"
+keymap="{{ keymap }}"
 
 # Enable 'securelevel' kernel security / See init(8)
 kern_securelevel_enable="YES"
@@ -24,22 +27,34 @@ linux_enable="YES"
 {% endif %}
 {% if is_first_class_host %}
 
-# Network options
+# NETWORK #
+###########
+
+{% if has_jails %}
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
+{% endif %}
+{% if has_ipv6 %}
 ipv6_activate_all_interfaces="YES"
 ipv6_default_interface="{{ ipv6.interface }}"
 ip6addrctl_enable="YES"
 ip6addrctl_policy="ipv4_prefer"
+{% endif %}
 
 # IPv4
 ifconfig_{{ ipv4.interface }}_ipv4="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
 defaultrouter="{{ ipv4.gateway }}"
+{% if has_ipv6 %}
 
 # IPv6
 ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
+{% endif %}
 {% if has_sshd %}
+
+
+# SERVICES #
+############
 
 # sshd
 sshd_enable="YES"
@@ -48,8 +63,9 @@ sshd_enable="YES"
 
 # pf
 pf_enable="YES"
+{% if pflog_enable %}
 pflog_enable="YES"
-{% endif %}
+{% endif %}{% endif %}
 
 # sendmail
 # sendmail_enable="NONE"
@@ -82,7 +98,7 @@ ntpd_enable="NO"
 
 # openntpd
 openntpd_enable="YES"
-openntpd_flags="-sv"
+openntpd_flags="{{ openntpd_flags }}"
 {% endif %}
 {% if has_smartd %}
 
@@ -92,10 +108,10 @@ smartd_enable="YES"
 {% if has_sshguard %}
 
 # sshguard
-sshguard_enable="YES"
-sshguard_safety_thresh="30"
-sshguard_pardon_min_interval="600"
-sshguard_prescribe_interval="7200"
+sshguard_enable="{{ 'YES' if sshguard_enable else 'NO' }}"
+sshguard_safety_thresh="{{ sshguard_safety_thresh }}"
+sshguard_pardon_min_interval="{{ sshguard_pardon_min_interval }}"
+sshguard_prescribe_interval="{{ sshguard_prescribe_interval }}"
 {% endif %}
 {% if has_bsdstats %}
 

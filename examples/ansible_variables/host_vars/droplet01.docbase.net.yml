@@ -9,14 +9,15 @@ jails:
   - rproxy02.docbase.net
 
 features:
-  - sshd
-  - pf
-  - openntpd
-  - ezjail
-  - sshguard
-  # - linuxulator
-  # - smartd
   - bsdstats
+  - ezjail
+  - ipv6
+  # - linuxulator
+  - openntpd
+  - pf
+  # - smartd
+  - sshd
+  - sshguard
 
 installed_users:
   - "{{ users.root }}"
