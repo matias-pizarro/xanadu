@@ -1,0 +1,9 @@
+---
+
+LoginGraceTime: 10s
+MaxAuthTries: 2
+PasswordAuthentication: 'no'
+PermitEmptyPasswords: 'no'
+PermitRootLogin: without-password
+
+...

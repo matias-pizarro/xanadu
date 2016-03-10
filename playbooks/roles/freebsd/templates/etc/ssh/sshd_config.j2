@@ -14,10 +14,10 @@
 # Note that some of FreeBSD's defaults differ from OpenBSD's, and
 # FreeBSD has a few additional options.
 
-Port {{ host_ssh_port }}
+Port {{ ansible_ssh_port }}
 #AddressFamily any
-ListenAddress {{ host_ipv4.address }}
-ListenAddress {{ host_ipv6.address }}
+ListenAddress {{ ipv4.address }}
+ListenAddress {{ ipv6.address }}
 
 # The default requires explicit activation of protocol 1
 #Protocol 2
@@ -44,9 +44,9 @@ ListenAddress {{ host_ipv6.address }}
 
 # Authentication:
 
-LoginGraceTime 10s
+LoginGraceTime {{ LoginGraceTime }}
 #StrictModes yes
-MaxAuthTries 2
+MaxAuthTries {{ MaxAuthTries }}
 #MaxSessions 10
 
 #RSAAuthentication yes
@@ -71,8 +71,8 @@ MaxAuthTries 2
 #IgnoreRhosts yes
 
 # Change to yes to enable built-in password authentication.
-PasswordAuthentication no
-PermitEmptyPasswords no
+PasswordAuthentication {{ PasswordAuthentication }}
+PermitEmptyPasswords {{ PermitEmptyPasswords }}
 
 # Change to no to disable PAM authentication
 #ChallengeResponseAuthentication yes
@@ -97,7 +97,7 @@ PermitEmptyPasswords no
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 #UsePAM yes
-PermitRootLogin without-password
+PermitRootLogin {{ PermitRootLogin }}
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes

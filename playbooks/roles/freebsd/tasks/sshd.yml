@@ -60,7 +60,7 @@
     group=0
     mode=0644
     state=present
-    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ host_ssh_port }} -> {{ ipv4.address }}        port {{ host_ssh_port }}'
+    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ ansible_ssh_port }} -> {{ ipv4.address }}        port {{ ansible_ssh_port }}'
   when: is_jail
   delegate_to: "{{ jail_host }}"
   register: ssh_rdr_added
