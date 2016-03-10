@@ -18,6 +18,8 @@
 
 - include: cron.yml
 
+- include: etc_hosts.yml
+
 - include: sshd.yml
     host_ssh_port={{ ansible_ssh_port }}
     host_ipv4={{ ipv4 }}
