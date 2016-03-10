@@ -9,6 +9,7 @@ import sys
 import tempfile
 
 from ansible.inventory import Inventory
+from ansible.inventory.group import Group
 from ansible.parsing.dataloader import DataLoader
 from ansible.utils.vars import combine_vars
 from ansible.vars import VariableManager
@@ -25,20 +26,20 @@ def get_hosts_list():
         return STATIC_HOSTS_PATH
 
 
-def update(inventory):
+def update_hosts(inventory, list_path):
     """First computes a list of hosts and their jails, assigning them to relevant group,
     then refreshes the inventory"""
 
-    handle, path = tempfile.mkstemp(dir='./', text=True)
-    with open(path, 'w') as host_list:
-        jail_hosts = set()
-        hosts = set()
-        jails = set()
-        for host in inventory.get_hosts():
+    hosts = set()
+    jail_hosts = set()
+    jails = set()
+    for host in inventory.get_hosts():
+        hosts.update([host.name])
+        if len(host.vars.get('jails', [])):
             jail_hosts.update([host.name])
-            hosts.update([host.name])
             jails.update(host.vars.get('jails', []))
-        hosts.update(jails)
+    hosts.update(jails)
+    with open(list_path, 'ab') as host_list:
         for host in hosts:
             host_list.write(host + '\n')
         host_list.write('[jail_hosts]\n')
@@ -50,19 +51,32 @@ def update(inventory):
         host_list.write('[freebsd:children]\njails\njail_hosts')
     inventory.host_list = host_list.name
     inventory.refresh_inventory()
-    os.remove(path)
 
 
-def set_vars(inventory):
+def update_features(inventory, list_path):
+    features = collections.defaultdict(list)
+    for host in inventory.get_hosts():
+        for feature in host.vars.get('features', []):
+            features[feature].append(host.name)
+    with open(list_path, 'ab') as host_list:
+        for feature, hosts in features.iteritems():
+            host_list.write('\n[{}]\n{}'.format(feature, '\n'.join(hosts)))
+    inventory.host_list = host_list.name
+    inventory.refresh_inventory()
+
+
+def update_vars(inventory):
     """Sets relevant variables"""
 
     jail_hosts = inventory.get_group('jail_hosts')
-    for host in jail_hosts.hosts:
+    for host in jail_hosts.get_hosts():
         jails_list = host.vars.get('jails', [])
         host.vars = combine_vars(host.get_group_vars(), host.vars)
         host.vars['is_first_class_host'] = True
         host.vars['is_jail'] = False
         host.vars['has_jails'] = len(jails_list) > 0
+        set_features(inventory, host)
+        set_packages(host)
         for jail_name in jails_list:
             jail = inventory.get_host(jail_name)
             jail.vars = combine_vars(jail.get_group_vars(), jail.vars)
@@ -71,8 +85,33 @@ def set_vars(inventory):
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
             set_ips(host, jail)
-        for feature in host.vars.get('features', []):
-            host.vars['has_' + feature] = True
+            set_features(inventory, jail)
+            set_packages(jail)
+
+
+def get_group(inventory, group_name):
+    if group_name in inventory.groups:
+        group = inventory.get_group(group_name)
+    else:
+        group = Group(name=group_name)
+        inventory.groups[group_name] = group
+    return group
+
+
+def set_features(inventory, host):
+    for feature in host.vars.get('features', []):
+        group = get_group(inventory, feature)
+        group.add_host(host)
+        host.vars['has_' + feature] = True
+
+
+def set_packages(host):
+    packages = set(host.vars.get('packages', []))
+    for group in host.get_groups():
+        packages.update(group.vars.get('packages', []))
+    packages = list(packages)
+    packages.sort()
+    host.set_variable('packages', packages)
 
 
 def set_ips(host, jail):
@@ -127,8 +166,11 @@ def main():
         sys.exit()
 
     inventory.set_playbook_basedir(os.path.dirname(PLAYBOOK_PATH))
-    update(inventory)
-    set_vars(inventory)
+    handle, list_path = tempfile.mkstemp(dir='./', text=True)
+    update_hosts(inventory, list_path)
+    update_features(inventory, list_path)
+    os.remove(list_path)
+    update_vars(inventory)
     # show_vars(inventory)
 
     output = json.dumps(output_dict(inventory))

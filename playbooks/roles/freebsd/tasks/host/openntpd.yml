@@ -4,10 +4,6 @@
   service: name=ntpd state=stopped enabled=no
   tags: openntpd
 
-- name: install openntpd
-  pkgng: name=net/openntpd state=present
-  tags: openntpd
-
 - name: start openntpd if it is not running
   service: name=openntpd state=running enabled=yes
   tags: openntpd

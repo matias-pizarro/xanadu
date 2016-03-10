@@ -1,17 +1,5 @@
 ---
 
-- name: create property lists
-  set_fact:
-    packages: []
-  tags: set_properties
-
-- name: populate property lists
-  set_fact:
-    packages: "{{ packages | union(item.packages) | unique }}"
-  when: item.group in group_names
-  with_items: "{{ properties }}"
-  tags: set_properties
-
 - name: retrieve jail facts
   set_fact:
     features: "{{ features | union(hostvars[item].features) | unique }}"

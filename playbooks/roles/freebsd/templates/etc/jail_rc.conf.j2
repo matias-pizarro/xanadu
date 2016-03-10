@@ -60,12 +60,12 @@ sendmail_msp_queue_enable="NO"
 
 # syslog
 syslogd_flags="-ss"
-{% if host_type == 'jail' %}
+{% if is_jail %}
 
 # Prevent lots of jails running cron jobs at the same time
 cron_flags="$cron_flags -J 15"
 {% endif %}
-{% if host_type == 'jail' %}
+{% if is_jail %}
 
 # rpc
 rpcbind_enable="NO"

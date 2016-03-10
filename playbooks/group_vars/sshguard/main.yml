@@ -1,0 +1,6 @@
+---
+
+packages:
+  - 'security/sshguard-pf'
+
+...

@@ -59,4 +59,7 @@
 - name: disable pf
   shell: /sbin/pfctl -d
 
+# system
+- name: reboot
+  shell: shutdown -r now
 ...
