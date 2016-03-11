@@ -30,7 +30,7 @@ linux_enable="YES"
 # NETWORK #
 ###########
 
-{% if has_jails %}
+{% if provides_jail_host %}
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 {% endif %}
 {% if has_ipv6 %}
@@ -115,5 +115,11 @@ sshguard_prescribe_interval="{{ sshguard_prescribe_interval }}"
 {% endif %}
 {% if has_bsdstats %}
 
+# bsdstats
 bsdstats_enable="YES"
+{% endif %}
+{% if has_nginx or has_nginx_proxy %}
+
+# nginx
+nginx_enable="YES"
 {% endif %}

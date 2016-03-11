@@ -1,0 +1,9 @@
+---
+
+provides:
+  - reverse_proxy
+
+packages:
+  - 'www/nginx'
+
+...

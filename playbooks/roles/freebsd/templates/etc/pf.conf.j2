@@ -11,26 +11,36 @@
 
 ################ Macros ###################################
 
+{% if provides_jail_host %}
   ### Jail Macros ###
     include "/etc/pf/jail_macros.conf"
+{% endif %}
 
   ### Interfaces ###
     ext_if              = "{{ ipv4.interface }}"
     lo_if               = "{{ loopback_if }}"
+{% if provides_jail_host %}
     jails_if            = "{{ jails_if }}"
+{% endif %}
     unfiltered          = "{" $lo_if "}"
 
   ### Host classes ###
+{% if provides_jail_host %}
     jailnet             = "{" $jails_if:network "}"
+{% endif %}
 
   ### Hosts ###
     host_ipv4           = "{{ ipv4.address }}"
+{% if has_ipv6 %}
     host_ipv6           = "{{ ipv6.address }}"
     host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
-    rproxy              = "rproxy"
+{% endif %}
+{% if provides_reverse_proxy %}
+    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].hostname}}"
+{% endif %}
 
   ### Ports ###
-    ssh                 = "{ {{ ansible_ssh_port }} " $jail_ssh_ports "}"
+    ssh                 = "{ {{ ansible_ssh_port }} {% if provides_jail_host %}" $jail_ssh_ports "{% endif %}}"
     http                = "{ 80 443 }"
     ntp                 = "{ 123 }"
     whois               = "43"
@@ -49,8 +59,10 @@
 
 
 ################ Tables ###################################
+{% if has_sshguard %}
 
   table <sshguard> persist
+{% endif %}
 
 
 ################ Options ##################################
@@ -60,9 +72,8 @@
     set require-order yes             # Enable order-checking in this ruleset
     set block-policy drop             # Blocked packets are silently dropped
     set loginterface $ext_if          # Log this interface (if using pflog)
-    # When set to if-bound, unbound ICMP packets requesting packet fragmentation are lost (internal mail)
-    # set state-policy if-bound
-    set state-policy floating
+    set state-policy floating         # When set to if-bound, unbound ICMP packets requesting packet
+                                      # | fragmentation are lost (internal mail) set state-policy if-bound
     set fingerprints "/etc/pf.os"     # Fingerprints file for passive operating system fingerprinting set
     set ruleset-optimization basic
     set skip on $unfiltered
@@ -86,20 +97,28 @@
   no rdr on $unfiltered from any to any
 
   # Allows nat to specified addresses
+{% if provides_jail_host %}
   nat on $ext_if from $jailnet to any      -> $host_ipv4
+{% endif %}
 
+{% if provides_reverse_proxy %}
   # redirect http traffic to reverse-proxy
-  rdr on $ext_if proto {tcp udp} to $host_ipv46 port $http -> $rproxy
+  rdr on $ext_if proto {tcp udp} to $host_{{ ipv46 }} port $http -> $reverse_proxy
+{% endif %}
 
+{% if has_sshd and provides_jail_host %}
   # redirect ssh to jails
   include "/etc/pf/ssh.rdr.conf"
+{% endif %}
 
 
 ################ Filtering #################################
 
   antispoof quick for $lo_if
 
+{% if has_sshguard %}
   block in quick proto tcp from <sshguard> to any port $ssh label "ssh bruteforce"
+{% endif %}
 
   # block all incoming packets but allow ssh, pass all outgoing tcp and udp
   # connections and keep state, logging blocked packets.
@@ -112,10 +131,14 @@
   pass in on $ext_if proto icmp all
   pass in on $ext_if proto icmp6 all
 
+{% if has_sshd %}
   pass in on $ext_if proto {tcp udp} from any to any port $ssh
+{% endif %}
 
+{% if provides_reverse_proxy %}
   # Allows HTTP incoming traffic to host
-  pass in on $ext_if proto {tcp udp} from any to $rproxy port $http keep state
+  pass in on $ext_if proto {tcp udp} from any to $reverse_proxy port $http keep state
+{% endif %}
 
   # allow anything outbound
   pass out on $ext_if proto { tcp udp icmp icmp6 } all keep state

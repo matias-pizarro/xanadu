@@ -1,0 +1,1 @@
+jail_ssh_ports = "{% for jail in jails %}{{ hostvars[jail].ansible_ssh_port }} {% endfor %}"

@@ -30,6 +30,6 @@
 # from your regional registry (ARIN, APNIC, LACNIC, RIPE NCC, or AfriNIC.)
 #
 {% for jail in jails %}
-{{ hostvars[jail]['ipv4']['address'] }}				{{ hostvars[jail]['jail_name'] }}
-{{ hostvars[jail]['ipv6']['address'] }}	{{ hostvars[jail]['jail_name'] }}
+{{ hostvars[jail]['ipv4']['address'] }}				{{ hostvars[jail]['hostname'] }}
+{{ hostvars[jail]['ipv6']['address'] }}	{{ hostvars[jail]['hostname'] }}
 {% endfor %}

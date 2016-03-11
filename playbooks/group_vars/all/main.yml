@@ -4,14 +4,23 @@ ansible_user: root
 host_charset: UTF-8
 host_locale: en_GB.UTF-8
 jails: []
-has_zfs: false
-has_linuxulator: false
-has_sshd: false
-has_pf: false
-has_ezjail: false
-has_openntpd: false
-has_smartd: false
-has_sshguard: false
+
 has_bsdstats: false
+has_ezjail: false
+has_ipv6: false
+has_linuxulator: false
+has_nginx: false
+has_nginx_proxy: false
+has_openntpd: false
+has_pf: false
+has_smartd: false
+has_sshd: false
+has_sshguard: false
+has_zfs: false
+
+provides_firewall: false
+provides_jail_host: false
+provides_ntp_server: false
+provides_reverse_proxy: false
 
 ...

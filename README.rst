@@ -120,13 +120,13 @@ Configure all hosts, including jail mail02.example.net: ::
 Common usage
 ============
 
-Remember to run **'set_properties'** when specifying tags: ::
+All tasks are tagged for ease of use: ::
 
-    ansible-playbook --tags="set_properties,openntpd" site.yml
+    ansible-playbook --tags="pf,openntpd" playbooks/site.yml
 
 You can dry-run a diff'ed playbook limited to a specific host: ::
 
-    ansible-playbook site.yml --check --diff --limit playbooks/droplet01.example.net
+    ansible-playbook --check --diff --limit droplet01.example.net playbooks/site.yml
 
 If you add the following config to your .ssh/config... ::
 

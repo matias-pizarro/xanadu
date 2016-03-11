@@ -10,23 +10,6 @@
   notify: start pf
   tags: pf
 
-- name: check whether /etc/pf/ssh.rdr.conf exists
-  stat:
-    path=/etc/pf/ssh.rdr.conf
-  register: ssh_rdr_conf_exists
-  tags: pf
-
-- name: Create /etc/pf/ssh.rdr.conf
-  file:
-    path=/etc/pf/ssh.rdr.conf
-    state=touch
-    owner=0
-    group=0
-    mode=0644
-  when: ssh_rdr_conf_exists.stat.exists == false
-  notify: partial pf flush
-  tags: pf
-
 - name: configure pf rules
   template: src=etc/pf.conf.j2
     dest=/etc/pf.conf
@@ -34,6 +17,50 @@
     group=0
     mode=0644
     validate='/sbin/pfctl -nf %s'
+  notify: partial pf flush
+  tags:
+    - pf
+    - pf_rules
+
+- name: configure pf jail macros
+  template: src=etc/pf/jail_macros.conf.j2
+    dest=/etc/pf/jail_macros.conf
+    owner=0
+    group=0
+    mode=0644
+  when: provides_jail_host
+  notify: partial pf flush
+  tags:
+    - pf
+    - pf_rules
+
+- name: remove pf jail macros
+  file:
+    path=/etc/pf/jail_macros.conf
+    state=absent
+  when: provides_jail_host == false
+  notify: partial pf flush
+  tags:
+    - pf
+    - pf_rules
+
+- name: configure pf jail redirections
+  template: src=etc/pf/ssh.rdr.conf.j2
+    dest=/etc/pf/ssh.rdr.conf
+    owner=0
+    group=0
+    mode=0644
+  when: provides_jail_host
+  notify: partial pf flush
+  tags:
+    - pf
+    - pf_rules
+
+- name: remove pf jail redirections
+  file:
+    path=/etc/pf/ssh.rdr.conf
+    state=absent
+  when: provides_jail_host == false
   notify: partial pf flush
   tags:
     - pf

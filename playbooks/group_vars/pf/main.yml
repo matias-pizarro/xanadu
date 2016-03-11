@@ -1,5 +1,9 @@
 ---
 
+provides:
+  - firewall
+
 pflog_enable: true
+ipv46: "{{ 'ipv46' if has_ipv6 else 'ipv4' }}"
 
 ...

@@ -1,5 +1,8 @@
 ---
 
+provides:
+  - ntp_server
+
 openntpd_flags: "-sv"
 packages:
   - 'net/openntpd'

@@ -82,6 +82,7 @@ def update_vars(inventory):
         host.vars['is_not_jail'] = True
         host.vars['has_jails'] = len(jails_list) > 0
         set_features(inventory, host)
+        set_providers(inventory, host)
         set_packages(host)
         for jail_name in jails_list:
             jail = inventory.get_host(jail_name)
@@ -92,7 +93,8 @@ def update_vars(inventory):
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
             set_ips(host, jail)
-            set_features(inventory, jail)
+            set_features(inventory, jail, jail_host=host)
+            set_providers(inventory, jail, jail_host=host)
             set_packages(jail)
 
 
@@ -105,11 +107,27 @@ def get_group(inventory, group_name):
     return group
 
 
-def set_features(inventory, host):
+def set_features(inventory, host, jail_host=None):
     for feature in host.vars.get('features', []):
         group = get_group(inventory, feature)
         group.add_host(host)
         host.vars['has_' + feature] = True
+
+
+def set_providers(inventory, host, jail_host=None):
+    if 'providers' not in host.vars:
+        host.vars['providers'] = {}
+    if jail_host and 'providers' not in jail_host.vars:
+        jail_host.vars['providers'] = {}
+    provisions = []
+    for provision in [group.vars['provides'] for group in host.get_groups() if 'provides' in group.vars]:
+        provisions += provision
+    for provision in provisions:
+        host.vars['provides_' + provision] = True
+        host.vars['providers'][provision] = host.name
+        if jail_host:
+            jail_host.vars['provides_' + provision] = True
+            jail_host.vars['providers'][provision] = host.name
 
 
 def set_packages(host):
@@ -173,7 +191,7 @@ def main():
         sys.exit()
 
     inventory.set_playbook_basedir(os.path.dirname(PLAYBOOK_PATH))
-    handle, list_path = tempfile.mkstemp(dir='./', text=True)
+    handle, list_path = tempfile.mkstemp(dir='./hosts/', text=True)
     update_hosts(inventory, list_path)
     update_features(inventory, list_path)
     os.remove(list_path)

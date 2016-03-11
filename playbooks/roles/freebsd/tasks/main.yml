@@ -21,9 +21,6 @@
 - include: etc_hosts.yml
 
 - include: sshd.yml
-    host_ssh_port={{ ansible_ssh_port }}
-    host_ipv4={{ ipv4 }}
-    host_ipv6={{ ipv6 }}
 
 - include: hostname.yml
 

@@ -1,5 +1,8 @@
 ---
 
+provides:
+  - jail_host
+
 packages:
   - 'sysutils/ezjail'
 
