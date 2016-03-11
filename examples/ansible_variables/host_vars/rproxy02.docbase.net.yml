@@ -18,7 +18,7 @@ jail_autorun: true
 
 features:
   - ipv6
-  - nginx
+  - nginx_proxy
   - sshd
 
 ...

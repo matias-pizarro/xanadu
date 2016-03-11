@@ -18,6 +18,7 @@ features:
   # - smartd
   - sshd
   - sshguard
+  # - zfs
 
 installed_users:
   - "{{ users.root }}"
