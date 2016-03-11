@@ -100,4 +100,16 @@
     - pkg
     - pkg_install
 
+- name: check whether /usr/local/bin/bsdstats-send exists
+  stat:
+    path=/usr/local/bin/bsdstats-send
+  when: has_bsdstats
+  register: bsdstats_send
+  tags: install_bsdstats
+
+- name: install bsdstats
+  shell: yes '' | /usr/sbin/pkg install -y bsdstats
+  when: has_bsdstats and bsdstats_send.stat.exists == false
+  tags: install_bsdstats
+
 ...
