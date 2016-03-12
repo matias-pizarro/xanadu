@@ -50,11 +50,11 @@ ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.p
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
 {% endif %}
-{% if has_sshd %}
 
 
 # SERVICES #
 ############
+{% if has_sshd %}
 
 # sshd
 sshd_enable="YES"

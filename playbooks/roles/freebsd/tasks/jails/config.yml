@@ -33,6 +33,6 @@
   shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
   changed_when: false
   always_run: yes
-  when: etc_resolv_conf_exists.stat.exists == false or similar_etc_resolv_conf.stdout == ""
+  when: jail_directory_exists == true and (etc_resolv_conf_exists.stat.exists == false or similar_etc_resolv_conf.stdout == "")
 
 ...

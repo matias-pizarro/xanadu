@@ -38,9 +38,9 @@
     jail: "{{ item }}"
     jail_hostname: "{{ item }}"
     jail_name: "{{ hostvars[item].jail_name }}"
-    ssh_port: "{{ hostvars[jail].ansible_ssh_port }}"
-    ipv4: "{{ hostvars[jail].ipv4 }}"
-    ipv6: "{{ hostvars[jail].ipv6 }}"
+    ssh_port: "{{ hostvars[item].ansible_ssh_port }}"
+    ipv4: "{{ hostvars[item].ipv4 }}"
+    ipv6: "{{ hostvars[item].ipv6 }}"
   when: provides_jail_host and has_jails
   with_items: "{{ jails }}"
 

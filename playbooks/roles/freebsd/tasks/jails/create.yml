@@ -7,8 +7,7 @@
   always_run: yes
 
 - name: check whether directory /usr/jails/--jail_name-- exists
-  stat:
-    path=/usr/jails/{{ jail_name }}
+  stat: path=/usr/jails/{{ jail_name }}
   register: jail_directory_exists
 
 - name: create jail

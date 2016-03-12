@@ -17,9 +17,9 @@
     - create_jails
     - jail_config
 
-# - include: rc_conf.yml
-#   when: jail_created.changed == true
-#   tags: create_jails
+- include: rc_conf.yml
+  when: jail_created.changed == true
+  tags: create_jails
 
 # - include: sshd.yml
 #     ansible_ssh_port={{ jail_ssh_port }}
