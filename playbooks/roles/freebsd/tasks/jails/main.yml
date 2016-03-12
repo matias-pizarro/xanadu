@@ -4,9 +4,14 @@
   tags: create_jails
 
 - include: hostname.yml
-  tags: create_jails
+  tags:
+    - create_jails
+    - jail_config
 
-# - include: config.yml
+- include: config.yml
+  tags:
+    - create_jails
+    - jail_config
 
 # - include: rc_conf.yml
   # tags: create_jails
