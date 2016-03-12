@@ -8,8 +8,14 @@
     - group_by: key={{ hosting }}
   tags: set_properties
 
-- hosts: freebsd
-  sudo: yes
+- hosts: first_class_hosts
+  become: yes
+  gather_facts: no
+  roles:
+    - freebsd
+
+- hosts: jails
+  become: yes
   gather_facts: no
   roles:
     - freebsd
