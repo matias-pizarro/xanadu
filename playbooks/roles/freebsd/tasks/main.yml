@@ -19,6 +19,8 @@
 - include: etc_hosts.yml
 
 - include: sshd.yml
+  vars:
+    ssh_port: "{{ ansible_ssh_port }}"
 
 - include: hostname.yml
 
@@ -36,6 +38,9 @@
     jail: "{{ item }}"
     jail_hostname: "{{ item }}"
     jail_name: "{{ hostvars[item].jail_name }}"
+    ssh_port: "{{ hostvars[jail].ansible_ssh_port }}"
+    ipv4: "{{ hostvars[jail].ipv4 }}"
+    ipv6: "{{ hostvars[jail].ipv6 }}"
   when: provides_jail_host and has_jails
   with_items: "{{ jails }}"
 
