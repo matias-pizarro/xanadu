@@ -36,15 +36,15 @@ class VarsModule(object):
         """ For backwards compatibility, when only vars per host were retrieved
             This method should return both host specific vars as well as vars
             calculated from groups it is a member of """
-        return {'tournesol': 2}
+        return {}
 
 
     def get_host_vars(self, host, vault_password=None):
         """ Get host specific variables. """
-        return {'rastapopoulos': 2}
+        return {}
 
 
     def get_group_vars(self, group, vault_password=None):
         """ Get group specific variables. """
-        return {'castafiore': 2}
+        return {}
 
