@@ -14,25 +14,33 @@
     - jail_config
 
 # - include: rc_conf.yml
-  # tags: create_jails
+#   when: jail_created.changed == true
+#   tags: create_jails
 
 # - include: sshd.yml
 #     ansible_ssh_port={{ jail_ssh_port }}
 #     ipv4={{ jail_ipv4 }}
 #     ipv6={{ jail_ipv6 }}
-  # tags: create_jails
+#   when: jail_created.changed == true
+#   tags: create_jails
 
 # - include: start.yml
-  # tags: create_jails
+#   tags:
+#     - create_jails
+#     - jail_config
 
 # - meta: flush_handlers
-  # tags: create_jails
+#   tags:
+#     - create_jails
+#     - jail_config
 
 # - include: utils.yml
-  # tags: create_jails
+#   when: jail_created.changed == true
+#   tags: create_jails
 
 # - include: users.yml
-  # tags: create_jails
+#   when: jail_created.changed == true
+#   tags: create_jails
 
 - include: handler.yml
   tags: create_jails
