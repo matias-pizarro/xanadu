@@ -16,7 +16,7 @@
     state=present
     manage_dir=yes
   with_subelements:
-    - sshd_config_allow_users | default([])
+    - '{{ sshd_config_allow_users | default([]) }}'
     - pubkeys
   register: authkeys_set
   tags: sshd_config
