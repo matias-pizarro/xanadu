@@ -199,12 +199,12 @@ def debug_output(inventory):
     """Returns a json representation of inventory data, for debugging purposes"""
 
     output = {'hosts': {}, 'groups': {}}
-    for host in inventory.get_hosts():
+    for host in sorted(inventory.get_hosts(), key=lambda x: (x.vars['is_jail'], x.name)):
         groups = [group.name for group in host.get_groups()]
         groups.sort()
         _vars = combine_vars(host.get_group_vars(), host.vars)
         output['hosts'][host.name] = {'groups': groups, 'vars': _vars}
-    for group in inventory.groups.values():
+    for group in sorted(inventory.groups.values(), key=lambda x: x.name):
         hosts = [host.name for host in group.get_hosts()]
         hosts.sort()
         _vars = group.get_vars()
