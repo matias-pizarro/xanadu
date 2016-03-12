@@ -106,6 +106,7 @@ def update_vars(inventory):
             set_features(inventory, jail, jail_host=host)
             set_providers(inventory, jail, jail_host=host)
             set_packages(jail)
+            set_root_pubkeys(jail)
 
 
 def get_group(inventory, group_name):
@@ -117,6 +118,29 @@ def get_group(inventory, group_name):
         group = Group(name=group_name)
         inventory.groups[group_name] = group
     return group
+
+
+def set_ips(host, jail):
+    """Computes a jail's ip configuration based on its host's properties"""
+
+    ipv4_pattern = host.vars.get('jails_base_ipv4')
+    ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
+    type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
+    jail_idx = jail.vars['jail_index']
+    port = str((type_idx + 3) * 1000 + jail_idx)
+    type_idx = str(type_idx)
+    jail_idx = str(jail_idx)
+    jail.vars['ipv4'] = {
+        'interface': host.vars['jails_if'],
+        'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+        'netmask': host.vars['jails_ipv4_netmask'],
+    }
+    jail.vars['ipv6'] = {
+        'interface': host.vars['jails_if'],
+        'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+        'prefixlen': host.vars['jails_ipv6_prefixlen'],
+    }
+    jail.vars['ansible_ssh_port'] = port
 
 
 def set_features(inventory, host, jail_host=None):
@@ -160,27 +184,15 @@ def set_packages(host):
     host.set_variable('packages', packages)
 
 
-def set_ips(host, jail):
-    """Computes a jail's ip configuration based on its host's properties"""
+def set_root_pubkeys(host):
+    """Aggregates the hosts root user authorized keys into a string
+    that can be used with the authorized_keys modules  when creating a jail"""
 
-    ipv4_pattern = host.vars.get('jails_base_ipv4')
-    ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
-    type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
-    jail_idx = jail.vars['jail_index']
-    port = str((type_idx + 3) * 1000 + jail_idx)
-    type_idx = str(type_idx)
-    jail_idx = str(jail_idx)
-    jail.vars['ipv4'] = {
-        'interface': host.vars['jails_if'],
-        'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'netmask': host.vars['jails_ipv4_netmask'],
-    }
-    jail.vars['ipv6'] = {
-        'interface': host.vars['jails_if'],
-        'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'prefixlen': host.vars['jails_ipv6_prefixlen'],
-    }
-    jail.vars['ansible_ssh_port'] = port
+    pubkeys = ""
+    for pubkey in host.vars['users']['root']['pubkeys']:
+        with open(os.path.join('playbooks/files', pubkey)) as pkf:
+            pubkeys += pkf.read() + '\n'
+    host.set_variable('root_pubkeys', pubkeys)
 
 
 def ansible_output(inventory):

@@ -9,8 +9,8 @@ users: {
         'shell': '/usr/local/bin/bash',
         'groups': 'wheel,operator',
         'pubkeys': [
-            files/pubkeys/user1/user1@example.pub,
-            files/pubkeys/user1/user1@other.example.pub
+            pubkeys/user1/user1@example.pub,
+            pubkeys/user1/user1@other.example.pub
         ],
         'charset': 'UTF-8',
         'locale': 'en_GB.UTF-8'
@@ -23,8 +23,8 @@ users: {
         'shell': '/usr/local/bin/bash',
         'groups': 'wheel,operator',
         'pubkeys': [
-            files/pubkeys/user1/user1@example.pub,
-            files/pubkeys/user1/user1@other.example.pub
+            pubkeys/user1/user1@example.pub,
+            pubkeys/user1/user1@other.example.pub
         ],
         'charset': 'UTF-8',
         'locale': 'en_GB.UTF-8'

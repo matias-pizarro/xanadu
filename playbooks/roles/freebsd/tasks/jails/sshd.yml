@@ -7,16 +7,12 @@
     group=0
     mode=0644
 
-# - name: authorized keys deployment
-#   authorized_key: 
-#     user={{ item.0.name }}
-#     key='{{ lookup('file', item.1) }}'
-#     state=present
-#     manage_dir=yes
-#   with_subelements:
-#     - '{{ sshd_config_allow_users | default([]) }}'
-#     - pubkeys
-#   register: authkeys_set
-#   tags: sshd_config
+- name: authorized keys deployment
+  authorized_key: 
+    user=root
+    key="{{ hostvars[jail].root_pubkeys }}"
+    state=present
+    manage_dir=yes
+    path='/usr/jails/{{ jail_name }}/root/.ssh/authorized_keys'
 
 ...
