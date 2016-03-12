@@ -21,12 +21,9 @@
   when: jail_created.changed == true
   tags: create_jails
 
-# - include: sshd.yml
-#     ansible_ssh_port={{ jail_ssh_port }}
-#     ipv4={{ jail_ipv4 }}
-#     ipv6={{ jail_ipv6 }}
-#   when: jail_created.changed == true
-#   tags: create_jails
+- include: sshd.yml
+  when: jail_created.changed == true
+  tags: create_jails
 
 # - include: start.yml
 #   tags:

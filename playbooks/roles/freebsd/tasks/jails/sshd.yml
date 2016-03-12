@@ -1,35 +1,22 @@
 ---
 
-- name: add pf config to allow direct ssh connection to jail
-  lineinfile:
-    dest=/etc/pf/ssh.rdr.conf
-    create=yes
-    owner=0
-    group=0
-    mode=0644
-    state=present
-    line='rdr pass on $ext_if  inet proto {tcp udp} to ($ext_if)  port {{ jail_ssh_port }} -> {{ jail_ipv4.address }}        port {{ ansible_ssh_port }}'
-  notify: partial pf flush
-  tags: sshd_config
-
 - name: configure jail /etc/ssh/sshd_config
-  template: src=roles/freebsd/templates/etc/ssh/sshd_config.j2
+  template: src=etc/ssh/sshd_config.j2
     dest=/usr/jails/{{ jail_name }}/etc/ssh/sshd_config
     owner=0
     group=0
     mode=0644
-  tags: sshd_config
 
-- name: authorized keys deployment
-  authorized_key: 
-    user={{ item.0.name }}
-    key='{{ lookup('file', item.1) }}'
-    state=present
-    manage_dir=yes
-  with_subelements:
-    - sshd_config_allow_users | default([])
-    - pubkeys
-  register: authkeys_set
-  tags: sshd_config
+# - name: authorized keys deployment
+#   authorized_key: 
+#     user={{ item.0.name }}
+#     key='{{ lookup('file', item.1) }}'
+#     state=present
+#     manage_dir=yes
+#   with_subelements:
+#     - '{{ sshd_config_allow_users | default([]) }}'
+#     - pubkeys
+#   register: authkeys_set
+#   tags: sshd_config
 
 ...
