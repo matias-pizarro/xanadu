@@ -15,11 +15,14 @@ from ansible.utils.vars import combine_vars
 from ansible.vars import VariableManager
 from ansible.vars.hostvars import HostVars
 
+DEBUG = True if '--debug' in sys.argv or '-d' in sys.argv else False
 PLAYBOOK_PATH = './playbooks/site.yml'
 STATIC_HOSTS_PATH = './static_hosts'
 
 
 def get_hosts_list():
+    """Returns the hosts list filename"""
+
     if len(sys.argv) > 2 and sys.argv[1] == '--host_list':
         return sys.argv[2]
     else:
@@ -27,12 +30,16 @@ def get_hosts_list():
 
 
 def update_hosts(inventory, list_path):
-    """First computes a list of hosts and their jails, assigning them to relevant group,
+    """First computes a list of hosts and their jails, assigning them to relevant groups,
     then refreshes the inventory"""
 
+    # Group containing all hosts
     hosts = set()
+    # Group containing full-fledged, bare-metal hosts
     first_class_hosts = set()
+    # Group containing hosts that host (!) jails
     jail_hosts = set()
+    # Group containing all jailed hosts
     jails = set()
     for host in inventory.get_hosts():
         hosts.update([host.name])
@@ -59,6 +66,9 @@ def update_hosts(inventory, list_path):
 
 
 def update_features(inventory, list_path):
+    """Collects features across all hosts and create groups for each of them,
+    Then refreshes the inventory so their variables are available"""
+
     features = collections.defaultdict(list)
     for host in inventory.get_hosts():
         for feature in host.vars.get('features', []):
@@ -71,7 +81,7 @@ def update_features(inventory, list_path):
 
 
 def update_vars(inventory):
-    """Sets relevant variables"""
+    """Sets relevant variables for each host and jail"""
 
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
@@ -99,6 +109,8 @@ def update_vars(inventory):
 
 
 def get_group(inventory, group_name):
+    """(creates if necessary) and returns group corresponding to group_name"""
+
     if group_name in inventory.groups:
         group = inventory.get_group(group_name)
     else:
@@ -108,6 +120,9 @@ def get_group(inventory, group_name):
 
 
 def set_features(inventory, host, jail_host=None):
+    """Assigns hosts groups based on their features. This allows hosts to inherit variables
+    based on their features and gives plays feature-based flow control """
+
     for feature in host.vars.get('features', []):
         group = get_group(inventory, feature)
         group.add_host(host)
@@ -115,6 +130,9 @@ def set_features(inventory, host, jail_host=None):
 
 
 def set_providers(inventory, host, jail_host=None):
+    """Assigns hosts variables based on services they or their child jails provide.
+    This gives plays service-based flow control."""
+
     if 'providers' not in host.vars:
         host.vars['providers'] = {}
     if jail_host and 'providers' not in jail_host.vars:
@@ -131,6 +149,9 @@ def set_providers(inventory, host, jail_host=None):
 
 
 def set_packages(host):
+    """Builds a list of packages for each host, based on their own packages and those defined
+    for the groups they belong to"""
+
     packages = set(host.vars.get('packages', []))
     for group in host.get_groups():
         packages.update(group.vars.get('packages', []))
@@ -140,6 +161,8 @@ def set_packages(host):
 
 
 def set_ips(host, jail):
+    """Computes a jail's ip configuration based on its host's properties"""
+
     ipv4_pattern = host.vars.get('jails_base_ipv4')
     ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
     type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
@@ -160,20 +183,33 @@ def set_ips(host, jail):
     jail.vars['ansible_ssh_port'] = port
 
 
-def output_dict(inventory):
-    output = {"_meta": {"hostvars": {}}}
+def ansible_output(inventory):
+    """Groups inventory data according to the structure Ansible expects"""
+
+    output = {'_meta': {'hostvars': {}}}
     for host in inventory.get_hosts():
         output['_meta']['hostvars'][host.name] = host.get_vars()
     for group in inventory.groups.values():
         if group.name not in ('all', 'ungrouped'):
-            output[group.name] = {"hosts": [host.name for host in group.get_hosts()]}
-    return output
+            output[group.name] = {'hosts': [host.name for host in group.get_hosts()]}
+    return json.dumps(output)
 
 
-def show_vars(inventory):
+def debug_output(inventory):
+    """Returns a json representation of inventory data, for debugging purposes"""
+
+    output = {'hosts': {}, 'groups': {}}
     for host in inventory.get_hosts():
-        hostvars = combine_vars(host.get_group_vars(), host.vars)
-        print(json.dumps(hostvars, sort_keys=True, indent=4, separators=(',', ': ')))
+        groups = [group.name for group in host.get_groups()]
+        groups.sort()
+        _vars = combine_vars(host.get_group_vars(), host.vars)
+        output['hosts'][host.name] = {'groups': groups, 'vars': _vars}
+    for group in inventory.groups.values():
+        hosts = [host.name for host in group.get_hosts()]
+        hosts.sort()
+        _vars = group.get_vars()
+        output['groups'][group.name] = {'hosts': hosts, 'vars': _vars}
+    return json.dumps(output, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 def main():
@@ -196,9 +232,10 @@ def main():
     update_features(inventory, list_path)
     os.remove(list_path)
     update_vars(inventory)
-    # show_vars(inventory)
-
-    output = json.dumps(output_dict(inventory))
+    if DEBUG:
+        output = debug_output(inventory)
+    else:
+        output = ansible_output(inventory)
     print(output)
 
 

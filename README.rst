@@ -152,3 +152,7 @@ If you add the following config to your .ssh/config... ::
     ssh mail02
 
 **Agent forwarding should be enabled with caution** (`man ssh_config <https://www.freebsd.org/cgi/man.cgi?query=ssh_config&sektion=5&n=1>`_)
+
+Get a human-readable representation of the dynamic inventory: ::
+
+    ./hosts/site.py -d

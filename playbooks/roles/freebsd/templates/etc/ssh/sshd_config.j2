@@ -44,9 +44,9 @@ ListenAddress {{ ipv6.address }}
 
 # Authentication:
 
-LoginGraceTime {{ LoginGraceTime }}
+LoginGraceTime {{ sshd_LoginGraceTime }}
 #StrictModes yes
-MaxAuthTries {{ MaxAuthTries }}
+MaxAuthTries {{ sshd_MaxAuthTries }}
 #MaxSessions 10
 
 #RSAAuthentication yes
@@ -71,8 +71,8 @@ MaxAuthTries {{ MaxAuthTries }}
 #IgnoreRhosts yes
 
 # Change to yes to enable built-in password authentication.
-PasswordAuthentication {{ PasswordAuthentication }}
-PermitEmptyPasswords {{ PermitEmptyPasswords }}
+PasswordAuthentication {{ sshd_PasswordAuthentication }}
+PermitEmptyPasswords {{ sshd_PermitEmptyPasswords }}
 
 # Change to no to disable PAM authentication
 #ChallengeResponseAuthentication yes
@@ -97,7 +97,7 @@ PermitEmptyPasswords {{ PermitEmptyPasswords }}
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 #UsePAM yes
-PermitRootLogin {{ PermitRootLogin }}
+PermitRootLogin {{ sshd_PermitRootLogin }}
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes

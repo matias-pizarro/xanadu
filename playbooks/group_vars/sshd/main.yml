@@ -1,9 +1,9 @@
 ---
 
-LoginGraceTime: 10s
-MaxAuthTries: 2
-PasswordAuthentication: 'no'
-PermitEmptyPasswords: 'no'
-PermitRootLogin: without-password
+sshd_LoginGraceTime: 10s
+sshd_MaxAuthTries: 2
+sshd_PasswordAuthentication: 'no'
+sshd_PermitEmptyPasswords: 'no'
+sshd_PermitRootLogin: without-password
 
 ...
