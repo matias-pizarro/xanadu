@@ -5,13 +5,13 @@
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
     replace='\1{{ jail_hostname }}\2'
-  register: hostname_updated_1
+  notify: restart jail
 
 - name: ensure jail hostname is correctly configured
   lineinfile:
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     state=present
     line='export jail_{{ jail_name }}_hostname="{{ jail_hostname }}"'
-  register: hostname_updated_2
+  notify: restart jail
 
 ...

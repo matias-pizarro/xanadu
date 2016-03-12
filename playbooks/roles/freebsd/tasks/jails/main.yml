@@ -1,10 +1,14 @@
 ---
 
+- set_fact:
+    jail_name: "{{ jail_name }}"
+  tags: create_jails
+
 - include: create.yml
   tags: create_jails
 
 - include: hostname.yml
-  tags:
+  tags: 
     - create_jails
     - jail_config
 
@@ -29,10 +33,10 @@
 #     - create_jails
 #     - jail_config
 
-# - meta: flush_handlers
-#   tags:
-#     - create_jails
-#     - jail_config
+- meta: flush_handlers
+  tags:
+    - create_jails
+    - jail_config
 
 # - include: utils.yml
 #   when: jail_created.changed == true
@@ -41,8 +45,5 @@
 # - include: users.yml
 #   when: jail_created.changed == true
 #   tags: create_jails
-
-- include: handler.yml
-  tags: create_jails
 
 ...
