@@ -1,0 +1,9 @@
+---
+
+- name: start recently created jail
+  shell: ezjail-admin start {{ jail_name | quote }}
+  when: jail_created.changed == true
+  changed_when: false
+  always_run: yes
+
+...

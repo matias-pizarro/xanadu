@@ -36,7 +36,7 @@
     host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
 {% endif %}
 {% if provides_reverse_proxy %}
-    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].hostname}}"
+    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].hostname }}"
 {% endif %}
 
   ### Ports ###

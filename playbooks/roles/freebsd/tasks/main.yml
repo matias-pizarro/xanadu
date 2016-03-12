@@ -31,4 +31,12 @@
 - include: pf.yml
   when: has_pf
 
+- include: jails/main.yml
+  vars:
+    jail: "{{ item }}"
+    jail_hostname: "{{ item }}"
+    jail_name: "{{ hostvars[item].jail_name }}"
+  when: provides_jail_host and has_jails
+  with_items: "{{ jails }}"
+
 ...

@@ -27,10 +27,10 @@
   service: name=ezjail state=restarted
 
 - name: start jail
-  shell: ezjail-admin start {{ jail_name | quote }}
+  shell: ezjail-admin start {{ jail_to_start | quote }}
 
 - name: restart jail
-  shell: ezjail-admin restart {{ jail_name | quote }}
+  shell: ezjail-admin restart {{ jail_to_restart | quote }}
 
 # pf
 - name: parse pf rules

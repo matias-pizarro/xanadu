@@ -3,7 +3,6 @@
 hostname: mail02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
-type: iredmail
 
 installed_users:
   - "{{ users.root }}"
