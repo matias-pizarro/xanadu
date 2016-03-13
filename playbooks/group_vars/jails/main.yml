@@ -1,6 +1,6 @@
 ---
 
 kern_securelevel: 3
-syslogd_flags: "-s -b localhost"
+syslogd_flags: "-ss -b localhost"
 
 ...
