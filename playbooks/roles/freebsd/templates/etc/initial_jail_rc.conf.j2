@@ -1,0 +1,37 @@
+# BASE SYSTEM #
+###############
+
+hostname="{{ hostvars[jail].hostname }}"
+keymap="{{ keymap }}"
+
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="NO"
+
+# FSCK Enhancements
+fsck_y_enable="YES"
+
+# tmp
+clear_tmp_enable="YES"
+
+
+# SERVICES #
+############
+
+# sshd
+sshd_enable="YES"
+
+# sendmail
+# sendmail_enable="NONE"
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+
+# syslog
+syslogd_flags="{{ syslogd_flags }}"
+
+# Prevent lots of jails running cron jobs at the same time
+cron_flags="$cron_flags -J 15"
+
+# rpc
+rpcbind_enable="NO"

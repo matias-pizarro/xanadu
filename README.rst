@@ -92,28 +92,11 @@ You can now access droplet01.example.net with: ::
 
 **Agent forwarding should be enabled with caution** (`man ssh_config <https://www.freebsd.org/cgi/man.cgi?query=ssh_config&sektion=5&n=1>`_)
 
-Configure droplet01.example.net: ::
+Run site-wide play: ::
 
     ansible-playbook playbooks/site.yml
 
-Create jail mail02.example.net on droplet01.example.net: ::
-
-    ssh-keygen -f ~/.ssh/known_hosts -R [mail02.example.net]:4001
-    ansible-playbook --extra-vars "jail_host=droplet01.example.net jail=mail02.example.net" playbooks/create_jail.yml
-
-Add mail02.example.net to your inventory file: ::
-
-   echo mail02.example.net >> <path_to_your_hosts_file_dir>hosts
-
-You can now access mail02.example.net with: ::
-
-    ssh -Ap 4001 root@mail02.example.net
-
-**Agent forwarding should be enabled with caution** (`man ssh_config <https://www.freebsd.org/cgi/man.cgi?query=ssh_config&sektion=5&n=1>`_)
-
-Configure all hosts, including jail mail02.example.net: ::
-
-    ansible-playbook playbooks/site.yml
+This will take care of first-class citizen hosts then install any as-of-yet-uninstalled jail and then run the global playbook on them
 
 
 

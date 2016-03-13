@@ -1,0 +1,27 @@
+---
+
+- name: check whether jail exists
+  shell: ezjail-admin list | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
+  register: jail_exists
+  changed_when: false
+  always_run: yes
+
+- name: check whether directory /usr/jails/--jail_name-- exists
+  stat: path=/usr/jails/{{ jail_name }}
+  register: jail_directory_exists
+
+- name: create jail
+  shell: ezjail-admin create {{ jail_name | quote }} '{{ hostvars[jail].ipv4.interface | quote }}|{{ hostvars[jail].ipv4.address | quote }},{{ hostvars[jail].ipv6.interface | quote }}|{{ hostvars[jail].ipv6.address | quote }}'
+  when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false and hosting != "digital_ocean"
+  notify: start jail
+  register: jail_created
+  tags: create_jails
+
+- name: create jail
+  shell: ezjail-admin create {{ jail_name | quote }} '{{ hostvars[jail].ipv4.interface | quote }}|{{ hostvars[jail].ipv4.address | quote }}'
+  when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false and hosting == "digital_ocean"
+  notify: start jail
+  register: jail_created
+  tags: create_jails
+
+...

@@ -1,0 +1,43 @@
+---
+
+- set_fact:
+    jail_name: "{{ jail_name }}"
+  tags: create_jails
+
+- include: create.yml
+  tags: 
+    - create_jails
+    - config_jails
+
+- include: hostname.yml
+  tags: 
+    - create_jails
+    - config_jails
+
+- include: config.yml
+  tags:
+    - create_jails
+    - config_jails
+
+- include: rc_conf.yml
+  when: jail_created.changed == true
+  tags: create_jails
+
+- include: sshd.yml
+  when: jail_created.changed == true
+  tags: create_jails
+
+- meta: flush_handlers
+  tags:
+    - create_jails
+    - config_jails
+
+- include: utils.yml
+  when: jail_created.changed == true
+  tags: create_jails
+
+- include: users.yml
+  when: jail_created.changed == true
+  tags: create_jails
+
+...

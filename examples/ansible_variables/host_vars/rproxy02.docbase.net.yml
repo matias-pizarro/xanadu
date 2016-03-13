@@ -3,7 +3,6 @@
 hostname: rproxy02.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
-type: nginx_proxy
 
 installed_users:
   - "{{ users.root }}"

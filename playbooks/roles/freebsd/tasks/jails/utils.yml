@@ -1,0 +1,6 @@
+---
+
+- name: install bash-static, python and ca_root_nss on jail
+  shell: jexec {{ jail_name | quote }} env ASSUME_ALWAYS_YES=YES pkg install -y python bash-static security/ca_root_nss
+
+...

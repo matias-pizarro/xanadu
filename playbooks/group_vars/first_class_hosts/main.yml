@@ -1,6 +1,6 @@
 ---
 
 kern_securelevel: 0
-syslogd_flags: "-ss -v -v"
+syslogd_flags: "-ss -vv"
 
 ...

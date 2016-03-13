@@ -19,6 +19,8 @@
 - include: etc_hosts.yml
 
 - include: sshd.yml
+  vars:
+    ssh_port: "{{ ansible_ssh_port }}"
 
 - include: hostname.yml
 
@@ -30,5 +32,17 @@
 
 - include: pf.yml
   when: has_pf
+
+- include: jails/main.yml
+  vars:
+    jail: "{{ item }}"
+    jail_hostname: "{{ item }}"
+    jail_name: "{{ hostvars[item].jail_name }}"
+    ssh_port: "{{ hostvars[item].ansible_ssh_port }}"
+    ipv4: "{{ hostvars[item].ipv4 }}"
+    ipv6: "{{ hostvars[item].ipv6 }}"
+    sshd_config_allow_users: "{{ [users.root] }}"
+  when: provides_jail_host and has_jails
+  with_items: "{{ jails }}"
 
 ...

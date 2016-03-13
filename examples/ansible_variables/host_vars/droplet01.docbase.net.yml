@@ -3,7 +3,6 @@
 hostname: droplet01.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
-type: server
 hosting: digital_ocean
 jails:
   - rproxy02.docbase.net

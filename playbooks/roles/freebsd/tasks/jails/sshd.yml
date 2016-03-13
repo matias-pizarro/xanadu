@@ -1,0 +1,18 @@
+---
+
+- name: configure jail /etc/ssh/sshd_config
+  template: src=etc/ssh/sshd_config.j2
+    dest=/usr/jails/{{ jail_name }}/etc/ssh/sshd_config
+    owner=0
+    group=0
+    mode=0644
+
+- name: authorized keys deployment
+  authorized_key: 
+    user=root
+    key="{{ hostvars[jail].root_pubkeys }}"
+    state=present
+    manage_dir=yes
+    path='/usr/jails/{{ jail_name }}/root/.ssh/authorized_keys'
+
+...

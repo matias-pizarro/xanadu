@@ -22,7 +22,7 @@
 
 - name: set timezone
   command: /usr/sbin/tzsetup -s {{ timezone | quote }}
-  when: current_timezone.stdout != timezone
+  when: zoneinfo_exists.stat.exists == false or current_timezone.stdout != timezone
   register: timezone_changed
   tags: tz_setup
 

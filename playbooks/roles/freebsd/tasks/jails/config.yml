@@ -1,0 +1,30 @@
+---
+
+- name: check jail's autorun status
+  stat:
+    path=/usr/local/etc/ezjail/{{ jail_name }}.norun
+  register: jail_norun
+
+- name: set jail autorun to 'run'
+  shell: ezjail-admin config -r run {{ jail_name | quote }}
+  changed_when: false
+  always_run: yes
+  when:  hostvars[jail].jail_autorun and jail_norun.stat.exists == true
+
+- name: set jail autorun to 'norun'
+  shell: ezjail-admin config -r norun {{ jail_name | quote }}
+  changed_when: false
+  always_run: yes
+  when: not hostvars[jail].jail_autorun and jail_norun.stat.exists == false
+
+- name: check whether jail's /etc/resolv.conf exists
+  copy:
+    src=/etc/resolv.conf
+    dest=/usr/jails/{{ jail_name }}/etc/resolv.conf
+    owner=0
+    group=0
+    mode=0644
+    remote_src=yes
+  changed_when: false
+
+...
