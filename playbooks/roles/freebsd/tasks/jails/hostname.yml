@@ -10,7 +10,7 @@
     regexp='^(export jail\_{{ jail_name }}\_hostname=").*(")$'
     replace='\1{{ jail_hostname }}\2'
   when: jail_config_exists.stat.exists == true
-  notify: restart jail
+  notify: partial pf flush
 
 - name: ensure jail hostname is correctly configured
   lineinfile:
@@ -18,6 +18,6 @@
     state=present
     line='export jail_{{ jail_name }}_hostname="{{ jail_hostname }}"'
   when: jail_config_exists.stat.exists == true
-  notify: restart jail
+  notify: partial pf flush
 
 ...

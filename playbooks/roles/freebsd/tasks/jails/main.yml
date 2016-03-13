@@ -5,17 +5,19 @@
   tags: create_jails
 
 - include: create.yml
-  tags: create_jails
+  tags: 
+    - create_jails
+    - config_jails
 
 - include: hostname.yml
   tags: 
     - create_jails
-    - jail_config
+    - config_jails
 
 - include: config.yml
   tags:
     - create_jails
-    - jail_config
+    - config_jails
 
 - include: rc_conf.yml
   when: jail_created.changed == true
@@ -25,22 +27,17 @@
   when: jail_created.changed == true
   tags: create_jails
 
-# - include: start.yml
-#   tags:
-#     - create_jails
-#     - jail_config
-
 - meta: flush_handlers
   tags:
     - create_jails
-    - jail_config
+    - config_jails
 
-# - include: utils.yml
-#   when: jail_created.changed == true
-#   tags: create_jails
+- include: utils.yml
+  when: jail_created.changed == true
+  tags: create_jails
 
-# - include: users.yml
-#   when: jail_created.changed == true
-#   tags: create_jails
+- include: users.yml
+  when: jail_created.changed == true
+  tags: create_jails
 
 ...

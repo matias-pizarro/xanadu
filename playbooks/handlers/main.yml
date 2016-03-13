@@ -45,7 +45,7 @@
 - name: partial pf flush
   shell: /sbin/pfctl -F nat -F queue -F rules -F Sources -F info -F Tables -F osfp -f /etc/pf.conf
   notify:
-    - restart ezjail
+    - restart jail
 
 - name: start pf
   service: name=pf state=started

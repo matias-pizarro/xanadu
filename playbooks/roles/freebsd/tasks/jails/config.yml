@@ -18,21 +18,13 @@
   when: not hostvars[jail].jail_autorun and jail_norun.stat.exists == false
 
 - name: check whether jail's /etc/resolv.conf exists
-  stat:
-    path=/usr/jails/{{ jail_name }}/etc/resolv.conf
-  register: etc_resolv_conf_exists
-
-- name: check jail and host /etc/resolv.conf are the same
-  shell: diff /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/resolv.conf
-  when: etc_resolv_conf_exists.stat.exists == true
+  copy:
+    src=/etc/resolv.conf
+    dest=/usr/jails/{{ jail_name }}/etc/resolv.conf
+    owner=0
+    group=0
+    mode=0644
+    remote_src=yes
   changed_when: false
-  always_run: yes
-  register: similar_etc_resolv_conf
-
-- name: copy host's /etc/resolv.conf to jail
-  shell: cp -p /etc/resolv.conf /usr/jails/{{ jail_name | quote }}/etc/
-  changed_when: false
-  always_run: yes
-  when: jail_directory_exists == true and (etc_resolv_conf_exists.stat.exists == false or similar_etc_resolv_conf.stdout == "")
 
 ...
