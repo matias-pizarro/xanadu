@@ -2,5 +2,7 @@
 
 kern_securelevel: 3
 syslogd_flags: "-ss -b localhost"
+requires: []
+before: []
 
 ...

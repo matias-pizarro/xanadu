@@ -11,13 +11,15 @@ sshd_config_allow_users:
     - "{{ users.root }}"
 
 jail_name: iredmail
-jail_index: 1
+jail_index: 9
 jail_type: service
 jail_autorun: true
 
 features:
-  - sshd
   - iredmail
   - mail_server
+  - sshd
+
+requires: [reverse_proxy]
 
 ...

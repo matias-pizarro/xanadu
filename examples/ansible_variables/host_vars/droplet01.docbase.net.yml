@@ -6,6 +6,7 @@ os: freebsd
 hosting: digital_ocean
 jails:
   - rproxy02.docbase.net
+  - mail02.docbase.net
 
 features:
   - bsdstats

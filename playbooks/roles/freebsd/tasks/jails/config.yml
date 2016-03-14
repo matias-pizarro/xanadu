@@ -27,4 +27,30 @@
     remote_src=yes
   changed_when: false
 
+- set_fact:
+    provide: "{{ hostvars[jail].provides | default([]) }}"
+
+# See man rcorder
+- name: Set jail provisions
+  replace: '
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    regexp="^# PROVIDE: .*$"
+    replace="# PROVIDE: {{ provide|join(\" \") }}"
+  '
+
+- name: Set jail requirements
+  replace: '
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    regexp="^# REQUIRE: .*$"
+    replace="# REQUIRE: {{ hostvars[jail].requires|join(\" \") }}"
+  '
+
+- name: Set jail precedence
+  replace: '
+    dest=/usr/local/etc/ezjail/{{ jail_name }}
+    regexp="^# BEFORE: .*$"
+    replace="# BEFORE: {{ hostvars[jail].before|join(\" \") }}"
+  '
+
+
 ...
