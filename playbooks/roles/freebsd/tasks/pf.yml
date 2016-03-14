@@ -70,4 +70,17 @@
   service: name=pf state=running enabled=yes
   tags: pf
 
+# pf needs to be flushed once ezjail has started.
+# This file takes care of this at boot time
+- name: Create /usr/local/etc/rc.d/z.flush_pf.sh
+  lineinfile:
+    dest=/usr/local/etc/rc.d/z.flush_pf.sh
+    line="/sbin/pfctl -F all -f /etc/pf.conf"
+    state=present
+    create=yes
+    owner=0
+    group=0
+    mode=0755
+  tags: pf
+
 ...
