@@ -20,4 +20,10 @@
   roles:
     - freebsd
 
+- hosts: nginx_proxy
+  become: yes
+  gather_facts: no
+  roles:
+    - nginx_proxy
+
 ...

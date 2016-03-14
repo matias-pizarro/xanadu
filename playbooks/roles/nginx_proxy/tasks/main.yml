@@ -1,0 +1,11 @@
+---
+
+- name: create /usr/local/etc/nginx/nginx.conf
+  template: src=usr/local/etc/nginx/nginx.conf.j2
+    dest=/usr/local/etc/nginx/nginx.conf
+    owner=0
+    group=0
+    mode=0644
+  tags: nginx.conf
+
+...
