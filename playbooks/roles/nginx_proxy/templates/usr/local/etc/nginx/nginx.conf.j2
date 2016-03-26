@@ -1,69 +1,52 @@
+#{{ ansible_managed }}
+user {{ nginx_user }}  {{ nginx_group }};
 
-user www;
-worker_processes auto;
+worker_processes {{ nginx_worker_processes }};
 
-#error_log  /var/log/nginx/error.log;
-#error_log  /var/log/nginx/error.log  notice;
-#error_log  /var/log/nginx/error.log  info;
+{% if nginx_pid_file %}
+pid {{ nginx_pid_file }};
+{% endif %}
 
-pid        /var/run/nginx.pid;
-
+worker_rlimit_nofile {{ nginx_worker_rlimit_nofile }};
 
 events {
-    worker_connections  1024;
+{% for v in nginx_events_params %}
+    {{ v }};
+{% endfor %}
 }
 
 
 http {
-    ##
-    # Basic Settings
-    ##
-
-    include       mime.types;
+    # Base
+    #######
+    include       {{ nginx_conf_dir }}/mime.types;
     default_type  application/octet-stream;
 
-    sendfile        on;
-    tcp_nopush      on;
-    tcp_nodelay     on;
+{% for v in nginx_http_params %}
+{% if v == 'logs' %}
 
-    keepalive_timeout  60;
-    server_names_hash_max_size 2048;
-    server_names_hash_bucket_size 128;
-    types_hash_max_size 2048;
-    client_max_body_size 200m;
+    # Logs
+    #######
+{% elif v == 'gzip' %}
 
+    # Gzip
+    #######
+{% elif v == 'log_formats' %}
+{% for l, def in log_formats.iteritems() %}
+    log_format  {{ l }}  '{{ "'\n                      '".join(def) }}';
+{% endfor %}
+{% elif v %}
+    {{ v }};
+{% else %}
 
-    ##
-    # Logging Settings
-    ##
+{% endif %}
+{% endfor %}
 
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-    access_log /var/log/nginx/access.log main;
-    error_log /var/log/nginx/error.log;
-
-    ##
-    # Gzip Settings
-    ##
-
-    gzip on;
-    # gzip_disable "msie6";
-    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 6;
-    gzip_buffers 16 8k;
-    gzip_http_version 1.1;
-    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-
-    # upstream php_engine {
-    #     server unix:/tmp/php5-fpm.sock;
-    # }
-
-    ##
-    # Virtual Host Configs
-    ##
-    include /usr/local/etc/nginx/sites-enabled/*;
+    # Sites
+    ########
+    include {{ nginx_conf_dir }}/sites-enabled/*;
 }
+
+{% if nginx_daemon_mode == "off" %}
+daemon off;
+{% endif %}

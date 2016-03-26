@@ -1,0 +1,49 @@
+# let final destination terminate ssl, both for ipv4 and 6
+# redirect let's encrypt traffic to letsencrypt jail
+# redirect all remaining http traffic to https
+# let final destination decide about hsts
+upstream main_backend {
+    server       unix:/var/run/nginx/pkg/nginx.sock;
+    keepalive 60;
+}
+
+upstream letsencrypt_backend {
+    server       10.0.1.21;
+    keepalive 60;
+}
+
+server {
+    listen       nginx_proxy:80;
+    server_name  pkg1.docbase.net;
+
+    location '/.well-known/acme-challenge' {
+         proxy_set_header   X-Real-IP $remote_addr;
+         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header   Host $http_host;
+         proxy_set_header   X-NginX-Proxy true;
+         proxy_pass         http://letsencrypt_backend;
+         proxy_http_version 1.1;
+         proxy_set_header   Connection "";
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen       nginx_proxy:443 ssl;
+    server_name  pkg1.docbase.net;
+
+    location / {
+         proxy_set_header   X-Real-IP $remote_addr;
+         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header   Host $http_host;
+         proxy_set_header   X-NginX-Proxy true;
+         proxy_pass         https://main_backend;
+         proxy_http_version 1.1;
+         proxy_set_header   Connection "";
+    }
+    access_log /var/log/nginx/nginx_proxy-access.log upstream;
+    error_log /var/log/nginx/nginx_proxy-error.log;
+}

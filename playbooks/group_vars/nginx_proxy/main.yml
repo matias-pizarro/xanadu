@@ -6,4 +6,54 @@ provides:
 packages:
   - 'www/nginx'
 
+tpls:
+  nginx_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/nginx.conf.j2"
+  site_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/site.conf.j2"
+
+site_specific_confs:
+  - "sites-available"
+  - "sites-enabled"
+
+nginx_sites: {}
+
+# (For all variables, take a look at https://github.com/jdauphant/ansible-role-nginx/blob/master/defaults/main.yml)
+nginx_events_params:
+  - worker_connections  1024
+
+log_formats:
+  main:
+    - '$remote_addr - $remote_user [$time_local] "$request" '
+    - '$status $body_bytes_sent "$http_referer" '
+    - '"$http_user_agent" "$http_x_forwarded_for"'
+  upstream:
+    - '$remote_addr - $remote_user [$time_local] - $server_name '
+    - 'to: $upstream_addr: $request upstream_response_time '
+    - '$upstream_response_time msec $msec request_time $request_time'
+
+
+nginx_http_params:
+  - sendfile        on
+  - tcp_nopush      on
+  - tcp_nodelay     on
+  - 
+  - keepalive_timeout 60
+  - 
+  - server_names_hash_max_size    2048
+  - server_names_hash_bucket_size  128
+  - types_hash_max_size           2048
+  - client_max_body_size          200m
+  - logs
+  - log_formats
+  - access_log /var/log/nginx/access.log upstream
+  - error_log /var/log/nginx/error.log
+  - gzip
+  - gzip on
+  - gzip_disable "msie6"
+  - gzip_vary on
+  - gzip_proxied any
+  - gzip_comp_level 6
+  - gzip_buffers 16 8k
+  - gzip_http_version 1.1
+  - gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript
+
 ...

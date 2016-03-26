@@ -15,6 +15,12 @@
 		},
 		{
 			"path": "~/.virtualenvs/xanadu/lib/python2.7/site-packages/ansible"
+		},
+		{
+			"path": "/usr/local/etc/ansible/roles"
+		},
+		{
+			"path": "~/projects/ansible-role-nginx"
 		}
 	]
 }

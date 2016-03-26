@@ -32,6 +32,16 @@
 - name: restart jail
   shell: ezjail-admin restart {{ jail_name | quote }}
 
+# nginx
+- name: start nginx
+  shell: service nginx start
+
+- name: restart nginx
+  shell: service nginx restart
+
+- name: reload nginx
+  shell: service nginx reload
+
 # pf
 - name: parse pf rules
   shell: /sbin/pfctl -nf /etc/pf.conf
