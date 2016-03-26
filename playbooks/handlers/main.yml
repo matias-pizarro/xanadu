@@ -33,14 +33,23 @@
   shell: ezjail-admin restart {{ jail_name | quote }}
 
 # nginx
+- name: check nginx configuration
+  shell: nginx -t
+  register: result
+  changed_when: "result.rc != 0"
+  always_run: yes
+
 - name: start nginx
   shell: service nginx start
+  notify: check nginx configuration
 
 - name: restart nginx
   shell: service nginx restart
+  notify: check nginx configuration
 
 - name: reload nginx
   shell: service nginx reload
+  notify: check nginx configuration
 
 # pf
 - name: parse pf rules

@@ -7,14 +7,15 @@ packages:
   - 'www/nginx'
 
 tpls:
-  nginx_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/nginx.conf.j2"
-  site_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/site.conf.j2"
+  nginx_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/nginx_proxy.conf.j2"
+  site_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/default_site.conf.j2"
 
 site_specific_confs:
   - "sites-available"
   - "sites-enabled"
 
-nginx_sites: {}
+nginx_sites:
+  default: []
 
 # (For all variables, take a look at https://github.com/jdauphant/ansible-role-nginx/blob/master/defaults/main.yml)
 nginx_events_params:
@@ -36,7 +37,7 @@ nginx_http_params:
   - tcp_nopush      on
   - tcp_nodelay     on
   - 
-  - keepalive_timeout 60
+  - keepalive_timeout  60
   - 
   - server_names_hash_max_size    2048
   - server_names_hash_bucket_size  128

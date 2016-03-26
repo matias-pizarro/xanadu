@@ -1,0 +1,12 @@
+server {
+    listen       localhost:80;
+    listen       localhost:443 ssl;
+    server_name  _;
+
+    location / {
+        root /usr/local/www/nginx-dist;
+    }
+
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log;
+}
