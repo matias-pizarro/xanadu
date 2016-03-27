@@ -25,6 +25,7 @@
     append=yes
   with_items: "{{ installed_users | default([]) }}"
   register: users_created
+  no_log: True
   tags:
     - ssh_in
     - config_user
@@ -34,6 +35,7 @@
   shell: 'pw usershow -u {{ item.uid }} | cut -d ":" -f 9'
   with_items: "{{ installed_users | default([]) }}"
   register: users_homedirs
+  no_log: True
   changed_when: false
   always_run: yes
   tags:

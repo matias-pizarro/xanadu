@@ -14,5 +14,6 @@
     state=present
     manage_dir=yes
     path='/usr/jails/{{ jail_name }}/root/.ssh/authorized_keys'
+  no_log: True
 
 ...

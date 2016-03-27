@@ -19,6 +19,7 @@
     - '{{ sshd_config_allow_users | default([]) }}'
     - pubkeys
   register: authkeys_set
+  no_log: True
   tags: sshd_config
 
 ...
