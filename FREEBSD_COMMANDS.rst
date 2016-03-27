@@ -91,6 +91,19 @@ load pf rules and flush nat and rules: ::
 
     pfctl -F nat -F rules -f /etc/pf.conf
 
+show all: ::
+
+    pfctl -sa
+
+show nat rules: ::
+
+    pfctl -sn
+
+show firewall rules: ::
+
+    pfctl -sr
+    pfctl -vvsr  # for more verbose output including rule counters, ID numbers, and so on
+
 live capture of pf activity: ::
 
     tcpdump -netttti pflog0
