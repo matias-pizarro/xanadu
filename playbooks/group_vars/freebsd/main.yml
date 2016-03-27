@@ -8,7 +8,7 @@ loopback_if: lo0
 pkg_repos:
   # - server_nox_local
   - server_nox
-  - FreeBSD
+  - FreeBSD.quarterly
 
 packages:
   - 'ftp/wget'

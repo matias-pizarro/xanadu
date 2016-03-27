@@ -3,6 +3,6 @@
 pkg_repos:
   # - desktop_x_local
   - desktop_x
-  - FreeBSD
+  - FreeBSD.quarterly
 
 ...

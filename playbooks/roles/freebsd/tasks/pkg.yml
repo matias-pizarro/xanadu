@@ -30,7 +30,7 @@
     group=0
     mode=0644
   with_items: "{{ pkg_repos | default([]) }}"
-  when: item != "FreeBSD"
+  when: item != "FreeBSD.quarterly"
   tags:
     - pkg
     - repo_config
@@ -54,7 +54,7 @@
     - repo_config
 
 - set_fact:
-    FreeBSD: "FreeBSD"
+    FreeBSDquarterly: "FreeBSD.quarterly"
   tags:
     - pkg
     - repo_config
@@ -62,7 +62,16 @@
 - name: disable pkg.FreeBSD.org repo
   shell: 'echo "FreeBSD: { enabled: no }" > /usr/local/etc/pkg/repos/FreeBSD.conf'
   changed_when: false
-  when: FreeBSD not in pkg_repos
+  when: FreeBSDquarterly not in pkg_repos
+  tags:
+    - pkg
+    - repo_config
+
+- name: check whether /usr/local/etc/pkg/repos/FreeBSD.conf exists
+  stat:
+    path=/usr/local/etc/pkg/repos/FreeBSD.conf
+  when: FreeBSDquarterly not in pkg_repos
+  register: has_freebsd_quarterly_disabler
   tags:
     - pkg
     - repo_config
@@ -74,19 +83,19 @@
     owner=0
     group=0
     mode=0644
-  when: FreeBSD not in pkg_repos
+  when: FreeBSDquarterly not in pkg_repos and has_freebsd_quarterly_disabler.stat.exists == true
   tags:
     - pkg
     - repo_config
 
-- name: enable pkg.FreeBSD.org repo
+- name: enable pkg.FreeBSD.org quarterly repo
   file:
     path=/usr/local/etc/pkg/repos/FreeBSD.conf
     state=absent
     owner=0
     group=0
     mode=0644
-  when: FreeBSD in pkg_repos
+  when: FreeBSDquarterly in pkg_repos
   tags:
     - pkg
     - repo_config
