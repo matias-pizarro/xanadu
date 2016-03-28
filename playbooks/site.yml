@@ -24,7 +24,8 @@
   become: yes
   gather_facts: yes
   roles:
+    - nginx_proxy
     - role: jdauphant.nginx
-      tags: nginx_proxy
+  tags: nginx_proxy
 
 ...

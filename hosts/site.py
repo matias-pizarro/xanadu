@@ -195,6 +195,24 @@ def set_root_pubkeys(host):
     host.set_variable('root_pubkeys', pubkeys)
 
 
+def update_variables(inventory):
+    """Once all groups, features, providers etc... are set,
+    set any and all variables that depend on these"""
+
+    http_proxied = inventory.get_group('http_proxied')
+    proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
+    jail_hosts = inventory.get_group('jail_hosts')
+    for host in jail_hosts.get_hosts():
+        if 'providers' in host.vars and 'reverse_proxy' in host.vars['providers']:
+            rproxy_provider = inventory.get_host(host.vars['providers']['reverse_proxy'])
+            letsencrypt_provider = inventory.get_host(host.vars['providers']['letsencrypt'])
+            if letsencrypt_provider.vars['jail_host'] == rproxy_provider.vars['jail_host']:
+                rproxy_provider.set_variable('letsencrypt_provider', letsencrypt_provider.vars['ipv4']['address'])
+            else:
+                rproxy_provider.set_variable('letsencrypt_provider', letsencrypt_provider.vars['hostname'])
+            rproxy_provider.set_variable('proxied_list', proxied_list)
+
+
 def ansible_output(inventory):
     """Groups inventory data according to the structure Ansible expects"""
 
@@ -244,6 +262,7 @@ def main():
     update_features(inventory, list_path)
     os.remove(list_path)
     update_vars(inventory)
+    update_variables(inventory)
     if DEBUG:
         output = debug_output(inventory)
     else:

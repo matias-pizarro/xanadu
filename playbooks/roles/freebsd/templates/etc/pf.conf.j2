@@ -114,10 +114,10 @@
 
 ################ Filtering #################################
 
-  antispoof quick for $lo_if
+  antispoof log quick for $lo_if
 
 {% if has_sshguard %}
-  block in quick proto tcp from <sshguard> to any port $ssh label "ssh bruteforce"
+  block in log quick proto tcp from <sshguard> to any port $ssh label "ssh bruteforce"
 {% endif %}
 
   # block all incoming packets but allow ssh, pass all outgoing tcp and udp
@@ -137,7 +137,11 @@
 
 {% if provides_reverse_proxy %}
   # Allows HTTP incoming traffic to host
-  pass in on $ext_if proto {tcp udp} from any to $reverse_proxy port $http keep state
+  pass in on $ext_if proto {tcp udp} from any to $reverse_proxy port $http flags S/SA keep state
+  pass on $jails_if proto tcp from $reverse_proxy to $jailnet port $http flags S/SA keep state
+  pass in on $jails_if proto udp from $reverse_proxy to $jailnet port $http keep state
+  pass on $jails_if proto tcp from $jailnet port $http to $reverse_proxy flags S/SA keep state
+  pass in on $jails_if proto udp from $jailnet port $http to $reverse_proxy keep state
 {% endif %}
 
   # allow anything outbound

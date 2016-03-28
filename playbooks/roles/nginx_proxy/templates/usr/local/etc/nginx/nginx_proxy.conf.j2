@@ -24,8 +24,8 @@ http {
 
     keepalive_timeout  60;
 
-    server_names_hash_max_size    2048;
-    server_names_hash_bucket_size  128;
+    server_names_hash_max_size     512;
+    server_names_hash_bucket_size   32;
     types_hash_max_size           2048;
     client_max_body_size          200m;
 
@@ -35,7 +35,7 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     log_format  upstream  '$remote_addr - $remote_user [$time_local] - $server_name '
-                          'to: $upstream_addr: $request upstream_response_time '
+                          '$status to: $upstream_addr: $request upstream_response_time '
                           '$upstream_response_time msec $msec request_time $request_time';
     access_log /var/log/nginx/access.log upstream;
     error_log /var/log/nginx/error.log;

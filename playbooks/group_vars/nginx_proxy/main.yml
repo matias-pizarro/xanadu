@@ -8,14 +8,12 @@ packages:
 
 tpls:
   nginx_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/nginx_proxy.conf.j2"
-  site_conf: "roles/nginx_proxy/templates/usr/local/etc/nginx/default_site.conf.j2"
 
 site_specific_confs:
   - "sites-available"
   - "sites-enabled"
 
-nginx_sites:
-  default: []
+nginx_sites: []
 
 # (For all variables, take a look at https://github.com/jdauphant/ansible-role-nginx/blob/master/defaults/main.yml)
 nginx_events_params:

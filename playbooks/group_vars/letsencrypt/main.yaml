@@ -1,0 +1,9 @@
+---
+
+provides:
+  - letsencrypt
+
+packages:
+  - 'security/py-letsencrypt'
+
+...
