@@ -149,3 +149,30 @@ Do the same, but put the output into a file: ::
 Follow an already-running process: ::
 
     truss -p 34
+
+
+
+`netstat <https://www.freebsd.org/cgi/man.cgi?query=netstat&sektion=1>`_
+=======
+
+Show the routes table
+
+    netstat -rn
+
+
+
+netif
+=====
+
+restart FreeBSD network service
+
+    /etc/rc.d/netif restart
+
+
+
+routing
+=======
+
+restart FreeBSD routing service
+
+    /etc/rc.d/routing restart
