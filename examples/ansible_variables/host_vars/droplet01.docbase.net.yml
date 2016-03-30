@@ -6,6 +6,7 @@ os: freebsd
 hosting: digital_ocean
 jails:
   - rproxy02.docbase.net
+  - letsencrypt02.docbase.net
   - mail02.docbase.net
 
 features:
@@ -42,7 +43,7 @@ ipv4:
 ipv6:
   interface: vtnet0
   address: AAAA:BBBB:0000:0000:0000:0000:0000:9999
-  prefixlen: 64
+  netmask: 64
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
 
 ansible_ssh_port: 123

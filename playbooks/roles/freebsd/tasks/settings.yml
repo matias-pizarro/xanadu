@@ -18,34 +18,29 @@
     - encoding
     - passwd_format
 
+- name: upload patch file
+  template: src=files/usr/local/share/patches/etc_login_conf_encoding.patch.j2
+    dest=/tmp/etc_login_conf_encoding.patch
+    owner=0
+    group=0
+    mode=0644
+  when: encoding_updated.stdout == "0"
+  register: encoding_patch_uploaded
+  tags: encoding
+
 - name: change charset
   patch: >
-    src=files/usr/local/share/patches/etc_login_conf_encoding.patch.j2
+    src=/tmp/etc_login_conf_encoding.patch
     dest=/etc/login.conf
+    remote_src=yes
   when: encoding_updated.stdout == "0"
   notify: rebuild db
   tags: encoding
 
-- name: update charset in login.conf
-  lineinfile:
-    dest=/etc/login.conf
-    state=present
-    regexp="^(.*)<HOST_CHARSET>(.*)$"
-    line="\1{{ host_charset }}\2"
-    backrefs=yes
-  when: encoding_updated.stdout == "0"
-  notify: rebuild db
-  tags: encoding
-
-- name: update locale in login.conf
-  lineinfile:
-    dest=/etc/login.conf
-    state=present
-    regexp="^(.*)<HOST_LOCALE>(.*)$"
-    line="\1{{ host_locale }}\2"
-    backrefs=yes
-  when: encoding_updated.stdout == "0"
-  notify: rebuild db
+- name: delete patch file
+  file: path=/tmp/etc_login_conf_encoding.patch
+    state=absent
+  when: encoding_patch_uploaded.changed == true
   tags: encoding
 
 - name: update passwd format in /etc/login.conf

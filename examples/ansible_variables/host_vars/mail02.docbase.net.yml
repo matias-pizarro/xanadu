@@ -15,11 +15,15 @@ jail_index: 9
 jail_type: service
 jail_autorun: true
 
+server_name: mail02.docbase.net
+server_socket: web # or unix
+
 features:
+  - http_proxied
   - iredmail
   - mail_server
   - sshd
 
-requires: [reverse_proxy]
+requires: [reverse_proxy, letsencrypt]
 
 ...
