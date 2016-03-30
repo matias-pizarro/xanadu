@@ -14,7 +14,25 @@
     state=absent
   with_items: "{{ config_list.files }}"
   when: (([(item.path|basename|splitext).0]|difference(proxied_list)|length)==1 and (item.path|basename != 'default.conf'))
-  no_log: True
+  no_log: true
+  tags: rproxy_configs
+
+- name: Create /usr/local/etc/nginx/sites-available directory
+  file:
+    path=/usr/local/etc/nginx/sites-available
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+  tags: rproxy_configs
+
+- name: Create /usr/local/etc/nginx/sites-enabled directory
+  file:
+    path=/usr/local/etc/nginx/sites-enabled
+    state=directory
+    owner=0
+    group=0
+    mode=0755
   tags: rproxy_configs
 
 - name: set up defaults
@@ -23,6 +41,14 @@
     owner=0
     group=0
     mode=0644
+  notify: reload nginx
+  tags: rproxy_configs
+
+- name: Create links for sites-enabled defaults
+  file:
+    state=link
+    src=/usr/local/etc/nginx/sites-available/default.conf
+    dest=/usr/local/etc/nginx/sites-enabled/default.conf
   notify: reload nginx
   tags: rproxy_configs
 
