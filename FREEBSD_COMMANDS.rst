@@ -176,3 +176,18 @@ routing
 restart FreeBSD routing service
 
     /etc/rc.d/routing restart
+
+
+
+`file flags <https://www.freebsd.org/doc/handbook/permissions.html>`_
+==========
+
+see file flags
+
+    ls -lo /usr/jails/basejail/lib
+
+modify file flags (make sure you are in kern level -1)
+
+    chflags -R nosunlink /usr/jails/basejail
+    chflags -Rf nouarch /usr/jails/basejail
+    chflags -Rf noschg /usr/jails/basejail

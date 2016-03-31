@@ -155,7 +155,22 @@ HOSTING
 PROXY
 =====
 
-
 `https://calomel.org/squid.html <https://calomel.org/squid.html>`_
 
 `https://calomel.org/squid_adservers.html <https://calomel.org/squid_adservers.html>`_
+
+
+
+SMTP REPUTATION AND GOOD PRACTICES
+==================================
+
+`https://support.google.com/mail/answer/81126#authentication`_
+`https://support.google.com/mail/answer/6227174`_
+`www.dkim.org`_
+`http://www.openspf.org/Introduction`_
+`http://www.openspf.org/SPF_Record_Syntax`_
+`http://www.openspf.org/Tools`_
+`https://dmarc.org/overview/`_
+`https://tools.ietf.org/html/rfc7489`_
+`http://aplawrence.com/Blog/B961.html`_
+`http://tools.bevhost.com/spf/`_
