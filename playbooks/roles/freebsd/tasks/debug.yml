@@ -1,6 +1,15 @@
 ---
 
 - debug: var=hostvars[hostname]
-  tags: debug
+
+- debug: var=ansible_default_ipv4
+
+- debug: var=ansible_default_ipv6
+
+- debug: var=has_ipv6
+
+- debug: var=ipv4
+
+- debug: var=ipv6
 
 ...

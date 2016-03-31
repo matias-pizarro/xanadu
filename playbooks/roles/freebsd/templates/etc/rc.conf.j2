@@ -30,23 +30,29 @@ linux_enable="YES"
 # NETWORK #
 ###########
 
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 {% endif %}
-{% if has_ipv6 %}
-ipv6_activate_all_interfaces="YES"
-ipv6_default_interface="{{ ipv6.interface }}"
-ip6addrctl_enable="YES"
-ip6addrctl_policy="ipv4_prefer"
-{% endif %}
+{% if if_dhcp %}
+
+# DHCP
+ifconfig_{{ ipv4.interface }}="DHCP"
+{% else %}
 
 # IPv4
-ifconfig_{{ ipv4.interface }}_ipv4="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
+ifconfig_{{ ipv4.interface }}="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
 defaultrouter="{{ ipv4.gateway }}"
+{% endif %}
 {% if has_ipv6 %}
 
+# Enable IPV6 support
+ipv6_activate_all_interfaces="YES"
+ipv6_default_interface="{% if 'interface' in ipv6 %}{{ ipv6.interface }}{% else %}{{ ipv4.interface }}{% endif %}"
+ip6addrctl_enable="YES"
+ip6addrctl_policy="ipv4_prefer"
+
 # IPv6
-ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
+ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
 {% endif %}

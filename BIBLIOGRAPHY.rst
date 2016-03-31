@@ -164,9 +164,11 @@ PROXY
 SMTP REPUTATION AND GOOD PRACTICES
 ==================================
 
+`http://mxtoolbox.com/SuperTool.aspx`_
 `https://support.google.com/mail/answer/81126#authentication`_
 `https://support.google.com/mail/answer/6227174`_
 `www.dkim.org`_
+`https://support.software.dell.com/sonicwall-email-security/kb/sw10821`_
 `http://www.openspf.org/Introduction`_
 `http://www.openspf.org/SPF_Record_Syntax`_
 `http://www.openspf.org/Tools`_

@@ -11,7 +11,7 @@
 
 ################ Macros ###################################
 
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
   ### Jail Macros ###
     include "/etc/pf/jail_macros.conf"
 {% endif %}
@@ -19,13 +19,13 @@
   ### Interfaces ###
     ext_if              = "{{ ipv4.interface }}"
     lo_if               = "{{ loopback_if }}"
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
     jails_if            = "{{ jails_if }}"
 {% endif %}
     unfiltered          = "{" $lo_if "}"
 
   ### Host classes ###
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
     jailnet             = "{" $jails_if:network "}"
 {% endif %}
 
@@ -40,7 +40,7 @@
 {% endif %}
 
   ### Ports ###
-    ssh                 = "{ {{ ansible_ssh_port }} {% if provides_jail_host %}" $jail_ssh_ports "{% endif %}}"
+    ssh                 = "{ {{ ansible_ssh_port }} {% if provides_jail_host and has_jails %}" $jail_ssh_ports "{% endif %}}"
     http                = "{ 80 443 }"
     ntp                 = "{ 123 }"
     whois               = "43"
@@ -97,7 +97,7 @@
   no rdr on $unfiltered from any to any
 
   # Allows nat to specified addresses
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
   nat on $ext_if from $jailnet to any      -> $host_ipv4
 {% endif %}
 
@@ -106,7 +106,7 @@
   rdr on $ext_if proto {tcp udp} to $host_{{ ipv46 }} port $http -> $reverse_proxy
 {% endif %}
 
-{% if has_sshd and provides_jail_host %}
+{% if has_sshd and provides_jail_host and has_jails %}
   # redirect ssh to jails
   include "/etc/pf/ssh.rdr.conf"
 {% endif %}
@@ -138,10 +138,12 @@
 {% if provides_reverse_proxy %}
   # Allows HTTP incoming traffic to host
   pass in on $ext_if proto {tcp udp} from any to $reverse_proxy port $http flags S/SA keep state
+{% if provides_jail_host and has_jails %}
   pass on $jails_if proto tcp from $reverse_proxy to $jailnet port $http flags S/SA keep state
   pass in on $jails_if proto udp from $reverse_proxy to $jailnet port $http keep state
   pass on $jails_if proto tcp from $jailnet port $http to $reverse_proxy flags S/SA keep state
   pass in on $jails_if proto udp from $jailnet port $http to $reverse_proxy keep state
+{% endif %}
 {% endif %}
 
   # allow anything outbound
@@ -149,3 +151,11 @@
 
   # allow anything on loopback interface
   pass on $lo_if all
+{% if open_all_ports %}
+
+  # Temporarily open every port
+  pass on $ext_if from any to any
+{% if provides_jail_host and has_jails %}
+  pass on $jails_if from any to any
+{% endif %}
+{% endif %}

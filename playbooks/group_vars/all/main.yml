@@ -3,7 +3,12 @@
 ansible_user: root
 host_charset: UTF-8
 host_locale: en_GB.UTF-8
+is_first_class_host: True
+is_jail: False
 jails: []
+ipv4: null
+ipv6: null
+if_dhcp: true
 
 has_bsdstats: false
 has_ezjail: false
@@ -26,5 +31,7 @@ provides_jail_host: false
 provides_letsencrypt: false
 provides_ntp_server: false
 provides_reverse_proxy: false
+
+hide_logs: true
 
 ...

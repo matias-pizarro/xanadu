@@ -1,6 +1,17 @@
 ---
 
+# - set_fact:
+#     ipv4: "{{ ansible_default_ipv4 }}"
+#   when: "{{ if_dhcp == true and ansible_default_ipv4|length }}"
+#   tags: set_properties
+
+# - set_fact:
+#     ipv6: "{{ ansible_default_ipv6 }}"
+#   when: "{{ has_ipv6 and ansible_default_ipv6|length }}"
+#   tags: set_properties
+
 # - include: debug.yml
+#   tags: debug
 
 - include: pkg.yml
 

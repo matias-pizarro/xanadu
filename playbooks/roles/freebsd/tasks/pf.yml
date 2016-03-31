@@ -10,18 +10,6 @@
   notify: start pf
   tags: pf
 
-- name: configure pf rules
-  template: src=etc/pf.conf.j2
-    dest=/etc/pf.conf
-    owner=0
-    group=0
-    mode=0644
-    validate='/sbin/pfctl -nf %s'
-  notify: partial pf flush
-  tags:
-    - pf
-    - pf_rules
-
 - name: configure pf jail macros
   template: src=etc/pf/jail_macros.conf.j2
     dest=/etc/pf/jail_macros.conf
@@ -61,6 +49,18 @@
     path=/etc/pf/ssh.rdr.conf
     state=absent
   when: provides_jail_host == false
+  notify: partial pf flush
+  tags:
+    - pf
+    - pf_rules
+
+- name: configure pf rules
+  template: src=etc/pf.conf.j2
+    dest=/etc/pf.conf
+    owner=0
+    group=0
+    mode=0644
+    validate='/sbin/pfctl -nf %s'
   notify: partial pf flush
   tags:
     - pf

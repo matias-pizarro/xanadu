@@ -3,6 +3,6 @@
 jails_if: lo1
 jails_base_ipv4: '10.0.{type_idx}.{jail_idx}'
 jails_ipv4_netmask: "255.255.255.0"
-jails_ipv6_prefixlen: "64"
+jails_ipv6_netmask: "64"
 
 ...

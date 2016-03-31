@@ -17,7 +17,7 @@ from ansible.vars.hostvars import HostVars
 
 DEBUG = True if '--debug' in sys.argv or '-d' in sys.argv else False
 PLAYBOOK_PATH = './playbooks/site.yml'
-STATIC_HOSTS_PATH = './static_hosts'
+FIRST_CLASS_HOSTS_PATH = './first_class_hosts'
 
 
 def get_hosts_list():
@@ -26,7 +26,7 @@ def get_hosts_list():
     if len(sys.argv) > 2 and sys.argv[1] == '--host_list':
         return sys.argv[2]
     else:
-        return STATIC_HOSTS_PATH
+        return FIRST_CLASS_HOSTS_PATH
 
 
 def update_hosts(inventory, list_path):
@@ -83,8 +83,8 @@ def update_features(inventory, list_path):
 def update_vars(inventory):
     """Sets relevant variables for each host and jail"""
 
-    jail_hosts = inventory.get_group('jail_hosts')
-    for host in jail_hosts.get_hosts():
+    first_class_hosts = inventory.get_group('first_class_hosts')
+    for host in first_class_hosts.get_hosts():
         jails_list = host.vars.get('jails', [])
         host.vars = combine_vars(host.get_group_vars(), host.vars)
         host.vars['is_first_class_host'] = True
@@ -102,9 +102,9 @@ def update_vars(inventory):
             jail.vars['is_not_jail'] = False
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
-            set_ips(host, jail)
             set_features(inventory, jail, jail_host=host)
             set_providers(inventory, jail, jail_host=host)
+            set_ips(host, jail)
             set_packages(jail)
             set_root_pubkeys(jail)
 
@@ -124,7 +124,9 @@ def set_ips(host, jail):
     """Computes a jail's ip configuration based on its host's properties"""
 
     ipv4_pattern = host.vars.get('jails_base_ipv4')
-    ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
+    host.vars['lo_base_ip'] = ipv4_pattern.format(type_idx=1, jail_idx=1)
+    if host.vars.get('has_ipv6', False):
+        ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
     type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
     jail_idx = jail.vars['jail_index']
     port = str((type_idx + 3) * 1000 + jail_idx)
@@ -135,11 +137,12 @@ def set_ips(host, jail):
         'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
         'netmask': host.vars['jails_ipv4_netmask'],
     }
-    jail.vars['ipv6'] = {
-        'interface': host.vars['jails_if'],
-        'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'prefixlen': host.vars['jails_ipv6_prefixlen'],
-    }
+    if host.vars.get('has_ipv6', False):
+        jail.vars['ipv6'] = {
+            'interface': host.vars['jails_if'],
+            'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+            'netmask': host.vars['jails_ipv6_netmask'],
+        }
     jail.vars['ansible_ssh_port'] = port
 
 
@@ -200,7 +203,8 @@ def update_variables(inventory):
     set any and all variables that depend on these"""
 
     http_proxied = inventory.get_group('http_proxied')
-    proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
+    if http_proxied:
+        proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
         if 'providers' in host.vars and 'reverse_proxy' in host.vars['providers']:

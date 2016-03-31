@@ -14,7 +14,7 @@
     state=absent
   with_items: "{{ config_list.files }}"
   when: (([(item.path|basename|splitext).0]|difference(proxied_list)|length)==1 and (item.path|basename != 'default.conf'))
-  no_log: true
+  no_log: "{{ hide_logs }}"
   tags: rproxy_configs
 
 - name: Create /usr/local/etc/nginx/sites-available directory

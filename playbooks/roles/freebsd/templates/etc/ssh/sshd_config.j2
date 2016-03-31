@@ -1,5 +1,5 @@
-#	$OpenBSD: sshd_config,v 1.93 2014/01/10 05:59:19 djm Exp $
-#	$FreeBSD: releng/10.2/crypto/openssh/sshd_config 264692 2014-04-20 12:46:18Z des $
+#  $OpenBSD: sshd_config,v 1.98 2016/02/17 05:29:04 djm Exp $
+#  $FreeBSD: releng/10.3/crypto/openssh/sshd_config 296853 2016-03-14 13:05:13Z des $
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
@@ -17,7 +17,9 @@
 Port {{ ssh_port }}
 #AddressFamily any
 ListenAddress {{ ipv4.address }}
+{% if has_ipv6 %}
 ListenAddress {{ ipv6.address }}
+{% endif %}
 
 # The default requires explicit activation of protocol 1
 #Protocol 2
@@ -45,6 +47,7 @@ ListenAddress {{ ipv6.address }}
 # Authentication:
 
 LoginGraceTime {{ sshd_LoginGraceTime }}
+PermitRootLogin {{ sshd_PermitRootLogin }}
 #StrictModes yes
 MaxAuthTries {{ sshd_MaxAuthTries }}
 #MaxSessions 10
@@ -97,7 +100,6 @@ PermitEmptyPasswords {{ sshd_PermitEmptyPasswords }}
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 #UsePAM yes
-PermitRootLogin {{ sshd_PermitRootLogin }}
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
@@ -120,25 +122,13 @@ PermitRootLogin {{ sshd_PermitRootLogin }}
 #MaxStartups 10:30:100
 #PermitTunnel no
 #ChrootDirectory none
-#VersionAddendum FreeBSD-20140420
+#VersionAddendum FreeBSD-20160310
 
 # no default banner path
 #Banner none
 
 # override default of no subsystems
 Subsystem	sftp	/usr/libexec/sftp-server
-
-# Disable HPN tuning improvements.
-#HPNDisabled no
-
-# Buffer size for HPN to non-HPN connections.
-#HPNBufferSize 2048
-
-# TCP receive socket buffer polling for HPN.  Disable on non autotuning kernels.
-#TcpRcvBufPoll yes
-
-# Allow the use of the NONE cipher.
-#NoneEnabled no
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs

@@ -1,11 +1,18 @@
 ---
 
+- name: check whether jail rc.conf exists
+  stat:
+    path=/usr/jails/{{ jail_name }}/etc/rc.conf
+  register: jail_rc_conf
+  tags: jail_rc_conf
+
 - name: create jail rc.conf
   template: src=roles/freebsd/templates/etc/initial_jail_rc.conf.j2
     dest=/usr/jails/{{ jail_name }}/etc/rc.conf
     owner=0
     group=0
     mode=0644
-  tags: rc_conf
+  when: jail_rc_conf.stat.exists == false
+  tags: jail_rc_conf
 
 ...

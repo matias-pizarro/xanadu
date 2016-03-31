@@ -19,7 +19,7 @@
     - '{{ sshd_config_allow_users | default([]) }}'
     - pubkeys
   register: authkeys_set
-  no_log: True
+  no_log: "{{ hide_logs }}"
   tags: sshd_config
 
 ...

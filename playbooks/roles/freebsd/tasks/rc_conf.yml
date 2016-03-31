@@ -1,11 +1,25 @@
 ---
 
+- name: check whether ezjail is installed
+  shell: ls /usr/jails/basejail | wc -l | sed -e 's/^[ \t]*//'
+  register: ezjail_installed
+  changed_when: false
+  always_run: yes
+  tags: ezjail_config
+
+- set_fact:
+    kern_securelevel: -1
+  when: kern_securelevel >= 0 and has_ezjail == true and ezjail_installed.stdout == "0"
+  tags: ezjail_config
+
 - name: create rc.conf
   template: src=etc/rc.conf.j2
     dest=/etc/rc.conf
     owner=0
     group=0
     mode=0644
-  tags: rc_conf
+  tags:
+    - rc_conf
+    - ezjail_config
 
 ...

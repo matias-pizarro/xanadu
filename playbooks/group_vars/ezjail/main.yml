@@ -1,5 +1,10 @@
 ---
 
+ezjail_jaildir: "/usr/jails"
+ezjail_use_zfs: "YES"
+ezjail_use_zfs_for_jails: "YES"
+ezjail_jailzfs: "{{ pool_name}}/DATA/jails"
+
 provides:
   - jail_host
 
