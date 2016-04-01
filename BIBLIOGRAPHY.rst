@@ -172,6 +172,7 @@ SMTP REPUTATION AND GOOD PRACTICES
 `http://www.openspf.org/Introduction`_
 `http://www.openspf.org/SPF_Record_Syntax`_
 `http://www.openspf.org/Tools`_
+`http://www.zytrax.com/books/dns/ch9/dmarc.html`_
 `https://dmarc.org/overview/`_
 `https://tools.ietf.org/html/rfc7489`_
 `http://aplawrence.com/Blog/B961.html`_
