@@ -46,7 +46,7 @@ defaultrouter="{{ ipv4.gateway }}"
 {% if has_ipv6 %}
 
 # IPv6
-ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.prefixlen }}"
+ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
 {% endif %}

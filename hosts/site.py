@@ -138,7 +138,7 @@ def set_ips(host, jail):
     jail.vars['ipv6'] = {
         'interface': host.vars['jails_if'],
         'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'prefixlen': host.vars['jails_ipv6_prefixlen'],
+        'netmask': host.vars['jails_ipv6_netmask'],
     }
     jail.vars['ansible_ssh_port'] = port
 
