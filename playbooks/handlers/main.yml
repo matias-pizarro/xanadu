@@ -28,9 +28,11 @@
 
 - name: start jail
   shell: ezjail-admin start {{ jail_name | quote }}
+  when: "{{ has_ezjail and jail_name is defined }}"
 
 - name: restart jail
   shell: ezjail-admin restart {{ jail_name | quote }}
+  when: "{{ has_ezjail and jail_name is defined }}"
 
 # nginx
 - name: check nginx configuration
