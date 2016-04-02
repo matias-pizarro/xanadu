@@ -202,7 +202,8 @@ def update_variables(inventory):
     set any and all variables that depend on these"""
 
     http_proxied = inventory.get_group('http_proxied')
-    proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
+    if http_proxied:
+        proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
         if 'providers' in host.vars and 'reverse_proxy' in host.vars['providers']:
