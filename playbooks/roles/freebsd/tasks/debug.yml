@@ -1,6 +1,11 @@
 ---
 
 - debug: var=hostvars[hostname]
-  tags: debug
+
+- debug: var=has_ipv6
+
+- debug: var=ipv4
+
+- debug: var=ipv6
 
 ...

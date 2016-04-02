@@ -124,7 +124,8 @@ def set_ips(host, jail):
     """Computes a jail's ip configuration based on its host's properties"""
 
     ipv4_pattern = host.vars.get('jails_base_ipv4')
-    ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
+    if host.vars.get('has_ipv6', False):
+        ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
     type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
     jail_idx = jail.vars['jail_index']
     port = str((type_idx + 3) * 1000 + jail_idx)
@@ -135,11 +136,12 @@ def set_ips(host, jail):
         'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
         'netmask': host.vars['jails_ipv4_netmask'],
     }
-    jail.vars['ipv6'] = {
-        'interface': host.vars['jails_if'],
-        'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'netmask': host.vars['jails_ipv6_netmask'],
-    }
+    if host.vars.get('has_ipv6', False):
+        jail.vars['ipv6'] = {
+            'interface': host.vars['jails_if'],
+            'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+            'netmask': host.vars['jails_ipv6_netmask'],
+        }
     jail.vars['ansible_ssh_port'] = port
 
 

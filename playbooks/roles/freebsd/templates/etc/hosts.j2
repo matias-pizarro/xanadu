@@ -31,5 +31,7 @@
 #
 {% for jail in jails %}
 {{ hostvars[jail]['ipv4']['address'] }}				{{ hostvars[jail]['hostname'] }}
+{% if has_ipv6 %}
 {{ hostvars[jail]['ipv6']['address'] }}	{{ hostvars[jail]['hostname'] }}
+{% endif %}
 {% endfor %}

@@ -17,7 +17,9 @@
 Port {{ ssh_port }}
 #AddressFamily any
 ListenAddress {{ ipv4.address }}
+{% if has_ipv6 %}
 ListenAddress {{ ipv6.address }}
+{% endif %}
 
 # The default requires explicit activation of protocol 1
 #Protocol 2
