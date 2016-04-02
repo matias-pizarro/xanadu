@@ -1,7 +1,7 @@
 ---
 
 - name: check whether jail exists
-  shell: ezjail-admin list | grep /usr/jails/{{ jail_name | quote }} | wc -l | sed -e 's/^[ \t]*//'
+  shell: ezjail-admin list | grep -e "/usr/jails/{{ jail_name | quote }}$" | wc -l | sed -e 's/^[ \t]*//'
   register: jail_exists
   changed_when: false
   always_run: yes
