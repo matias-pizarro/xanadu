@@ -102,9 +102,9 @@ def update_vars(inventory):
             jail.vars['is_not_jail'] = False
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
-            set_ips(host, jail)
             set_features(inventory, jail, jail_host=host)
             set_providers(inventory, jail, jail_host=host)
+            set_ips(host, jail)
             set_packages(jail)
             set_root_pubkeys(jail)
 
