@@ -28,4 +28,6 @@ provides_letsencrypt: false
 provides_ntp_server: false
 provides_reverse_proxy: false
 
+hide_logs: true
+
 ...
