@@ -17,7 +17,7 @@ from ansible.vars.hostvars import HostVars
 
 DEBUG = True if '--debug' in sys.argv or '-d' in sys.argv else False
 PLAYBOOK_PATH = './playbooks/site.yml'
-STATIC_HOSTS_PATH = './static_hosts'
+FIRST_CLASS_HOSTS_PATH = './first_class_hosts'
 
 
 def get_hosts_list():
@@ -26,7 +26,7 @@ def get_hosts_list():
     if len(sys.argv) > 2 and sys.argv[1] == '--host_list':
         return sys.argv[2]
     else:
-        return STATIC_HOSTS_PATH
+        return FIRST_CLASS_HOSTS_PATH
 
 
 def update_hosts(inventory, list_path):
@@ -83,8 +83,8 @@ def update_features(inventory, list_path):
 def update_vars(inventory):
     """Sets relevant variables for each host and jail"""
 
-    jail_hosts = inventory.get_group('jail_hosts')
-    for host in jail_hosts.get_hosts():
+    first_class_hosts = inventory.get_group('first_class_hosts')
+    for host in first_class_hosts.get_hosts():
         jails_list = host.vars.get('jails', [])
         host.vars = combine_vars(host.get_group_vars(), host.vars)
         host.vars['is_first_class_host'] = True

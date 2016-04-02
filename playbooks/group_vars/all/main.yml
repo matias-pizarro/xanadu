@@ -3,6 +3,7 @@
 ansible_user: root
 host_charset: UTF-8
 host_locale: en_GB.UTF-8
+is_first_class_host: True
 jails: []
 
 has_bsdstats: false

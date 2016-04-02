@@ -11,7 +11,7 @@ from ansible.inventory import Inventory
 from ansible.executor.playbook_executor import PlaybookExecutor
 
 DEFAULT_PLAYBOOK_PATH = './playbooks/site.yml'
-DEFAULT_HOST_LIST = './hosts/static_hosts'
+DEFAULT_HOST_LIST = './hosts/first_class_hosts'
 DEFAULT_OPTIONS_LIST = ['listtags','listtasks', 'listhosts', 'syntax', 'connection',
     'module_path', 'forks', 'remote_user', 'private_key_file', 'ssh_common_args',
     'ssh_extra_args', 'sftp_extra_args', 'scp_extra_args', 'become', 'become_method',
