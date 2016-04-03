@@ -129,3 +129,32 @@ bsdstats_enable="YES"
 # nginx
 nginx_enable="YES"
 {% endif %}
+{% if has_iredmail %}
+
+# crude iredmail config, will be refined later
+nginx_enable="YES"
+php_fpm_enable="YES"
+uwsgi_enable="YES"
+uwsgi_profiles="iredadmin"
+uwsgi_iredadmin_flags="--ini /usr/local/etc/uwsgi/iredadmin.ini"
+slapd_enable="YES"
+slapd_flags="-h 'ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/'"
+slapd_sockets="/var/run/openldap/ldapi"
+mysql_enable="YES"
+mysql_optfile="/usr/local/etc/my.cnf"
+postfix_enable="YES"
+daily_clean_hoststat_enable="NO"
+daily_status_mail_rejects_enable="NO"
+daily_status_include_submit_mailq="NO"
+daily_submit_queuerun="NO"
+dovecot_enable="YES"
+clamav_clamd_enable="YES"
+clamav_freshclam_enable="YES"
+amavisd_enable="YES"
+amavisd_pidfile="/var/amavis/amavisd.pid"
+amavis_milter_enable="NO"
+amavis_p0fanalyzer_enable="NO"
+iredapd_enable="YES"
+memcached_enable="YES"
+sogod_enable="YES"
+{% endif %}

@@ -38,6 +38,9 @@
 {% if provides_reverse_proxy %}
     reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].hostname }}"
 {% endif %}
+{% if provides_mail_server %}
+    mail_server       = "{{ hostvars[providers['mail_server']].hostname }}"
+{% endif %}
 
   ### Ports ###
     ssh                 = "{ {{ ansible_ssh_port }} {% if provides_jail_host and has_jails %}" $jail_ssh_ports "{% endif %}}"
@@ -105,7 +108,17 @@
   # redirect http traffic to reverse-proxy
   rdr on $ext_if proto {tcp udp} to $host_{{ ipv46 }} port $http -> $reverse_proxy
 {% endif %}
-
+{% if provides_mail_server %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $http -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 110 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 995 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 143 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 993 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 585 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 587 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 465 -> $mail_server
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 25 -> $mail_server
+{% endif %}
 {% if has_sshd and provides_jail_host and has_jails %}
   # redirect ssh to jails
   include "/etc/pf/ssh.rdr.conf"
@@ -151,6 +164,12 @@
 
   # allow anything on loopback interface
   pass on $lo_if all
+{% if provides_mail_server %}
+
+  # Allow traffic to and from mail server jail ports
+  pass on $ext_if proto {tcp udp} from any to any port { 110 995 143 993 585 587 465 25 445 53 123 }
+  pass on $jails_if proto {tcp udp} from any to any port { 110 995 143 993 585 587 465 25 10024 10025 10026 7777 389 3306 6277 20000 11211 }
+{% endif %}
 {% if open_all_ports %}
 
   # Temporarily open every port

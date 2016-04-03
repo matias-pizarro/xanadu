@@ -1,0 +1,6 @@
+---
+
+provides:
+  - mail_server
+
+...
