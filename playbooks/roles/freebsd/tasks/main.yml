@@ -1,6 +1,7 @@
 ---
 
 # - include: debug.yml
+#   tags: debug
 
 - include: pkg.yml
 
