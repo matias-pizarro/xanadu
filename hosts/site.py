@@ -124,6 +124,7 @@ def set_ips(host, jail):
     """Computes a jail's ip configuration based on its host's properties"""
 
     ipv4_pattern = host.vars.get('jails_base_ipv4')
+    host.vars['lo_base_ip'] = ipv4_pattern.format(type_idx=1, jail_idx=1)
     if host.vars.get('has_ipv6', False):
         ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
     type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2

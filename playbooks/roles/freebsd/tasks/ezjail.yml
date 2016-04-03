@@ -22,7 +22,7 @@
   tags: ezjail_config
 
 - name: make sure the cloned interface has an ip address
-  command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip | quote }}.1 netmask 255.255.255.0
+  command: ifconfig "{{ jails_if | quote }}" inet {{ lo_base_ip | quote }} netmask 255.255.255.0
   when: has_jails and jails_if_ip.stdout == "0"
   tags: ezjail_config
 

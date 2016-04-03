@@ -5,6 +5,9 @@ host_charset: UTF-8
 host_locale: en_GB.UTF-8
 is_first_class_host: True
 jails: []
+ipv4: null
+ipv6: null
+if_dhcp: true
 
 has_bsdstats: false
 has_ezjail: false
