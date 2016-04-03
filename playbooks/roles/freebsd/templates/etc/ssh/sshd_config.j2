@@ -1,10 +1,11 @@
-{% if freebsd_version == '10.3' %}
+{% if freebsd_version == '10.2' %}
 #	$OpenBSD: sshd_config,v 1.93 2014/01/10 05:59:19 djm Exp $
 #	$FreeBSD: releng/10.2/crypto/openssh/sshd_config 264692 2014-04-20 12:46:18Z des $
-{% elif freebsd_version == '10.2' %}
+{% elif freebsd_version == '10.3' %}
 #  $OpenBSD: sshd_config,v 1.98 2016/02/17 05:29:04 djm Exp $
 #  $FreeBSD: releng/10.3/crypto/openssh/sshd_config 296853 2016-03-14 13:05:13Z des $
 {% endif %}
+
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
 
@@ -126,10 +127,10 @@ PermitEmptyPasswords {{ sshd_PermitEmptyPasswords }}
 #MaxStartups 10:30:100
 #PermitTunnel no
 #ChrootDirectory none
-{% if freebsd_version == '10.3' %}
-#VersionAddendum FreeBSD-20160310
-{% elif freebsd_version == '10.2' %}
+{% if freebsd_version == '10.2' %}
 #VersionAddendum FreeBSD-20140420
+{% elif freebsd_version == '10.3' %}
+#VersionAddendum FreeBSD-20160310
 {% endif %}
 
 # no default banner path
