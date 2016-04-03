@@ -30,7 +30,7 @@ linux_enable="YES"
 # NETWORK #
 ###########
 
-{% if provides_jail_host %}
+{% if provides_jail_host and has_jails %}
 cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 {% endif %}
 {% if has_ipv6 %}
