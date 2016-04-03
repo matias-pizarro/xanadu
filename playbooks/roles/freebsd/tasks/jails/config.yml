@@ -17,6 +17,11 @@
   always_run: yes
   when: not hostvars[jail].jail_autorun and jail_norun.stat.exists == false
 
+- name: check whether jail's ezjail config exists
+  stat:
+    path=/usr/local/etc/ezjail/{{ jail_name }}
+  register: jail_config
+
 - name: check whether jail's /etc/resolv.conf exists
   copy:
     src=/etc/resolv.conf
@@ -26,6 +31,7 @@
     mode=0644
     remote_src=yes
   changed_when: false
+  when: jail_config.stat.exists == true
 
 - set_fact:
     provide: "{{ hostvars[jail].provides | default([]) }}"
@@ -37,6 +43,7 @@
     regexp="^# PROVIDE: .*$"
     replace="# PROVIDE: {{ provide|join(\" \") }}"
   '
+  when: jail_config.stat.exists == true
 
 - name: Set jail requirements
   replace: '
@@ -44,6 +51,7 @@
     regexp="^# REQUIRE: .*$"
     replace="# REQUIRE: {{ hostvars[jail].requires|join(\" \") }}"
   '
+  when: jail_config.stat.exists == true
 
 - name: Set jail precedence
   replace: '
@@ -51,6 +59,7 @@
     regexp="^# BEFORE: .*$"
     replace="# BEFORE: {{ hostvars[jail].before|join(\" \") }}"
   '
+  when: jail_config.stat.exists == true
 
 
 ...
