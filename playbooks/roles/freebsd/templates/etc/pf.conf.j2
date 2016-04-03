@@ -151,3 +151,11 @@
 
   # allow anything on loopback interface
   pass on $lo_if all
+{% if open_all_ports %}
+
+  # Temporarily open every port
+  pass on $ext_if from any to any
+{% if provides_jail_host and has_jails %}
+  pass on $jails_if from any to any
+{% endif %}
+{% endif %}

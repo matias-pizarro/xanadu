@@ -3,4 +3,6 @@
 kern_securelevel: 0
 syslogd_flags: "-ss -vv"
 
+open_all_ports: false
+
 ...
