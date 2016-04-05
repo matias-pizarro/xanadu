@@ -10,6 +10,14 @@ ipv4: null
 ipv6: null
 if_dhcp: true
 
+allow_plain_smtp: false
+allow_plain_imap: false
+allow_plain_pop: false
+allow_submission: true
+allow_encrypted_smtp: true
+allow_encrypted_imap: true
+allow_encrypted_pop: true
+
 has_bsdstats: false
 has_ezjail: false
 has_http_proxied: false
@@ -26,11 +34,21 @@ has_sshd: false
 has_sshguard: false
 has_zfs: false
 
+provides_dhcp_server: false
+provides_dns_server: false
 provides_firewall: false
 provides_jail_host: false
+provides_ldap_server: false
 provides_letsencrypt: false
+provides_mail_server: false
+provides_memcached_server: false
+provides_mysql_server: false
+provides_nfs_server: false
 provides_ntp_server: false
+provides_postgresql_server: false
 provides_reverse_proxy: false
+provides_samba_server: false
+provides_whois_server: false
 
 hide_logs: true
 

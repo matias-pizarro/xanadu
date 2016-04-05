@@ -1,0 +1,9 @@
+---
+
+provides:
+  - memcached_server
+
+packages:
+  - 'databases/memcached'
+
+...

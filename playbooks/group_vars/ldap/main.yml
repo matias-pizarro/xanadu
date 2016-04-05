@@ -1,0 +1,6 @@
+---
+
+provides:
+  - ldap_server
+
+...

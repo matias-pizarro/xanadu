@@ -1,0 +1,14 @@
+---
+
+provides:
+  - mail_server
+
+allow_plain_smtp: false
+allow_plain_imap: false
+allow_plain_pop: false
+allow_submission: true
+allow_encrypted_smtp: true
+allow_encrypted_imap: true
+allow_encrypted_pop: true
+
+...

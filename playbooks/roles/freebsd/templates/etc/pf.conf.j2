@@ -36,29 +36,99 @@
     host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
 {% endif %}
 {% if provides_reverse_proxy %}
-    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].hostname }}"
+    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].ipv4.address }}"
 {% endif %}
 {% if provides_mail_server %}
-    mail_server       = "{{ hostvars[providers['mail_server']].hostname }}"
+    mail_jail           = "{{ hostvars[providers['mail_server']].ipv4.address }}"
+{% endif %}
+{% if provides_whois_server %}
+    whois_jail          = "43"
+{% endif %}
+{% if provides_dns_server %}
+    dns_jail            = "{{ hostvars[providers['dns_server']].ipv4.address }}"
+{% endif %}
+{% if provides_dhcp_server %}
+    dhcp_jail           = "{{ hostvars[providers['dhcp_server']].ipv4.address }}"
+{% endif %}
+{% if provides_samba_server %}
+    samba_jail          = "{{ hostvars[providers['samba_server']].ipv4.address }}"
+{% endif %}
+{% if provides_postgresql_server %}
+    postgresql_jail     = "{{ hostvars[providers['postgresql_server']].ipv4.address }}"
+{% endif %}
+{% if provides_mysql_server %}
+    mysql_jail          = "{{ hostvars[providers['mysql_server']].ipv4.address }}"
+{% endif %}
+{% if provides_memcached_server %}
+    memcached_jail      = "{{ hostvars[providers['memcached_server']].ipv4.address }}"
+{% endif %}
+{% if provides_ldap_server %}
+    ldap_jail           = "{{ hostvars[providers['ldap_server']].ipv4.address }}"
 {% endif %}
 
   ### Ports ###
     ssh                 = "{ {{ ansible_ssh_port }} {% if provides_jail_host and has_jails %}" $jail_ssh_ports "{% endif %}}"
     http                = "{ 80 443 }"
+{% if provides_ntp_server %}
     ntp                 = "{ 123 }"
+{% endif %}
+{% if provides_whois_server %}
     whois               = "43"
+{% endif %}
+{% if provides_dns_server %}
     dns                 = "{ 53 5353 }"
+{% endif %}
+{% if provides_dhcp_server %}
     dhcp                = "{ 67 68 }"
+{% endif %}
+{% if provides_nfs_server %}
     nfs                 = "{ 111 2049 775 776 777 }"
+{% endif %}
+{% if provides_samba_server %}
     samba_udp           = "{ 137 138 }"
     samba_tcp           = "{ 139 445 }"
-    mysql               = "3306"
+{% endif %}
+{% if provides_postgresql_server %}
     postgresql          = "5432"
-    multicast_dns       = "5353"
-    # npp               = "4045"
-    github              = "9418"
-    services_tcp        = "{ ssh, submission, domain, auth, www, pop3, > 1024 }"
-    services_tcp        = "{ ssh, submission, domain, auth }"
+{% endif %}
+{% if provides_mysql_server %}
+    mysql               = "3306"
+{% endif %}
+{% if provides_memcached_server %}
+    memcached           = "11211"
+{% endif %}
+{% if provides_ldap_server %}
+    ldap                = "389"
+{% endif %}
+{% if provides_mail_server %}
+{% if allow_plain_smtp %}
+    plain_smtp          = "25"
+{% endif %}
+    plain_imap          = "143"
+    plain_pop           = "110"
+{% if allow_submission %}
+    submission          = "587"
+{% endif %}
+{% if allow_encrypted_smtp %}
+    encrypted_smtp      = "465"
+{% endif %}
+{% if allow_encrypted_imap %}
+    encrypted_imap      = "993"
+{% endif %}
+{% if allow_encrypted_pop %}
+    encrypted_pop       = "995"
+{% endif %}
+    external_mail       = "{"{% if allow_plain_smtp %} $plain_smtp{% endif %}{% if allow_plain_imap %} $plain_imap{% endif %}{% if allow_plain_pop %} $plain_pop{% endif %}{% if allow_submission %} $submission{% endif %}{% if allow_encrypted_smtp %} $encrypted_smtp{% endif %}{% if allow_encrypted_imap %} $encrypted_imap{% endif %}{% if allow_encrypted_pop %} $encrypted_pop{% endif %} "}"
+    # postfix_policy_service
+    postfix_ps          = "7777"
+    smtpd               = "10025"
+    smtp_amavis         = "10024 10026"
+    # amavis policy delegation protocol
+    am_pdp              = "9998"
+    dcc                 = "6277"
+    sogo                = "20000"
+    internal_mail       = "{" $plain_imap $plain_pop $postfix_ps $smtpd $smtp_amavis $am_pdp $dcc $sogo "}"
+{% endif %}
 
 
 ################ Tables ###################################
@@ -103,23 +173,38 @@
 {% if provides_jail_host and has_jails %}
   nat on $ext_if from $jailnet to any      -> $host_ipv4
 {% endif %}
-
 {% if provides_reverse_proxy %}
+
   # redirect http traffic to reverse-proxy
   rdr on $ext_if proto {tcp udp} to $host_{{ ipv46 }} port $http -> $reverse_proxy
 {% endif %}
 {% if provides_mail_server %}
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $http -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 110 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 995 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 143 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 993 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 585 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 587 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 465 -> $mail_server
-  rdr on $ext_if proto {tcp udp} to $host_ipv4 port 25 -> $mail_server
+
+  # redirect mail-related traffic to mail_server
+{% if allow_plain_smtp %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $plain_smtp -> $mail_jail
+{% endif %}
+{% if allow_plain_imap %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $plain_imap -> $mail_jail
+{% endif %}
+{% if allow_plain_pop %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $plain_pop -> $mail_jail
+{% endif %}
+{% if allow_submission %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $submission -> $mail_jail
+{% endif %}
+{% if allow_encrypted_smtp %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $encrypted_smtp -> $mail_jail
+{% endif %}
+{% if allow_encrypted_imap %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $encrypted_imap -> $mail_jail
+{% endif %}
+{% if allow_encrypted_pop %}
+  rdr on $ext_if proto {tcp udp} to $host_ipv4 port $encrypted_pop -> $mail_jail
+{% endif %}
 {% endif %}
 {% if has_sshd and provides_jail_host and has_jails %}
+
   # redirect ssh to jails
   include "/etc/pf/ssh.rdr.conf"
 {% endif %}
@@ -130,46 +215,95 @@
   antispoof log quick for $lo_if
 
 {% if has_sshguard %}
+  # block incoming packets from ips in table <sshguard>
   block in log quick proto tcp from <sshguard> to any port $ssh label "ssh bruteforce"
 {% endif %}
 
-  # block all incoming packets but allow ssh, pass all outgoing tcp and udp
-  # connections and keep state, logging blocked packets.
+  # to start with, block all incoming packets
   block in log all
 
-  # nmap
-  block in log quick on $ext_if inet proto tcp from any to any flags FUP/FUP
 
-  # icmp, ping etc
+  ### ext_if ###
+
+  # allow anything outbound
+  pass out on $ext_if proto { tcp udp icmp icmp6 } all
+
+  # Allow incoming icmp
   pass in on $ext_if proto icmp all
   pass in on $ext_if proto icmp6 all
 
+  # block incoming nmap packets
+  block in log quick on $ext_if inet proto tcp from any to any flags FUP/FUP
 {% if has_sshd %}
-  pass in on $ext_if proto {tcp udp} from any to any port $ssh
-{% endif %}
 
+  # Allow incoming ssh
+  pass in on $ext_if proto tcp from any to any port $ssh flags S/SA keep state
+  pass in on $ext_if proto udp from any to any port $ssh
+{% endif %}
 {% if provides_reverse_proxy %}
-  # Allows HTTP incoming traffic to host
-  pass in on $ext_if proto {tcp udp} from any to $reverse_proxy port $http flags S/SA keep state
+
+  # Allow incoming http to reverse proxy
+  pass in on $ext_if proto tcp from any to $reverse_proxy port $http flags S/SA keep state
+  pass in on $ext_if proto udp from any to $reverse_proxy port $http
+{% endif %}
+{% if provides_mail_server %}
+
+  # Allow incoming mail-related to mail server
+  pass in on $ext_if proto tcp from any to $mail_jail port $external_mail flags S/SA keep state
+  pass in on $ext_if proto udp from any to $mail_jail port $external_mail
+{% endif %}
 {% if provides_jail_host and has_jails %}
-  pass on $jails_if proto tcp from $reverse_proxy to $jailnet port $http flags S/SA keep state
-  pass in on $jails_if proto udp from $reverse_proxy to $jailnet port $http keep state
-  pass on $jails_if proto tcp from $jailnet port $http to $reverse_proxy flags S/SA keep state
-  pass in on $jails_if proto udp from $jailnet port $http to $reverse_proxy keep state
-{% endif %}
-{% endif %}
+
+
+  ### jails_if ###
 
   # allow anything outbound
-  pass out on $ext_if proto { tcp udp icmp icmp6 } all keep state
+  pass out on $jails_if proto { tcp udp icmp icmp6 } all
+
+  # Allow incoming icmp
+  pass in on $jails_if proto icmp all
+  pass in on $jails_if proto icmp6 all
+{% if provides_reverse_proxy %}
+
+  # Allow incoming http to reverse proxy
+  pass in on $jails_if proto tcp from any to $reverse_proxy port $http flags S/SA keep state
+  pass in on $jails_if proto udp from any to $reverse_proxy port $http
+{% endif %}
+{% if provides_mysql_server %}
+
+  # Allow incoming mysql to mail server
+  pass in on $jails_if proto tcp from any to $mysql_jail port $mysql flags S/SA keep state
+  pass in on $jails_if proto udp from any to $mysql_jail port $mysql
+{% endif %}
+{% if provides_memcached_server %}
+
+  # Allow incoming memcached to mail server
+  pass in on $jails_if proto tcp from any to $memcached_jail port $memcached flags S/SA keep state
+  pass in on $jails_if proto udp from any to $memcached_jail port $memcached
+{% endif %}
+{% if provides_ldap_server %}
+
+  # Allow incoming ldap to mail server
+  pass in on $jails_if proto tcp from any to $ldap_jail port $ldap flags S/SA keep state
+  pass in on $jails_if proto udp from any to $ldap_jail port $ldap
+{% endif %}
+{% if provides_mail_server %}
+
+  # Allow incoming auxiliary mail services to mail server
+  pass in on $jails_if proto tcp from any to $mail_jail port $internal_mail flags S/SA keep state
+  pass in on $jails_if proto udp from any to $mail_jail port $internal_mail
+
+  # Allow incoming mail protocols to mail server
+  pass in on $jails_if proto tcp from any to $mail_jail port $external_mail flags S/SA keep state
+  pass in on $jails_if proto udp from any to $mail_jail port $external_mail
+{% endif %}
+{% endif %}
+
+
+  ### lo_if ###
 
   # allow anything on loopback interface
   pass on $lo_if all
-{% if provides_mail_server %}
-
-  # Allow traffic to and from mail server jail ports
-  pass on $ext_if proto {tcp udp} from any to any port { 110 995 143 993 585 587 465 25 445 53 123 }
-  pass on $jails_if proto {tcp udp} from any to any port { 110 995 143 993 585 587 465 25 10024 10025 10026 7777 389 3306 6277 20000 11211 }
-{% endif %}
 {% if open_all_ports %}
 
   # Temporarily open every port
