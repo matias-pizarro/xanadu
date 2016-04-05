@@ -60,8 +60,8 @@
     owner=0
     group=0
     mode=0644
-  #   validate='/sbin/pfctl -nf %s'
-  # notify: partial pf flush
+    validate='/sbin/pfctl -nf %s'
+  notify: partial pf flush
   tags:
     - pf
     - pf_rules
