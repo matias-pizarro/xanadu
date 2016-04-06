@@ -3,7 +3,7 @@
 ezjail_jaildir: "/usr/jails"
 ezjail_use_zfs: "{{ 'YES' if has_zfs else 'NO' }}"
 ezjail_use_zfs_for_jails: "{{ 'YES' if has_zfs else 'NO' }}"
-ezjail_jailzfs: "{{ pool_name + '/DATA/jails' if has_zfs else 'NO' }}"
+ezjail_jailzfs: "{{ pool_name + '/DATA/jails' if has_zfs else None }}"
 
 provides:
   - jail_host

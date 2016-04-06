@@ -23,6 +23,7 @@ has_ezjail: false
 has_http_proxied: false
 has_http_proxy: false
 has_ipv6: false
+has_iredmail: false
 has_letsencrypt: false
 has_linuxulator: false
 has_nginx: false
