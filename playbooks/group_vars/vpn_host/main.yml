@@ -1,0 +1,8 @@
+---
+
+vpn_if: tun0
+vpn_base_ipv4: '10.10.{type_idx}.{jail_idx}'
+vpn_ipv4_netmask: "255.255.255.0"
+vpn_ipv6_netmask: "64"
+
+...
