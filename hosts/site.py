@@ -124,6 +124,8 @@ def set_ips(host, jail):
     """Computes a jail's ip configuration based on its host's properties"""
 
     ipv4_pattern = host.vars.get('jails_base_ipv4')
+    if host.vars.get('has_vpn_host', False):
+        vpn_ipv4_pattern = host.vars.get('vpn_base_ipv4')
     host.vars['lo_base_ip'] = ipv4_pattern.format(type_idx=1, jail_idx=1)
     if host.vars.get('has_ipv6', False):
         ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
@@ -142,6 +144,12 @@ def set_ips(host, jail):
             'interface': host.vars['jails_if'],
             'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
             'netmask': host.vars['jails_ipv6_netmask'],
+        }
+    if host.vars.get('has_vpn_host', False):
+        jail.vars['vpn_ipv4'] = {
+            'interface': host.vars['vpn_if'],
+            'address': vpn_ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+            'netmask': host.vars['vpn_ipv4_netmask'],
         }
     jail.vars['ansible_ssh_port'] = port
 
@@ -189,7 +197,7 @@ def set_packages(host):
 
 def set_root_pubkeys(host):
     """Aggregates the hosts root user authorized keys into a string
-    that can be used with the authorized_keys modules  when creating a jail"""
+    that can be used with the authorized_keys modules when creating a jail"""
 
     pubkeys = ""
     for pubkey in host.vars['users']['root']['pubkeys']:
@@ -204,18 +212,44 @@ def update_variables(inventory):
 
     http_proxied = inventory.get_group('http_proxied')
     if http_proxied:
-        proxied_list = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
+        proxied_sites = []
+        proxy_configs = {}
+        all_proxy_configs = ['default.conf']
+        proxied_domains = {}
+        proxied_jails = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
+        for host in http_proxied.get_hosts():
+            proxy_configs[host.vars['hostname']] = ['default.conf']
+            proxied_domains[host.vars['hostname']] = []
+            for site in host.vars['sites']:
+                proxied_domains[host.vars['hostname']] += site['fqdns'].split()
+                proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
+                all_proxy_configs.append('{}.conf'.format(site['name']))
+                site['jail'] = host.vars['hostname']
+                site['jail_name'] = host.vars['jail_name']
+                site['ipv4'] = host.vars['ipv4']['address']  # should be vpn_ipv4 when vpn is set
+                site['deny_iframe'] = site['deny_iframe'] if 'deny_iframe' in site else True
+                proxied_sites.append(site)
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
-        if 'providers' in host.vars and 'reverse_proxy' in host.vars['providers']:
-            rproxy_provider = inventory.get_host(host.vars['providers']['reverse_proxy'])
-            letsencrypt_provider = inventory.get_host(host.vars['providers']['letsencrypt'])
-            if letsencrypt_provider.vars['jail_host'] == rproxy_provider.vars['jail_host']:
-                rproxy_provider.set_variable('letsencrypt_provider', letsencrypt_provider.vars['ipv4']['address'])
-            else:
-                rproxy_provider.set_variable('letsencrypt_provider', letsencrypt_provider.vars['hostname'])
-            rproxy_provider.set_variable('proxied_list', proxied_list)
-
+        host.set_variable('proxied_sites', proxied_domains)
+        host.set_variable('proxy_configs', proxy_configs)
+        host.set_variable('all_proxy_configs', all_proxy_configs)
+        host.set_variable('proxied_domains', proxied_domains)
+        if 'providers' in host.vars:
+            jails_list = host.vars.get('jails', [])
+            for jail_name in jails_list:
+                jail = inventory.get_host(jail_name)
+                jail.vars['providers'] = host.vars['providers']
+                jail.set_variable('proxied_sites', proxied_sites)
+                jail.set_variable('proxy_configs', proxy_configs)
+                jail.set_variable('all_proxy_configs', all_proxy_configs)
+                jail.set_variable('proxied_domains', proxied_domains)
+                for provision, provider_name in host.vars['providers'].iteritems():
+                    provider = inventory.get_host(provider_name)
+                    if provider == host or provider.vars['jail_host'] == jail.vars['jail_host']:
+                        jail.set_variable('{}_provider'.format(provision), provider.vars['ipv4']['address'])
+                    else:
+                        jail.set_variable('{}_provider'.format(provision), provider.vars['vpn_ipv4']['address'])
 
 def ansible_output(inventory):
     """Groups inventory data according to the structure Ansible expects"""
@@ -237,16 +271,20 @@ def debug_output(inventory):
         groups = [group.name for group in host.get_groups()]
         groups.sort()
         _vars = combine_vars(host.get_group_vars(), host.vars)
-        output['hosts'][host.name] = {'groups': groups, 'vars': _vars}
+        separator = '{} host -- {} --'.format("---" * 30, host.name)
+        output['hosts'][host.name] = {'...': separator, 'groups': groups, 'vars': _vars}
     for group in sorted(inventory.groups.values(), key=lambda x: x.name):
         hosts = [host.name for host in group.get_hosts()]
         hosts.sort()
         _vars = group.get_vars()
-        output['groups'][group.name] = {'hosts': hosts, 'vars': _vars}
+        separator = '{} group -- {} --'.format("---" * 30, group.name)
+        output['groups'][group.name] = {'...': separator, 'hosts': hosts, 'vars': _vars}
     return json.dumps(output, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 def main():
+    if DEBUG:
+        print('=' * 160)
     hosts_list = get_hosts_list()
 
     loader = DataLoader()
@@ -268,10 +306,13 @@ def main():
     update_vars(inventory)
     update_variables(inventory)
     if DEBUG:
+        print('=' * 80)
         output = debug_output(inventory)
     else:
         output = ansible_output(inventory)
     print(output)
+    if DEBUG:
+        print('=' * 160)
 
 
 if __name__ == "__main__":
