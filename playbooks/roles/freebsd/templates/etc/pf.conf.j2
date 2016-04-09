@@ -62,8 +62,8 @@
 {% if provides_memcached_server %}
     memcached_jail      = "{{ hostvars[providers['memcached_server']].ipv4.address }}"
 {% endif %}
-{% if provides_ldap_server %}
-    ldap_jail           = "{{ hostvars[providers['ldap_server']].ipv4.address }}"
+{% if provides_slapd_server %}
+    slapd_jail          = "{{ hostvars[providers['slapd_server']].ipv4.address }}"
 {% endif %}
 
   ### Ports ###
@@ -97,8 +97,8 @@
 {% if provides_memcached_server %}
     memcached           = "11211"
 {% endif %}
-{% if provides_ldap_server %}
-    ldap                = "389"
+{% if provides_slapd_server %}
+    slapd               = "389"
 {% endif %}
 {% if provides_mail_server %}
 {% if allow_plain_smtp %}
@@ -265,9 +265,9 @@
   pass in on $jails_if proto icmp6 all
 {% if provides_reverse_proxy %}
 
-  # Allow incoming http to reverse proxy
-  pass in on $jails_if proto tcp from any to $reverse_proxy port $http flags S/SA keep state
-  pass in on $jails_if proto udp from any to $reverse_proxy port $http
+  # Allow incoming http to allowed jails
+  pass in on $jails_if proto tcp from any to any port $http flags S/SA keep state
+  pass in on $jails_if proto udp from any to any port $http
 {% endif %}
 {% if provides_mysql_server %}
 
@@ -281,11 +281,11 @@
   pass in on $jails_if proto tcp from any to $memcached_jail port $memcached flags S/SA keep state
   pass in on $jails_if proto udp from any to $memcached_jail port $memcached
 {% endif %}
-{% if provides_ldap_server %}
+{% if provides_slapd_server %}
 
-  # Allow incoming ldap to mail server
-  pass in on $jails_if proto tcp from any to $ldap_jail port $ldap flags S/SA keep state
-  pass in on $jails_if proto udp from any to $ldap_jail port $ldap
+  # Allow incoming slapd to mail server
+  pass in on $jails_if proto tcp from any to $slapd_jail port $slapd flags S/SA keep state
+  pass in on $jails_if proto udp from any to $slapd_jail port $slapd
 {% endif %}
 {% if provides_mail_server %}
 

@@ -1,0 +1,66 @@
+
+user www www;
+worker_processes  {{ nginx_http_config_worker_processes }};
+
+pid /var/run/nginx.pid;
+
+worker_rlimit_nofile  {{ nginx_http_config_worker_rlimit_nofile }};
+
+events {
+    worker_connections  {{ nginx_http_config_worker_connections }};
+}
+
+http {
+    # Base
+    #######
+    include       /usr/local/etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        {{ nginx_http_config_sendfile }};
+    tcp_nopush      {{ nginx_http_config_tcp_nopush }};
+    tcp_nodelay     {{ nginx_http_config_tcp_nodelay }};
+
+    keepalive_timeout  {{ nginx_http_config_keepalive_timeout }};
+
+    server_names_hash_max_size     {{ nginx_http_config_server_names_hash_max_size }};
+    server_names_hash_bucket_size  {{ nginx_http_config_server_names_hash_bucket_size }};
+    types_hash_max_size            {{ nginx_http_config_types_hash_max_size }};
+    client_max_body_size           {{ nginx_http_config_client_max_body_size }};
+
+    # hide Nginx version number
+    server_tokens  {{ nginx_http_config_server_tokens }};
+
+    # Logs
+    #######
+{% if provides_reverse_proxy %}
+    log_format  upstream  '$remote_addr - $remote_user [$time_local] - $server_name '
+                          '$status to: $upstream_addr: $request upstream_response_time '
+                          '$upstream_response_time msec $msec request_time $request_time';
+    access_log  /var/log/nginx/access.log upstream;
+{% else %}
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /var/log/nginx/access.log main;
+{% endif %}
+    error_log   /var/log/nginx/error.log;
+
+    # Gzip
+    #######
+{% if provides_reverse_proxy %}
+    gzip               {{ nginx_http_config_gzip }};
+    gzip_disable       {{ nginx_http_config_gzip_disable }};
+    gzip_vary          {{ nginx_http_config_gzip_vary }};
+    gzip_proxied       {{ nginx_http_config_gzip_proxied }};
+    gzip_comp_level    {{ nginx_http_config_gzip_comp_level }};
+    gzip_buffers       {{ nginx_http_config_gzip_buffers }};
+    gzip_http_version  {{ nginx_http_config_gzip_http_version }};
+    gzip_types         {{ nginx_http_config_gzip_types }};
+{% else %}
+    gzip  off;
+{% endif %}
+
+    # Sites
+    ########
+    include /usr/local/etc/nginx/sites-enabled/*.conf;
+}

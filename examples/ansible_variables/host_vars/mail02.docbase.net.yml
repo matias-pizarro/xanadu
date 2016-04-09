@@ -10,20 +10,48 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: iredmail
-jail_index: 9
+jail_name: mail
+jail_index: 10
 jail_type: service
 jail_autorun: true
 
-server_name: mail02.docbase.net
-server_socket: web # or unix
+nginx_http_config_worker_processes: 2
+nginx_http_config_keepalive_timeout: 600
+
+sites:
+  - name: mail
+    fqdns: mail02.docbase.net
+    deny_iframe: false
+    upstreams:
+      - name: php_workers
+        servers:
+          - unix:/var/run/php-fpm.socket
+        keepalive: 600
+    locations:
+      - base: /
+        root: /usr/local/www/apache24/data
+    includes:
+      - /usr/local/etc/nginx/templates/roundcube.tmpl
+      - /usr/local/etc/nginx/templates/php-catchall.tmpl
+      - /usr/local/etc/nginx/templates/iredadmin.tmpl
+      - /usr/local/etc/nginx/templates/sogo.tmpl
+      - /usr/local/etc/nginx/templates/misc.tmpl
 
 features:
   - http_proxied
   - iredmail
-  - mail_server
+  - slapd
+  - uwsgi
+  - php
+  - mail
+  - memcached
+  - mysql
+  - nginx
   - sshd
+  - sogo
 
 requires: [reverse_proxy, letsencrypt]
+
+# temporary settings
 
 ...

@@ -1,0 +1,35 @@
+{% if 'upstreams' in item %}
+{% for upstream in item.upstreams %}
+upstream {{ upstream.name }} {
+{% if 'servers' in upstream %}
+{% for server in upstream.servers %}
+    server     {{ server }};
+{% endfor %}
+{% endif %}
+{% if 'keepalive' in upstream %}
+    keepalive  {{ upstream.keepalive }};
+{% endif %}
+}
+
+{% endfor %}
+{% endif %}
+server {
+    listen       localhost:80;
+    server_name  {{ item.fqdns }};
+
+{% if 'locations' in item %}
+{% for location in item.locations %}
+    location {{ location.base }} {
+{% if 'root' in location %}
+        root {{ location.root }};
+{% endif %}
+    }
+{% endfor %}
+{% endif %}
+{% if 'includes' in item %}
+
+{% for include in item.includes %}
+    include {{ include }};
+{% endfor %}
+{% endif %}
+}

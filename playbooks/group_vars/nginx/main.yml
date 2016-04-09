@@ -6,4 +6,25 @@ provides:
 packages:
   - 'www/nginx'
 
+nginx_http_config_worker_processes: "auto"
+nginx_http_config_worker_rlimit_nofile: 1024
+nginx_http_config_worker_connections: 1024
+nginx_http_config_sendfile: "on"
+nginx_http_config_tcp_nopush: "on"
+nginx_http_config_tcp_nodelay: "on"
+nginx_http_config_keepalive_timeout: 60
+nginx_http_config_server_names_hash_max_size: 512
+nginx_http_config_server_names_hash_bucket_size: 32
+nginx_http_config_types_hash_max_size: 2048
+nginx_http_config_client_max_body_size: "50m"
+nginx_http_config_server_tokens: "off"
+nginx_http_config_gzip: "on"
+nginx_http_config_gzip_disable: "msie6"
+nginx_http_config_gzip_vary: "on"
+nginx_http_config_gzip_proxied: "any"
+nginx_http_config_gzip_comp_level: 6
+nginx_http_config_gzip_buffers: "16 8k"
+nginx_http_config_gzip_http_version: "1.1"
+nginx_http_config_gzip_types: "text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript"
+
 ...

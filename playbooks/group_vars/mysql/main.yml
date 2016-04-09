@@ -3,7 +3,7 @@
 provides:
   - mysql_server
 
-packages:
-  - 'databases/percona55-server'
+# packages:
+#   - 'databases/percona55-server'
 
 ...

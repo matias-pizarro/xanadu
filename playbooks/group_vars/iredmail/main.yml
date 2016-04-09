@@ -3,4 +3,8 @@
 provides:
   - mail_server
 
+uwsgi_profiles:
+  - name: "iredmail"
+    flags: "--ini /usr/local/etc/uwsgi/iredadmin.ini"
+
 ...

@@ -1,6 +1,6 @@
 ---
 
 provides:
-  - ldap_server
+  - slapd_server
 
 ...

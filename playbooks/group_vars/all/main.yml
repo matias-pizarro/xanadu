@@ -8,9 +8,10 @@ is_jail: False
 jails: []
 ipv4: null
 ipv6: null
+vpn_ipv4: null
 if_dhcp: true
 
-allow_plain_smtp: false
+allow_plain_smtp: true
 allow_plain_imap: false
 allow_plain_pop: false
 allow_submission: true
@@ -30,16 +31,21 @@ has_nginx: false
 has_nginx_proxy: false
 has_openntpd: false
 has_pf: false
+has_php: false
+has_uwsgi: false
 has_smartd: false
+has_memcached: false
+has_sogo: false
 has_sshd: false
 has_sshguard: false
+has_vpn: false
 has_zfs: false
 
 provides_dhcp_server: false
 provides_dns_server: false
 provides_firewall: false
 provides_jail_host: false
-provides_ldap_server: false
+provides_slapd_server: false
 provides_letsencrypt: false
 provides_mail_server: false
 provides_memcached_server: false

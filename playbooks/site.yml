@@ -20,12 +20,11 @@
   roles:
     - freebsd
 
-- hosts: nginx_proxy
+- hosts: nginx_proxy, nginx
   become: yes
   gather_facts: yes
   roles:
-    - nginx_proxy
-    - role: jdauphant.nginx
-  tags: nginx_proxy
+    - nginx
+  tags: nginx
 
 ...

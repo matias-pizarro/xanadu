@@ -8,7 +8,7 @@ loopback_if: lo0
 
 pkg_repos:
   # - server_nox_local
-  - server_nox
+  # - server_nox
   - FreeBSD.quarterly
 
 packages:
@@ -29,4 +29,5 @@ net_inet_ip_sourceroute: 0
 net_inet_ip_accept_sourceroute: 0
 net_inet_icmp_bmcastecho: 0
 
+nginx_binary_name: /usr/local/sbin/nginx
 ...

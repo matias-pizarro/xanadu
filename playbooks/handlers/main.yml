@@ -35,23 +35,36 @@
   when: "{{ has_ezjail and jail_name is defined }}"
 
 # nginx
-- name: check nginx configuration
-  shell: nginx -t
-  register: result
-  changed_when: "result.rc != 0"
-  always_run: yes
-
 - name: start nginx
   shell: service nginx start
   notify: check nginx configuration
 
 - name: restart nginx
-  shell: service nginx restart
-  notify: check nginx configuration
+  debug: msg="checking config first"
+  changed_when: True
+  notify:
+    - check nginx configuration
+    - restart nginx - after config check
 
 - name: reload nginx
-  shell: service nginx reload
-  notify: check nginx configuration
+  debug: msg="checking config first"
+  changed_when: True
+  notify:
+    - check nginx configuration
+    - reload nginx - after config check
+
+- name: check nginx configuration
+  shell: "{{ nginx_binary_name }} -t -c %s"
+  register: result
+  changed_when: "result.rc != 0"
+  always_run: yes
+  when: nginx_installation_type in nginx_installation_types_using_service
+
+- name: restart nginx - after config check
+  service: name={{ nginx_service_name }} state=restarted
+
+- name: reload nginx - after config check
+  service: name={{ nginx_service_name }} state=reloaded
 
 # pf
 - name: parse pf rules

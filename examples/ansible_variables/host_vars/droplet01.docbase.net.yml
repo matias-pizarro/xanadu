@@ -1,13 +1,16 @@
 ---
 
+# permanent settings
 hostname: droplet01.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
+freebsd_version: "10.2"
 hosting: digital_ocean
 jails:
   - rproxy02.docbase.net
   - letsencrypt02.docbase.net
   - mail02.docbase.net
+  - webjail02.docbase.net
 
 features:
   - bsdstats
@@ -47,5 +50,7 @@ ipv6:
   gateway: AAAA:BBBB:0000:0000:0000:0000:0000:0001
 
 ansible_ssh_port: 123
+
+# temporary settings
 
 ...

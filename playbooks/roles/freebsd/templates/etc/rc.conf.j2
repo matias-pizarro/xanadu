@@ -129,14 +129,34 @@ bsdstats_enable="YES"
 # nginx
 nginx_enable="YES"
 {% endif %}
+{% if has_php %}
+
+# php
+php_fpm_enable="YES"
+{% endif %}
+{% if has_uwsgi %}
+
+# uwsgi
+uwsgi_enable="YES"
+{% if uwsgi_profiles %}
+uwsgi_profiles="{% for profile in uwsgi_profiles %}{{ profile.name }}{% endfor %}"
+{% for profile in uwsgi_profiles %}
+uwsgi_{{ profile.name }}_flags="{{ profile.flags }}"
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if has_memcached %}
+
+# memcached
+memcached_enable="YES"
+{% endif %}
+{% if has_sogo %}
+
+# sogo
+sogod_enable="YES"
+{% endif %}
 {% if has_iredmail %}
 
-# crude iredmail config, will be refined later
-nginx_enable="YES"
-php_fpm_enable="YES"
-uwsgi_enable="YES"
-uwsgi_profiles="iredadmin"
-uwsgi_iredadmin_flags="--ini /usr/local/etc/uwsgi/iredadmin.ini"
 slapd_enable="YES"
 slapd_flags="-h 'ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/'"
 slapd_sockets="/var/run/openldap/ldapi"
@@ -155,6 +175,4 @@ amavisd_pidfile="/var/amavis/amavisd.pid"
 amavis_milter_enable="NO"
 amavis_p0fanalyzer_enable="NO"
 iredapd_enable="YES"
-memcached_enable="YES"
-sogod_enable="YES"
 {% endif %}
