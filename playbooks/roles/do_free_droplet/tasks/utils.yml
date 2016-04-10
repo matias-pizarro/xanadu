@@ -1,7 +1,7 @@
 ---
 
 - name: install python
-  raw: env ASSUME_ALWAYS_YES=YES pkg install python bash-static
+  raw: env ASSUME_ALWAYS_YES=YES pkg install python bash
   tags: install_python
 
 ...
