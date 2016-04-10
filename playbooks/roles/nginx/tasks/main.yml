@@ -5,6 +5,28 @@
 # redirect let's encrypt traffic to letsencrypt jail
 # redirect all remaining http traffic to https
 
+- name: Create nginx log directory
+  file:
+    path={{ item.path }}
+    state=directory
+    owner=80
+    group=80
+    mode=0755
+  when: "{{ nginx_http_config_logs is defined }}"
+  with_items: "{{ nginx_http_config_logs }}"
+  tags: nginx_config
+
+- name: Create nginx logs
+  file:
+    path={{ item.path }}/{{ item.filename }}
+    state=file
+    owner=80
+    group=80
+    mode=0644
+  when: "{{ nginx_http_config_logs is defined }}"
+  with_items: "{{ nginx_http_config_logs }}"
+  tags: nginx_config
+
 - name: Create /usr/local/etc/nginx/sites-available directory
   file:
     path=/usr/local/etc/nginx/sites-available
