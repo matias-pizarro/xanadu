@@ -191,3 +191,15 @@ modify file flags (make sure you are in kern level -1)
     chflags -R nosunlink /usr/jails/basejail
     chflags -Rf nouarch /usr/jails/basejail
     chflags -Rf noschg /usr/jails/basejail
+
+
+
+`drill <https://www.freebsd.org/cgi/man.cgi?query=drill&sektion=1>`_
+=======
+
+Do a reverse lookup on address 123.231.123.231
+
+    drill -x 123.231.123.231
+
+
+
