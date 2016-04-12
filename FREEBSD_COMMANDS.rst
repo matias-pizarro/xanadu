@@ -203,3 +203,9 @@ Do a reverse lookup on address 123.231.123.231
 
 
 
+ZFS backup
+==========
+
+send a backup of 'tank' on hetzner01 to a backup sub-filesystem on hetzner02
+
+    zfs send -R tank@backup | ssh hetzner02.docbase.net zfs receive -dvu tank/BACKUP/hetzner01
