@@ -34,6 +34,8 @@
 - include: pf.yml
   when: has_pf
 
+- include: storage.yml
+
 - include: jails/main.yml
   vars:
     jail: "{{ item }}"

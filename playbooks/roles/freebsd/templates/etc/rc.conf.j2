@@ -106,7 +106,7 @@ ntpd_enable="NO"
 openntpd_enable="YES"
 openntpd_flags="{{ openntpd_flags }}"
 {% endif %}
-{% if has_smartd %}
+{% if smartd_params|length %}
 
 # S.M.A.R.T. monitoring (sysutils/smartmontools)
 smartd_enable="YES"

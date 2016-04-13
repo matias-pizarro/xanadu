@@ -1,0 +1,9 @@
+{% if smartd_params|length > 1 %}
+{% for params in smartd_params %}
+{{ params }}
+{% endfor %}
+{% else %}
+{% for disk in disks %}
+{{ disk }} {{ smartd_params[0] }}
+{% endfor %}
+{% endif %}

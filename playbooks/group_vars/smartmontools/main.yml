@@ -1,0 +1,9 @@
+---
+
+provides:
+  - smartd
+
+packages:
+  - 'sysutils/smartmontools'
+
+...

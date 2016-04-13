@@ -6,6 +6,11 @@ timezone: Europe/Amsterdam
 os: freebsd
 freebsd_version: "10.2"
 hosting: digital_ocean
+disks:
+  - /dev/ada0
+  - /dev/ada1
+  - /dev/ada2
+  - /dev/ada3
 jails:
   - rproxy02.docbase.net
   - letsencrypt02.docbase.net
@@ -23,6 +28,12 @@ features:
   - sshd
   - sshguard
   # - zfs
+
+smartd_params:
+  - "/dev/ada0 -a -o on -S on -s (S/../.././02|L/../../6/03)"
+  - "/dev/ada1 -a -o on -S on -s (S/../.././03|L/../../7/03)"
+  - "/dev/ada2 -a -o on -S on -s (S/../.././04|L/../../6/03)"
+  - "/dev/ada3 -a -o on -S on -s (S/../.././05|L/../../7/03)"
 
 installed_users:
   - "{{ users.root }}"

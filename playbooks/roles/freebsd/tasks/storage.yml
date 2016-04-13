@@ -1,0 +1,15 @@
+---
+
+- name: configure smartd with per-disk params
+  template: src=usr/local/etc/smartd.conf.j2
+    dest=/usr/local/etc/smartd.conf
+    owner=0
+    group=0
+    mode=0640
+  when: smartd_params is defined and smartd_params|length > 0
+  notify: restart smartd
+  tags:
+    - smartd
+    - storage
+
+...
