@@ -227,7 +227,6 @@ def update_variables(inventory):
                 site['jail'] = host.vars['hostname']
                 site['jail_name'] = host.vars['jail_name']
                 site['ipv4'] = host.vars['ipv4']['address']  # should be vpn_ipv4 when vpn is set
-                site['deny_iframe'] = site['deny_iframe'] if 'deny_iframe' in site else True
                 proxied_sites.append(site)
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():

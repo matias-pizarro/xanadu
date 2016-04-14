@@ -50,10 +50,12 @@ server {
 
     # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
-{% if item.deny_iframe %}
+{% if item.allow_iframe is not defined or not item.allow_iframe %}
     add_header X-Frame-Options DENY;
 {% endif %}
+{% if item.content_nosniff is defined and item.content_nosniff %}
     add_header X-Content-Type-Options nosniff;
+{% endif %}
 
     location / {
          proxy_set_header   X-Real-IP $remote_addr;

@@ -21,7 +21,6 @@ nginx_http_config_keepalive_timeout: 600
 sites:
   - name: mail
     fqdns: mail02.docbase.net
-    deny_iframe: false
     upstreams:
       - name: php_workers
         servers:
