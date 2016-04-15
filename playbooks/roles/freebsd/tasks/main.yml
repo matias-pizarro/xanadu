@@ -35,6 +35,7 @@
   when: has_pf
 
 - include: storage.yml
+  when: disks is defined and disks|length > 0
 
 - include: jails/main.yml
   vars:

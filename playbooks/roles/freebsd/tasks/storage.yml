@@ -12,4 +12,32 @@
     - smartd
     - storage
 
+- name: retrieve drive data
+  shell: "camcontrol identify {{ item | quote }}"
+  with_items: "{{ disks }}"
+  register: drive_data
+  changed_when: false
+  no_log: true
+  tags:
+    - storage
+    - backup_storage_data
+
+- name: store drive data locally
+  local_action: 'file state=directory path="./host_data/{{ hostname }}/{{ item.item[5:] }}" follow=true'
+  with_items: '{{ drive_data.results }}'
+  when: drive_data is defined
+  no_log: true
+  tags:
+    - storage
+    - backup_storage_data
+
+- name: store drive data locally
+  local_action: 'file state=file content="{{ item.stdout_lines|join(\"\\n\") }}" path="./host_data/{{ hostname }}/{{ item.item[5:] }}/drive_data.txt" follow=true'
+  with_items: '{{ drive_data.results }}'
+  when: drive_data is defined
+  no_log: true
+  tags:
+    - storage
+    - backup_storage_data
+
 ...
