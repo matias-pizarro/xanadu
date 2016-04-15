@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+echo STORAGE DATA
+echo ============
+echo ''
+{% for disk in disks %}
+echo '{{ disk }} [camcontrol identify {{ disk }}] '
+echo '---------'
+echo ''
+camcontrol identify {{ disk }}
+echo ''
+echo ''
+{% endfor %}
+echo ''
+echo ''
+echo PARTITIONS
+echo ==========
+echo ''
+echo 'type'  [gpart show]
+echo '----'
+echo ''
+gpart show
+echo ''
+echo ''
+echo 'label'  [gpart show -l]
+echo '-----'
+echo ''
+gpart show -l
+echo ''
+echo ''
+echo ''
+echo ZPOOLS  [zpool status]
+echo ======
+echo ''
+zpool status
+echo ''
+echo ''
+echo ''
+echo ZFS FILESYSTEMS  [zfs list -o name,mountpoint,quota,copies,setuid,exec,compress,mounted,used,available,referenced]
+echo ===============
+echo ''
+zfs list -o name,mountpoint,quota,copies,setuid,exec,compress,mounted,used,available,referenced

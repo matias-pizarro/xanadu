@@ -9,35 +9,46 @@
   when: smartd_params is defined and smartd_params|length > 0
   notify: restart smartd
   tags:
+    - storage
     - smartd
-    - storage
 
-- name: retrieve drive data
-  shell: "camcontrol identify {{ item | quote }}"
-  with_items: "{{ disks }}"
-  register: drive_data
+- name: check whether ../ansible_variables/host_data/{{ hostname }}_storage_data.txt exists
+  local_action: 'stat path=../ansible_variables/host_data/{{ hostname }}_storage_data.txt'
+  always_run: yes
+  register: storage_data_file
+  tags:
+    - storage
+    - collect_storage_data
+
+- name: upload collect_storage_data.sh script
+  template: src=usr/local/share/collect_storage_data.sh.j2
+    dest=/usr/local/share/collect_storage_data.sh
+    owner=0
+    group=0
+    mode=0755
+  when: storage_data_file.stat.exists == false
+  tags:
+    - storage
+    - collect_storage_data
+
+- name: collect storage data
+  shell: "/usr/local/share/collect_storage_data.sh > /tmp/{{ hostname }}_storage_data.txt"
   changed_when: false
-  no_log: true
+  when: storage_data_file.stat.exists == false
   tags:
     - storage
-    - backup_storage_data
+    - collect_storage_data
 
-- name: store drive data locally
-  local_action: 'file state=directory path="./host_data/{{ hostname }}/{{ item.item[5:] }}" follow=true'
-  with_items: '{{ drive_data.results }}'
-  when: drive_data is defined
-  no_log: true
+- name: retrieve collected storage data
+  synchronize:
+    src=/tmp/{{ hostname }}_storage_data.txt
+    dest=../../ansible_variables/host_data/{{ hostname }}_storage_data.txt
+    mode=pull
+    checksum=yes
+    rsync_path="/usr/local/bin/rsync"
+  when: storage_data_file.stat.exists == false
   tags:
     - storage
-    - backup_storage_data
-
-- name: store drive data locally
-  local_action: 'file state=file content="{{ item.stdout_lines|join(\"\\n\") }}" path="./host_data/{{ hostname }}/{{ item.item[5:] }}/drive_data.txt" follow=true'
-  with_items: '{{ drive_data.results }}'
-  when: drive_data is defined
-  no_log: true
-  tags:
-    - storage
-    - backup_storage_data
+    - collect_storage_data
 
 ...
