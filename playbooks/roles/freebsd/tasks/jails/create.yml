@@ -6,7 +6,7 @@
   changed_when: false
   always_run: yes
 
-- name: check whether directory /usr/jails/--jail_name-- exists
+- name: check whether directory /usr/jails/{{ jail_name }} exists
   stat: path=/usr/jails/{{ jail_name }}
   register: jail_directory_exists
 

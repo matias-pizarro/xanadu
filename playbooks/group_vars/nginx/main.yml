@@ -18,6 +18,7 @@ nginx_http_config_logs:
   - type: error_log
     path: /var/log/nginx
     filename: error.log
+
 nginx_http_config_worker_processes: "auto"
 nginx_http_config_worker_rlimit_nofile: 1024
 nginx_http_config_worker_connections: 1024

@@ -16,6 +16,7 @@ packages:
   - 'lang/python2' # so Ansible can work
   - 'net/rsync'
   - 'shells/bash'
+  - 'sysutils/htop'
   - 'sysutils/lsof'
   - 'sysutils/ncdu'
   - 'sysutils/pftop'
