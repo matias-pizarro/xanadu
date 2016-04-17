@@ -105,6 +105,7 @@
     name={{ item }}
     state=present
   with_items: "{{ packages }}"
+  when: install_pkgs
   tags:
     - pkg
     - pkg_install
@@ -112,13 +113,13 @@
 - name: check whether /usr/local/bin/bsdstats-send exists
   stat:
     path=/usr/local/bin/bsdstats-send
-  when: has_bsdstats
+  when: has_bsdstats and install_pkgs
   register: bsdstats_send
   tags: install_bsdstats
 
 - name: install bsdstats
   shell: yes '' | /usr/sbin/pkg install -y bsdstats
-  when: has_bsdstats and bsdstats_send.stat.exists == false
+  when: has_bsdstats and bsdstats_send.stat.exists == false and install_pkgs
   tags: install_bsdstats
 
 ...

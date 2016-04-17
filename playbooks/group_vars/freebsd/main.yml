@@ -21,6 +21,8 @@ packages:
   - 'sysutils/ncdu'
   - 'sysutils/pftop'
 
+install_pkgs: yes
+
 security_bsd_see_other_uids: 0
 net_inet_tcp_blackhole: 2
 net_inet_udp_blackhole: 1
