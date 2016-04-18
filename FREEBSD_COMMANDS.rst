@@ -34,6 +34,15 @@ Tx/Rx for one of icmp, icmp6, ip, ip6, tcp (in example): ::
 
 
 
+`gstat <https://www.freebsd.org/cgi/man.cgi?gstat>`_
+======
+
+print statistics about GEOM disks: ::
+
+    gstat
+
+
+
 `iostat <https://www.freebsd.org/cgi/man.cgi?iostat>`_
 ======
 
