@@ -19,7 +19,7 @@
 - name: Create nginx logs
   file:
     path={{ item.path }}/{{ item.filename }}
-    state=file
+    state=touch
     owner=80
     group=80
     mode=0644
