@@ -33,4 +33,5 @@ net_inet_ip_accept_sourceroute: 0
 net_inet_icmp_bmcastecho: 0
 
 nginx_binary_name: /usr/local/sbin/nginx
+nginx_service_name: "nginx"
 ...

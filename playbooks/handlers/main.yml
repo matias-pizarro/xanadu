@@ -54,10 +54,9 @@
     - reload nginx - after config check
 
 - name: check nginx configuration
-  shell: "{{ nginx_binary_name }} -t -c %s"
+  shell: "{{ nginx_binary_name }} -t"
   register: result
   changed_when: "result.rc != 0"
-  always_run: yes
 
 - name: restart nginx - after config check
   service: name={{ nginx_service_name }} state=restarted
