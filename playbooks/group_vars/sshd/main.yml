@@ -1,6 +1,6 @@
 ---
 
-sshd_LoginGraceTime: 10s
+sshd_LoginGraceTime: 2s
 sshd_MaxAuthTries: 2
 sshd_PasswordAuthentication: 'no'
 sshd_PermitEmptyPasswords: 'no'
