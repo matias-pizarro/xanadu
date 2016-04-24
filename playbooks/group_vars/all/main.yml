@@ -9,7 +9,7 @@ jails: []
 ipv4: null
 ipv6: null
 vpn_ipv4: null
-if_dhcp: true
+if_dhcp: false
 smartd_params: []
 
 allow_plain_smtp: true
