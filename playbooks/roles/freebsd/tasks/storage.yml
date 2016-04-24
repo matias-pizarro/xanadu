@@ -27,6 +27,7 @@
     group=0
     mode=0755
   when: storage_data_file.stat.exists == false
+  always_run: yes
   tags:
     - storage
     - collect_storage_data
@@ -35,6 +36,7 @@
   shell: "/usr/local/share/collect_storage_data.sh > /tmp/{{ hostname }}_storage_data.txt"
   changed_when: false
   when: storage_data_file.stat.exists == false
+  always_run: yes
   tags:
     - storage
     - collect_storage_data
@@ -47,6 +49,7 @@
     checksum=yes
     rsync_path="/usr/local/bin/rsync"
   when: storage_data_file.stat.exists == false
+  always_run: yes
   tags:
     - storage
     - collect_storage_data
