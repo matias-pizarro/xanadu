@@ -21,9 +21,13 @@
 
 Port {{ ssh_port }}
 #AddressFamily any
-ListenAddress {{ ipv4.address }}
+{% for ip in ext_if.ipv4s %}
+ListenAddress {{ ip.address }}
+{% endfor%}
 {% if has_ipv6 %}
-ListenAddress {{ ipv6.address }}
+{% for ip in ext_if.ipv6s %}
+ListenAddress {{ ip.address }}
+{% endfor%}
 {% endif %}
 
 # The default requires explicit activation of protocol 1

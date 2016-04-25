@@ -123,31 +123,30 @@ def get_group(inventory, group_name):
 def set_ips(host, jail):
     """Computes a jail's ip configuration based on its host's properties"""
 
-    ipv4_pattern = host.vars.get('jails_base_ipv4')
-    if host.vars.get('has_vpn_host', False):
-        vpn_ipv4_pattern = host.vars.get('vpn_base_ipv4')
-    host.vars['lo_base_ip'] = ipv4_pattern.format(type_idx=1, jail_idx=1)
-    if host.vars.get('has_ipv6', False):
-        ipv6_pattern = ':'.join(host.vars.get('ipv6')['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
     type_idx = jail.vars['type_index'] = 1 if jail.vars['jail_type'] == 'service' else 2
     jail_idx = jail.vars['jail_index']
     port = str((type_idx + 3) * 1000 + jail_idx)
     type_idx = str(type_idx)
     jail_idx = str(jail_idx)
-    jail.vars['ipv4'] = {
-        'interface': host.vars['jails_if'],
-        'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
-        'netmask': host.vars['jails_ipv4_netmask'],
+    ipv4_pattern = host.vars.get('jails_base_ipv4')
+    jail.vars['ext_if'] = {
+        'name': host.vars['jails_if'],
+        'ipv4s': [{
+            'address': ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
+            'netmask': host.vars['jails_ipv4_netmask'],
+        }],
+        'ipv6s': []
     }
     if host.vars.get('has_ipv6', False):
-        jail.vars['ipv6'] = {
-            'interface': host.vars['jails_if'],
+        ipv6_pattern = ':'.join(host.vars['ext_if']['ipv6s'][0]['address'].split(':')[0:-2] +['{type_idx}', '{jail_idx}'])
+        jail.vars['ext_if']['ipv6s'].append({
             'address': ipv6_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
             'netmask': host.vars['jails_ipv6_netmask'],
-        }
+        })
     if host.vars.get('has_vpn_host', False):
-        jail.vars['vpn_ipv4'] = {
-            'interface': host.vars['vpn_if'],
+        vpn_ipv4_pattern = host.vars.get('vpn_base_ipv4')
+        jail.vars['vpn_if'] = {
+            'name': host.vars['vpn_if'],
             'address': vpn_ipv4_pattern.format(type_idx=type_idx, jail_idx=jail_idx),
             'netmask': host.vars['vpn_ipv4_netmask'],
         }
@@ -226,7 +225,7 @@ def update_variables(inventory):
                 all_proxy_configs.append('{}.conf'.format(site['name']))
                 site['jail'] = host.vars['hostname']
                 site['jail_name'] = host.vars['jail_name']
-                site['ipv4'] = host.vars['ipv4']['address']  # should be vpn_ipv4 when vpn is set
+                site['ipv4s'] = ' '.join([ipv4['address'] for ipv4 in host.vars['ext_if']['ipv4s']])  # should be vpn_ipv4 when vpn is set
                 proxied_sites.append(site)
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
@@ -246,7 +245,7 @@ def update_variables(inventory):
                 for provision, provider_name in host.vars['providers'].iteritems():
                     provider = inventory.get_host(provider_name)
                     if provider == host or provider.vars['jail_host'] == jail.vars['jail_host']:
-                        jail.set_variable('{}_provider'.format(provision), provider.vars['ipv4']['address'])
+                        jail.set_variable('{}_provider'.format(provision), provider.vars['ext_if']['ipv4s'][0]['address'])
                     else:
                         jail.set_variable('{}_provider'.format(provision), provider.vars['vpn_ipv4']['address'])
 

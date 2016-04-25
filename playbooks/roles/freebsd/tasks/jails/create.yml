@@ -10,18 +10,11 @@
   stat: path=/usr/jails/{{ jail_name }}
   register: jail_directory_exists
 
-- name: create jail with ipv6
-  shell: ezjail-admin create {{ jail_name | quote }} '{{ hostvars[jail].ipv4.interface | quote }}|{{ hostvars[jail].ipv4.address | quote }}{% if has_ipv6 %},{{ hostvars[jail].ipv6.interface | quote }}|{{ hostvars[jail].ipv6.address | quote }}{% endif %}'
-  when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false and hosting != "digital_ocean"
+- name: create jail
+  shell: ezjail-admin create {{ jail_name | quote }} '{% for ip in hostvars[jail].ext_if.ipv4s + hostvars[jail].ext_if.ipv6s %}{{ hostvars[jail].ext_if.name | quote }}|{{ ip.address | quote }}{% endfor %}'
+  when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false
   notify: start jail
-  register: jail_created_w_ipv6
-  tags: create_jails
-
-- name: create jail without ipv6
-  shell: ezjail-admin create {{ jail_name | quote }} '{{ hostvars[jail].ipv4.interface | quote }}|{{ hostvars[jail].ipv4.address | quote }}'
-  when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false and hosting == "digital_ocean"
-  notify: start jail
-  register: jail_created_wo_ipv6
+  register: jail_created
   tags: create_jails
 
 ...

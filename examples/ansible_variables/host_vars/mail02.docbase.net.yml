@@ -1,7 +1,7 @@
 ---
 
 hostname: mail02.docbase.net
-timezone: Europe/Amsterdam
+timezone: Europe/Berlin
 os: freebsd
 
 installed_users:
@@ -20,7 +20,9 @@ nginx_http_config_keepalive_timeout: 600
 
 sites:
   - name: mail
-    fqdns: mail02.docbase.net
+    fqdns: mail.docbase.net mail02.docbase.net
+    allow_iframe: true
+    content_nosniff: true
     upstreams:
       - name: php_workers
         servers:
@@ -52,5 +54,7 @@ features:
 requires: [reverse_proxy, letsencrypt]
 
 # temporary settings
+hide_logs: false
+install_pkgs: no
 
 ...

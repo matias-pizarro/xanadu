@@ -1,6 +1,6 @@
 upstream {{ item.name }}_backend {
     # server       unix:/var/run/nginx/{{ item.name }}/nginx.sock;
-    server       {{ item.ipv4 }};
+    server       {{ item.ipv4s }};
     keepalive 60;
 }
 

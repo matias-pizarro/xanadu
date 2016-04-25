@@ -4,7 +4,7 @@
 hostname: droplet01.docbase.net
 timezone: Europe/Amsterdam
 os: freebsd
-freebsd_version: "10.2"
+freebsd_version: "10.3"
 hosting: digital_ocean
 disks:
   - /dev/ada0
@@ -15,7 +15,6 @@ jails:
   - rproxy02.docbase.net
   - letsencrypt02.docbase.net
   - mail02.docbase.net
-  - webjail02.docbase.net
 
 features:
   - bsdstats

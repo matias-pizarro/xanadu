@@ -36,23 +36,30 @@ cloned_interfaces="${cloned_interfaces} {{ jails_if }}"
 {% if if_dhcp %}
 
 # DHCP
-ifconfig_{{ ipv4.interface }}="DHCP"
+ifconfig_{{ ext_if.name }}="DHCP"
 {% else %}
 
 # IPv4
-ifconfig_{{ ipv4.interface }}="inet {{ ipv4.address }} netmask {{ ipv4.netmask }}"
-defaultrouter="{{ ipv4.gateway }}"
+ifconfig_{{ ext_if.name }}="inet {{ ext_if.ipv4s.0.address }} netmask {{ ext_if.ipv4s.0.netmask }}"
+{% if ext_if.ipv4s|length > 1 %}
+ifconfig_{{ ext_if.name }}_aliases="\
+{% for ipv4 in ext_if.ipv4s[1:] %}
+    inet {{ ipv4.address }} netmask {{ ipv4.netmask }} \
+{% endfor %}
+"
+{% endif %}
+defaultrouter="{{ ext_if.gateway }}"
 {% endif %}
 {% if has_ipv6 %}
 
 # Enable IPV6 support
 ipv6_activate_all_interfaces="YES"
-ipv6_default_interface="{{ ipv6.interface }}"
+ipv6_default_interface="{{ ext_if.interface }}"
 ip6addrctl_enable="YES"
 ip6addrctl_policy="ipv4_prefer"
 
 # IPv6
-ifconfig_{{ ipv6.interface }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
+ifconfig_{{ ext_if.name }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netmask }}"
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
 {% endif %}

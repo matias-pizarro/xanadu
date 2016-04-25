@@ -17,8 +17,8 @@
 {% endif %}
 
   ### Interfaces ###
-    ext_if              = "{{ ipv4.interface }}"
-    lo_if               = "{{ loopback_if }}"
+    ext_if              = "{{ ext_if.name }}"
+    lo_if               = "{{ loopback_if.name }}"
 {% if provides_jail_host and has_jails %}
     jails_if            = "{{ jails_if }}"
 {% endif %}
@@ -30,40 +30,40 @@
 {% endif %}
 
   ### Hosts ###
-    host_ipv4           = "{{ ipv4.address }}"
+    host_ipv4           = "{ {% for ipv4 in ext_if.ipv4s %}{{ ipv4.address }} {% endfor %}}"
 {% if has_ipv6 %}
     host_ipv6           = "{{ ipv6.address }}"
     host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
 {% endif %}
 {% if provides_reverse_proxy %}
-    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].ipv4.address }}"
+    reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_mail_server %}
-    mail_jail           = "{{ hostvars[providers['mail_server']].ipv4.address }}"
+    mail_jail           = "{{ hostvars[providers['mail_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_whois_server %}
     whois_jail          = "43"
 {% endif %}
 {% if provides_dns_server %}
-    dns_jail            = "{{ hostvars[providers['dns_server']].ipv4.address }}"
+    dns_jail            = "{{ hostvars[providers['dns_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_dhcp_server %}
-    dhcp_jail           = "{{ hostvars[providers['dhcp_server']].ipv4.address }}"
+    dhcp_jail           = "{{ hostvars[providers['dhcp_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_samba_server %}
-    samba_jail          = "{{ hostvars[providers['samba_server']].ipv4.address }}"
+    samba_jail          = "{{ hostvars[providers['samba_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_postgresql_server %}
-    postgresql_jail     = "{{ hostvars[providers['postgresql_server']].ipv4.address }}"
+    postgresql_jail     = "{{ hostvars[providers['postgresql_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_mysql_server %}
-    mysql_jail          = "{{ hostvars[providers['mysql_server']].ipv4.address }}"
+    mysql_jail          = "{{ hostvars[providers['mysql_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_memcached_server %}
-    memcached_jail      = "{{ hostvars[providers['memcached_server']].ipv4.address }}"
+    memcached_jail      = "{{ hostvars[providers['memcached_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_slapd_server %}
-    slapd_jail          = "{{ hostvars[providers['slapd_server']].ipv4.address }}"
+    slapd_jail          = "{{ hostvars[providers['slapd_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 
   ### Ports ###

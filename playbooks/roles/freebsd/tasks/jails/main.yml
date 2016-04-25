@@ -23,7 +23,7 @@
   tags: create_jails
 
 - include: sshd.yml
-  when: jail_created_w_ipv6.changed == true or jail_created_wo_ipv6.changed == true
+  when: jail_created.changed == true
   tags: create_jails
 
 - meta: flush_handlers
@@ -32,11 +32,11 @@
     - config_jails
 
 - include: utils.yml
-  when: jail_created_w_ipv6.changed == true or jail_created_wo_ipv6.changed == true
+  when: jail_created.changed == true
   tags: create_jails
 
 - include: users.yml
-  when: jail_created_w_ipv6.changed == true or jail_created_wo_ipv6.changed == true
+  when: jail_created.changed == true
   tags: create_jails
 
 ...

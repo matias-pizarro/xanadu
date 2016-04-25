@@ -1,7 +1,7 @@
 ---
 
 hostname: rproxy02.docbase.net
-timezone: Europe/Amsterdam
+timezone: Europe/Berlin
 os: freebsd
 
 installed_users:

@@ -4,7 +4,10 @@ freebsd_version: "10.3"
 ansible_python_interpreter: /usr/local/bin/python2
 ansible_connection: ssh
 passwd_format: blf
-loopback_if: lo0
+loopback_if:
+  name: lo0
+  address: 127.0.0.1
+  netmask: 255.0.0.0
 
 pkg_repos:
   # - server_nox_local
