@@ -1,6 +1,6 @@
 ---
 
-- name: check whether /usr/local/etc/ezjail/{{ jail_name }} exists
+- name: check whether /usr/local/etc/ezjail/--jail_name-- exists
   stat: path=/usr/local/etc/ezjail/{{ jail_name }}
   register: jail_config_exists
 
