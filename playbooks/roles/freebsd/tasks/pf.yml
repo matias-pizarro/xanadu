@@ -67,7 +67,11 @@
     - pf_rules
 
 - name: start pf if it is not running
-  service: name=pf state=running enabled=yes
+  # service: name=pf state=running enabled=yes
+  command: pfctl -e
+  register: command_result
+  changed_when: "'pf enabled' in command_result.stdout"
+  failed_when: "'Cannot' in command_result.stderr"
   tags: pf
 
 # pf needs to be flushed once ezjail has started.

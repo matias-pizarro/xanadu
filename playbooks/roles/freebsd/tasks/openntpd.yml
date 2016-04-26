@@ -1,11 +1,19 @@
 ---
 
 - name: stop ntpd if it is running
-  service: name=ntpd state=stopped enabled=no
+  # service: name=ntpd state=stopped enabled=no
+  command: service ntpd onestop
+  register: command_result
+  changed_when: "'Stopping ntpd' in command_result.stdout"
+  failed_when: "'Cannot' in command_result.stderr"
   tags: openntpd
 
 - name: start openntpd if it is not running
-  service: name=openntpd state=running enabled=yes
+  # service: name=openntpd state=running enabled=yes
+  command: service openntpd start
+  register: command_result
+  changed_when: "'Starting openntpd' in command_result.stdout"
+  failed_when: "'Cannot' in command_result.stderr"
   tags: openntpd
 
 - name: configure openntpd
