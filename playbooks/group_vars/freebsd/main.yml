@@ -15,6 +15,7 @@ pkg_repos:
   - FreeBSD.quarterly
 
 packages:
+  - 'ports-mgmt/pkg'
   - 'ftp/wget'
   - 'lang/python2' # so Ansible can work
   - 'net/rsync'
