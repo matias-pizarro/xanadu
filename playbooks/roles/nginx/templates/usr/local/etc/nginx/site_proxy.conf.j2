@@ -53,7 +53,7 @@ server {
 {% if item.allow_iframe is not defined or not item.allow_iframe %}
     add_header X-Frame-Options DENY;
 {% endif %}
-{% if item.content_nosniff is defined and item.content_nosniff %}
+{% if item.sniff_content is not defined or not item.sniff_content %}
     add_header X-Content-Type-Options nosniff;
 {% endif %}
 

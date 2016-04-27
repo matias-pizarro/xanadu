@@ -22,7 +22,7 @@ sites:
   - name: mail
     fqdns: mail.docbase.net mail02.docbase.net
     allow_iframe: true
-    content_nosniff: true
+    sniff_content: true
     upstreams:
       - name: php_workers
         servers:
