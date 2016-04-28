@@ -129,6 +129,7 @@ def set_ips(host, jail):
     type_idx = str(type_idx)
     jail_idx = str(jail_idx)
     ipv4_pattern = host.vars.get('jails_base_ipv4')
+    host.vars['lo_base_ip'] = ipv4_pattern.format(type_idx=1, jail_idx=1)
     jail.vars['ext_if'] = {
         'name': host.vars['jails_if'],
         'ipv4s': [{
