@@ -10,7 +10,7 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: mail
+jail_name: mail02
 jail_index: 10
 jail_type: service
 jail_autorun: true
@@ -39,17 +39,21 @@ sites:
       - /usr/local/etc/nginx/templates/misc.tmpl
 
 features:
+  - amavis
+  - clamav
+  - dovecot
   - http_proxied
   - iredmail
-  - slapd
-  - uwsgi
-  - php
   - mail
   - memcached
   - mysql
   - nginx
-  - sshd
+  - php
+  - postfix
+  - slapd
   - sogo
+  - sshd
+  - uwsgi
 
 requires: [reverse_proxy, letsencrypt]
 

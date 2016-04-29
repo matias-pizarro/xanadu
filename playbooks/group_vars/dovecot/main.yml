@@ -1,0 +1,9 @@
+---
+
+provides:
+  - dovecot
+
+packages:
+  - 'mail/dovecot'
+
+...

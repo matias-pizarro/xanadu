@@ -40,11 +40,11 @@
 - include: jails/main.yml
   vars:
     jail: "{{ item }}"
-    jail_hostname: "{{ item }}"
+    jail_hostname: "{{ hostvars[item].hostname }}"
     jail_name: "{{ hostvars[item].jail_name }}"
     ssh_port: "{{ hostvars[item].ansible_ssh_port }}"
-    ext_if: "{{ jails_if }}"
-    sshd_config_allow_users: "{{ [users.root] }}"
+    ext_if: "{{ hostvars[item].ext_if }}"
+    sshd_config_allow_users: "{{ hostvars[item].sshd_config_allow_users }}"
   when: provides_jail_host and has_jails
   with_items: "{{ jails }}"
 

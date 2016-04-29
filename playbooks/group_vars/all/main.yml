@@ -20,7 +20,10 @@ allow_encrypted_smtp: true
 allow_encrypted_imap: true
 allow_encrypted_pop: true
 
+has_amavis: false
 has_bsdstats: false
+has_clamav: false
+has_dovecot: false
 has_ezjail: false
 has_http_proxied: false
 has_http_proxy: false
@@ -28,17 +31,20 @@ has_ipv6: false
 has_iredmail: false
 has_letsencrypt: false
 has_linuxulator: false
+has_memcached: false
+has_mysql: false
 has_nginx: false
 has_nginx_proxy: false
 has_openntpd: false
 has_pf: false
 has_php: false
-has_uwsgi: false
+has_postfix: false
+has_slapd: false
 has_smartmontools: false
-has_memcached: false
 has_sogo: false
 has_sshd: false
 has_sshguard: false
+has_uwsgi: false
 has_vpn: false
 has_zfs: false
 

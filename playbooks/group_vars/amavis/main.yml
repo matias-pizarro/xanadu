@@ -1,0 +1,9 @@
+---
+
+provides:
+  - amavis
+
+packages:
+  - 'security/amavisd-new'
+
+...

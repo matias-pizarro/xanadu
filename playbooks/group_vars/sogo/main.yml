@@ -1,0 +1,9 @@
+---
+
+provides:
+  - sogo
+
+packages:
+  - 'www/sogo'
+
+...

@@ -1,0 +1,9 @@
+---
+
+provides:
+  - postfix
+
+packages:
+  - 'mail/postfix'
+
+...
