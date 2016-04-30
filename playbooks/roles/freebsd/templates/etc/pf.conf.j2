@@ -31,9 +31,10 @@
 
   ### Hosts ###
     host_ipv4           = "{ {% for ipv4 in ext_if.ipv4s %}{{ ipv4.address }} {% endfor %}}"
+    # nat requires permanent, predictable ips
+    nat_ipv4            = "{ {% for ipv4 in ext_if.ipv4s %}{% if ipv4.type == 'permanent' %}{{ ipv4.address }} {% endif %}{% endfor %}}"
 {% if has_ipv6 %}
     host_ipv6           = "{{ ipv6.address }}"
-    host_ipv46          = "{" $host_ipv4 $host_ipv6 "}"
 {% endif %}
 {% if provides_reverse_proxy %}
     reverse_proxy       = "{{ hostvars[providers['reverse_proxy']].ext_if.ipv4s.0.address }}"
@@ -171,7 +172,7 @@
 
   # Allows nat to specified addresses
 {% if provides_jail_host and has_jails %}
-  nat on $ext_if from $jailnet to any      -> $host_ipv4
+  nat on $ext_if from $jailnet to any      -> $nat_ipv4
 {% endif %}
 {% if provides_reverse_proxy %}
 

@@ -1,0 +1,71 @@
+---
+
+# permanent settings
+hostname: hetzner02.docbase.net
+timezone: Europe/Berlin
+os: freebsd
+os_version: 10
+os_arch: x86
+os_word: 64
+hosting: hetzner
+disks:
+  - /dev/ada0
+  - /dev/ada1
+jails:
+  - rproxy02.docbase.net
+  - letsencrypt02.docbase.net
+  - mail02.docbase.net
+  - didierghez02.docbase.net
+
+features:
+  - bsdstats
+  - ezjail
+  # - ipv6
+  # - linuxulator
+  # - mtree
+  - openntpd
+  - pf
+  - smartmontools
+  - sshd
+  - sshguard
+  # - vpn_host
+  - zfs
+
+smartd_params:
+  - "/dev/ada0 -a -o on -S on -s (S/../.././02|L/../../6/03)"
+  - "/dev/ada1 -a -o on -S on -s (S/../.././03|L/../../7/03)"
+
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+sshd_config_allow_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+ext_if:
+  name: re0
+  gateway: 188.40.115.193
+  ipv4s:
+    - address: 188.40.115.196
+      netmask: 255.255.255.0
+      type: permanent
+    - address: 188.40.16.172
+      netmask: 255.255.255.0
+      type: failover
+
+# ipv6:
+#   interface: re0
+#   address: "2a01:4f8:101:11a9::1:1"
+#   netmask: 64
+#   gateway: "fe80::1%re0"
+
+ansible_ssh_port: 222
+
+# temporary settings
+hide_logs: false
+kern_securelevel: -1
+
+...
