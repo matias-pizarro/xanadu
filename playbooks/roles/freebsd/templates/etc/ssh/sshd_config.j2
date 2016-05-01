@@ -150,4 +150,4 @@ Subsystem	sftp	/usr/libexec/sftp-server
 #	PermitTTY no
 #	ForceCommand cvs server
 
-AllowUsers{% for user in sshd_config_allow_users %} {{ user.name }}{% endfor %}
+AllowUsers{% for user in hostvars[hostname].sshd_config_allow_users %} {{ user.name }}{% endfor %}
