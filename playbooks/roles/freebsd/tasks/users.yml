@@ -28,6 +28,7 @@
   no_log: "{{ hide_logs }}"
   tags:
     - ssh_in
+    - create_user
     - config_user
     - user_files
 
