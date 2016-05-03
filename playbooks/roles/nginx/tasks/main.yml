@@ -124,7 +124,7 @@
     src=/usr/local/etc/nginx/sites-available/{{ item.name }}.conf
     dest=/usr/local/etc/nginx/sites-enabled/{{ item.name }}.conf
   with_items: "{{ proxied_sites }}"
-  when: "item.jail == hostname and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
+  when: "(provides_reverse_proxy or item.jail == hostname) and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
   notify: reload nginx
   tags: nginx_config
 
