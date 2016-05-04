@@ -16,13 +16,27 @@ upstream {{ upstream.name }} {
 server {
     listen       localhost:80;
     server_name  {{ item.fqdns }};
+{% if 'root' in item %}
+    root         {{ item.root }};
+{% endif %}
+{% if 'index' in item %}
+    index        {{ item.index }};
+{% endif %}
+{% if 'max_upload_size' in item %}
 
+    client_max_body_size  {{ item.max_upload_size }};
+{% endif %}
 {% if 'locations' in item %}
 {% for location in item.locations %}
+
     location {{ location.base }} {
-{% if 'root' in location %}
-        root {{ location.root }};
+{% for conf in location.confs %}
+{% if conf[0] == 'location' %}
+        {{ conf[0] }} {{ conf[1] }}
+{% else %}
+        {{ conf[0] }}  {{ conf[1] }};
 {% endif %}
+{% endfor %}
     }
 {% endfor %}
 {% endif %}

@@ -1,7 +1,7 @@
 ---
 
-hostname: rproxy02.docbase.net
-timezone: Europe/Berlin
+hostname: letsencrypt01.docbase.net
+timezone: Europe/Amsterdam
 os: freebsd
 
 installed_users:
@@ -10,15 +10,17 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: rproxy02
-jail_index: 1
+jail_name: letsencrypt01
+jail_index: 2
 jail_type: service
 jail_autorun: true
 
 features:
-  - ipv6
-  - nginx_proxy
+  - http_proxy
+  - letsencrypt
   - sshd
+
+requires: [reverse_proxy]
 
 # temporary settings
 

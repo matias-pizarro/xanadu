@@ -1,7 +1,7 @@
 ---
 
 # permanent settings
-hostname: hetzner02.docbase.net
+hostname: hetzner01.docbase.net
 timezone: Europe/Berlin
 os: freebsd
 os_version: 10
@@ -12,10 +12,10 @@ disks:
   - /dev/ada0
   - /dev/ada1
 jails:
-  - rproxy02.docbase.net
-  - letsencrypt02.docbase.net
-  - mail02.docbase.net
-  - didierghez02.docbase.net
+  - rproxy01.docbase.net
+  - letsencrypt01.docbase.net
+  - mail01.docbase.net
+  - didierghez01.docbase.net
 
 features:
   - bsdstats

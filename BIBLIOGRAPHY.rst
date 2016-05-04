@@ -75,6 +75,12 @@ JAILS
 
 
 
+NGINX
+===
+`https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/ <https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/>`_
+
+
+
 SSL
 ===
 `https://wiki.mozilla.org/Security/Server_Side_TLS <https://wiki.mozilla.org/Security/Server_Side_TLS>`_

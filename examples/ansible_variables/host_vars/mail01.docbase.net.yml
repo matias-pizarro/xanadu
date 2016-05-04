@@ -1,6 +1,6 @@
 ---
 
-hostname: mail02.docbase.net
+hostname: mail01.docbase.net
 timezone: Europe/Berlin
 os: freebsd
 
@@ -10,7 +10,7 @@ installed_users:
 sshd_config_allow_users:
     - "{{ users.root }}"
 
-jail_name: mail02
+jail_name: mail01
 jail_index: 10
 jail_type: service
 jail_autorun: true
@@ -20,7 +20,8 @@ nginx_http_config_keepalive_timeout: 600
 
 sites:
   - name: mail
-    fqdns: mail.docbase.net mail02.docbase.net
+    fqdns: mail.docbase.net mail01.docbase.net
+    root: /usr/local/www/apache24/data
     allow_iframe: true
     sniff_content: true
     upstreams:
@@ -28,9 +29,6 @@ sites:
         servers:
           - unix:/var/run/php-fpm.socket
         keepalive: 600
-    locations:
-      - base: /
-        root: /usr/local/www/apache24/data
     includes:
       - /usr/local/etc/nginx/templates/roundcube.tmpl
       - /usr/local/etc/nginx/templates/php-catchall.tmpl
