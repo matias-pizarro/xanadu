@@ -218,3 +218,13 @@ ZFS backup
 send a backup of 'tank' on hetzner01 to a backup sub-filesystem on hetzner02
 
     zfs send -R tank@backup | ssh hetzner02.docbase.net zfs receive -dvu tank/BACKUP/hetzner01
+
+
+
+MISC
+====
+
+remove windows line endings from a file, in place
+
+    # ^M is ctrl + V + M
+    sed -i "" -e "s/^M//g" myfile.txt
