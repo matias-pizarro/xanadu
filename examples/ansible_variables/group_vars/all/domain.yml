@@ -2,5 +2,6 @@
 
 domain: docbase.net
 keymap: us.iso.acc
+failover_website: http://matiaspizarro.com
 
 ...
