@@ -1,7 +1,7 @@
 upstream {{ item.name }}_backend {
     # server       unix:/var/run/nginx/{{ item.name }}/nginx.sock;
-    server       {{ item.ipv4s }};
-    keepalive 60;
+    server     {{ item.ipv4s }};
+    keepalive  60;
 }
 
 server {
@@ -58,12 +58,12 @@ server {
 {% endif %}
 
     location / {
-         proxy_set_header   X-Real-IP $remote_addr;
-         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-         proxy_set_header   Host $http_host;
-         proxy_set_header   X-NginX-Proxy true;
-         proxy_pass         http://{{ item.name }}_backend;
-         proxy_http_version 1.1;
-         proxy_set_header   Connection "";
+         proxy_set_header    X-Real-IP $remote_addr;
+         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header    Host $http_host;
+         proxy_set_header    X-NginX-Proxy true;
+         proxy_pass          http://{{ item.name }}_backend;
+         proxy_http_version  1.1;
+         proxy_set_header    Connection "";
     }
 }
