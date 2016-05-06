@@ -5,127 +5,19 @@
 # redirect let's encrypt traffic to letsencrypt jail
 # redirect all remaining http traffic to https
 
-- name: Create nginx log directory
-  file:
-    path={{ item.path }}
-    state=directory
-    owner=80
-    group=80
-    mode=0755
-  when: "{{ nginx_http_config_logs is defined }}"
-  with_items: "{{ nginx_http_config_logs }}"
-  tags: nginx_config
+- include: logs.yml
+  tags:
+    - nginx_config
+    - nginx_logs
 
-- name: Create nginx logs
-  file:
-    path={{ item.path }}/{{ item.filename }}
-    state=touch
-    owner=80
-    group=80
-    mode=0644
-  when: "{{ nginx_http_config_logs is defined }}"
-  with_items: "{{ nginx_http_config_logs }}"
-  changed_when: false
-  register: create_nginx_logs
-  tags: nginx_config
+- include: nginx_conf.yml
+  tags:
+    - nginx_config
+    - nginx.conf
 
-- name: Create /usr/local/etc/nginx/sites-available directory
-  file:
-    path=/usr/local/etc/nginx/sites-available
-    state=directory
-    owner=80
-    group=80
-    mode=0755
-  register: sites_available_exists
-  tags: nginx_config
-
-- name: Create /usr/local/etc/nginx/sites-enabled directory
-  file:
-    path=/usr/local/etc/nginx/sites-enabled
-    state=directory
-    owner=80
-    group=80
-    mode=0755
-  register: sites_enabled_exists
-  tags: nginx_config
-
-- name: find obsolete nginx configs
-  find:
-    paths:
-      - "/usr/local/etc/nginx/sites-available"
-      - "/usr/local/etc/nginx/sites-enabled"
-    patterns: "*.conf"
-  register: config_list
-  tags: nginx_config
-
-- name: delete obsolete nginx configs
-  file:
-    path={{ item.path }}
-    state=absent
-  with_items: "{{ config_list.files }}"
-  when: "(not provides_reverse_proxy and hostname in proxy_configs and item.path|basename not in proxy_configs[hostname]) or (provides_reverse_proxy and item.path|basename not in all_proxy_configs)"
-  notify: reload nginx
-  no_log: "{{ hide_logs }}"
-  tags: nginx_config
-
-# - name: set up defaults
-#   template: src=usr/local/etc/nginx/default.conf.j2
-#     dest="/usr/local/etc/nginx/sites-available/default.conf"
-#     owner=80
-#     group=80
-#     mode=0644
-#   when: "'path' in sites_available_exists"
-#   notify: reload nginx
-#   tags: nginx_config
-
-# - name: Create links for sites-enabled defaults
-#   file:
-#     state=link
-#     src=/usr/local/etc/nginx/sites-available/default.conf
-#     dest=/usr/local/etc/nginx/sites-enabled/default.conf
-#   when: "provides_reverse_proxy and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
-#   notify: reload nginx
-#   tags: nginx_config
-
-- name: create nginx.conf
-  template: src=usr/local/etc/nginx/nginx.conf.j2
-    dest="/usr/local/etc/nginx/nginx.conf"
-    owner=80
-    group=80
-    mode=0644
-  notify: reload nginx
-  tags: nginx_config
-
-- name: set up proxy redirections
-  template: src=usr/local/etc/nginx/site_proxy.conf.j2
-    dest="/usr/local/etc/nginx/sites-available/{{ item.name }}.conf"
-    owner=80
-    group=80
-    mode=0644
-  with_items: "{{ proxied_sites }}"
-  when: "provides_reverse_proxy and 'path' in sites_available_exists"
-  notify: reload nginx
-  tags: nginx_config
-
-- name: set up site config
-  template: src=usr/local/etc/nginx/site.conf.j2
-    dest="/usr/local/etc/nginx/sites-available/{{ item.name }}.conf"
-    owner=80
-    group=80
-    mode=0644
-  with_items: "{{ proxied_sites }}"
-  when: "item.jail == hostname and not provides_reverse_proxy and 'path' in sites_available_exists"
-  notify: reload nginx
-  tags: nginx_config
-
-- name: Create links for sites-enabled
-  file:
-    state=link
-    src=/usr/local/etc/nginx/sites-available/{{ item.name }}.conf
-    dest=/usr/local/etc/nginx/sites-enabled/{{ item.name }}.conf
-  with_items: "{{ proxied_sites }}"
-  when: "(provides_reverse_proxy or item.jail == hostname) and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
-  notify: reload nginx
-  tags: nginx_config
+- include: site_conf.yml
+  tags:
+    - nginx_config
+    - site.conf
 
 ...

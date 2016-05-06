@@ -1,0 +1,25 @@
+---
+
+- name: Create nginx log directory
+  file:
+    path={{ item.path }}
+    state=directory
+    owner=80
+    group=80
+    mode=0755
+  when: "{{ nginx_http_config_logs is defined }}"
+  with_items: "{{ nginx_http_config_logs }}"
+
+- name: Create nginx logs
+  file:
+    path={{ item.path }}/{{ item.filename }}
+    state=touch
+    owner=80
+    group=80
+    mode=0644
+  when: "{{ nginx_http_config_logs is defined }}"
+  with_items: "{{ nginx_http_config_logs }}"
+  changed_when: false
+  register: create_nginx_logs
+
+...

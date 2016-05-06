@@ -1,0 +1,11 @@
+---
+
+- name: create nginx.conf
+  template: src=usr/local/etc/nginx/nginx.conf.j2
+    dest="/usr/local/etc/nginx/nginx.conf"
+    owner=80
+    group=80
+    mode=0644
+  notify: reload nginx
+
+...

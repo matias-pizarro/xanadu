@@ -1,6 +1,6 @@
 upstream letsencrypt_backend {
-    server       {{ letsencrypt_provider }};
-    keepalive 60;
+    server     {{ letsencrypt_provider }};
+    keepalive  60;
 }
 
 server {
