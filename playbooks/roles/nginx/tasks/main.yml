@@ -10,6 +10,11 @@
     - nginx_config
     - nginx_logs
 
+- include: ssl.yml
+  tags:
+    - nginx_config
+    - ssl
+
 - include: nginx_conf.yml
   tags:
     - nginx_config

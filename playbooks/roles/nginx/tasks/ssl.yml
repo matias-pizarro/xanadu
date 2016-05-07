@@ -1,0 +1,49 @@
+---
+
+- name: Check /etc/ssl/certs permissions
+  file:
+    path=/etc/ssl/certs
+    state=directory
+    owner=0
+    group=80
+    mode=0750
+  when: "provides_reverse_proxy"
+  tags: dhparam
+
+- name: Check /etc/ssl/certs/dhparam.pem permissions
+  file:
+    path=/etc/ssl/certs/dhparam.pem
+    state=file
+    owner=0
+    group=80
+    mode=0640
+  when: provides_reverse_proxy
+  tags: dhparam
+
+- name: Check proxied sites ssl certs base directory permissions
+  file:
+    path=/etc/ssl/{{ item[0].jail_name }}{{ item[1] }}
+    state=directory
+    owner=0
+    group=80
+    mode=0750
+  with_nested:
+    - "{{ proxied_sites }}"
+    - [ '', '/certs', '/private' ]
+  when: "provides_reverse_proxy"
+  tags: certs
+
+- name: Check proxied sites ssl certs files permissions
+  file:
+    path=/etc/ssl/{{ item[0].jail_name }}/{{ item[1] }}
+    state=file
+    owner=0
+    group=80
+    mode=0640
+  with_nested:
+    - "{{ proxied_sites }}"
+    - [ 'certs/cert.pem', 'certs/chain.pem', 'certs/fullchain.pem', 'private/privkey.pem' ]
+  when: "provides_reverse_proxy"
+  tags: certs
+
+...
