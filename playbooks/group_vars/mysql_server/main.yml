@@ -1,0 +1,9 @@
+---
+
+provides:
+  - mysql_server
+
+packages:
+  - 'databases/percona56-server'
+
+...

@@ -7,7 +7,19 @@
     owner=0
     group=80
     mode=0750
-  when: "provides_reverse_proxy"
+  when: provides_reverse_proxy
+  tags: dhparam
+
+- name: check whether /etc/ssl/certs/dhparam.pem exists
+  stat:
+    path=/etc/ssl/certs/dhparam.pem
+  when: provides_reverse_proxy
+  register: dhparam_exists
+  tags: dhparam
+
+- name: create /etc/ssl/certs/dhparam.pem if it doesn't exist
+  command: openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
+  when: provides_reverse_proxy and dhparam_exists.stat.exists == false
   tags: dhparam
 
 - name: Check /etc/ssl/certs/dhparam.pem permissions
