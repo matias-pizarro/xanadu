@@ -5,6 +5,8 @@ Xanadu
 
 **a collection of Ansible playbooks to set-up basic but fully functional FreeBSD hosts and an ecosystem of service jails**
 
+**This is a beta version at which I am throwing a couple of hours daily at best, tending to priotary needs on my side first. I have a very long road map to complete and I would advise anyone interested to wait until I have completed some sort of decent documentation and testing infrastructure.**
+
 Free software: BSD license
 
     .. | PyPi: https://pypi.python.org/pypi/pybsd
