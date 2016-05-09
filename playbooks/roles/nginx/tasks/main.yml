@@ -13,6 +13,7 @@
 - include: ssl.yml
   tags:
     - nginx_config
+    - site.conf
     - ssl
 
 - include: nginx_conf.yml

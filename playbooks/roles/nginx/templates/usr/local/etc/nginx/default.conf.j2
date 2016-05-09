@@ -20,6 +20,7 @@ server {
          proxy_set_header   Connection "";
     }
 }
+{% if catchall_certs.stat.exists %}
 
 server {
     listen       localhost:443 default_server ssl;
@@ -52,3 +53,4 @@ server {
         return 302 {{ failover_website }};
     }
 }
+{% endif %}

@@ -58,4 +58,11 @@
   when: "provides_reverse_proxy"
   tags: certs
 
+- name: check whether catch-all certs exists
+  stat:
+    path=/etc/ssl/{{ jail_name}}/private/privkey.pem
+  when: provides_reverse_proxy
+  register: catchall_certs
+  tags: certs
+
 ...
