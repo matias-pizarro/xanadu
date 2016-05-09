@@ -192,7 +192,7 @@ def set_packages(host):
         packages.update(group.vars.get('packages', []))
     packages = list(packages)
     packages.sort()
-    host.set_variable('packages', packages)
+    host.set_variable('pkg_list', packages)
 
 
 def set_root_pubkeys(host):

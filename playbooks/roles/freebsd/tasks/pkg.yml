@@ -104,7 +104,7 @@
   pkgng:
     name={{ item }}
     state=present
-  with_items: "{{ packages }}"
+  with_items: "{{ pkg_list }}"
   when: install_pkgs
   tags:
     - pkg
