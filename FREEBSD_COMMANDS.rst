@@ -215,9 +215,18 @@ Do a reverse lookup on address 123.231.123.231
 ZFS backup
 ==========
 
-send a backup of 'tank' on hetzner01 to a backup sub-filesystem on hetzner02
+send a backup of 'tank' on hetzner01 to a backup sub-filesystem on hetzner02 (full snapshot path without pool name / not mounted / force rollback)
 
-    zfs send -R tank@backup | ssh hetzner02.docbase.net zfs receive -dvu tank/BACKUP/hetzner01
+    zfs send -R tank@backup | ssh hetzner02.docbase.net zfs receive -dvuF tank/BACKUP/hetzner01
+
+
+
+RSYNC
+=====
+
+rsync using a non-default port
+
+    rsync -aAHvz  -e "ssh -p 4001" rproxy01.docbase.net:/etc/ssl/example01 /etc/ssl
 
 
 
