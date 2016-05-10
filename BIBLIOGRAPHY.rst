@@ -35,7 +35,6 @@ NTP
 DNS
 ===
 
-
 `https://calomel.org/unbound_dns.html <https://calomel.org/unbound_dns.html>`_
 
 
@@ -53,12 +52,10 @@ SECURITY
 
 
 
-
 STORAGE
 =======
 
 `FreeBSD Mastery: Storage Essentials, Michael W. Lucas, Tilted Windmill Press (2014) <https://www.michaelwlucas.com/nonfiction/freebsd-mastery-storage-essentials>`_
-
 
 
 
@@ -76,7 +73,7 @@ JAILS
 
 
 NGINX
-===
+=====
 `https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/ <https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/>`_
 
 
@@ -175,6 +172,17 @@ PROXY
 
 
 
+VPN
+=====
+
+`https://www.digitalocean.com/community/tutorials/how-to-configure-and-connect-to-a-private-openvpn-server-on-freebsd-10-1 <https://www.digitalocean.com/community/tutorials/how-to-configure-and-connect-to-a-private-openvpn-server-on-freebsd-10-1>`_
+
+`http://www.mired.org/writing/bridged-openvpn-on-freebsd <http://www.mired.org/writing/bridged-openvpn-on-freebsd>`_
+
+`https://gundersen.net/openvpn-server-on-freebsd-with-pf-firewall/ <https://gundersen.net/openvpn-server-on-freebsd-with-pf-firewall/>`_
+
+
+
 SMTP REPUTATION AND GOOD PRACTICES
 ==================================
 
@@ -191,3 +199,10 @@ SMTP REPUTATION AND GOOD PRACTICES
 `https://tools.ietf.org/html/rfc7489`_
 `http://aplawrence.com/Blog/B961.html`_
 `http://tools.bevhost.com/spf/`_
+
+
+
+MISC
+====
+
+`The Jargon file <http://www.catb.org/jargon/html/>`_
