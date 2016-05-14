@@ -1,7 +1,7 @@
 ---
 
 hostname: letsencrypt01.docbase.net
-timezone: Europe/Amsterdam
+timezone: Europe/Berlin
 os: freebsd
 
 installed_users:
@@ -14,6 +14,8 @@ jail_name: letsencrypt01
 jail_index: 2
 jail_type: service
 jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/letsencrypt01/basejail', 'fs': 'nullfs', 'r': 'ro' }
 
 features:
   - http_proxy
@@ -21,6 +23,9 @@ features:
   - sshd
 
 requires: [reverse_proxy]
+
+pkg_repos:
+  - FreeBSD.latest
 
 # temporary settings
 

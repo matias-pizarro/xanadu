@@ -1,6 +1,6 @@
 ---
 
-- name: Create nginx log directory
+- name: create nginx log directory
   file:
     path={{ item.path }}
     state=directory
@@ -10,7 +10,7 @@
   when: "{{ nginx_http_config_logs is defined }}"
   with_items: "{{ nginx_http_config_logs }}"
 
-- name: Create nginx logs
+- name: create nginx logs
   file:
     path={{ item.path }}/{{ item.filename }}
     state=touch

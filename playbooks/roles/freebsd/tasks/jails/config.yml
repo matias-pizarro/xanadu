@@ -37,7 +37,7 @@
     provide: "{{ hostvars[jail].provides | default([]) }}"
 
 # See man rcorder
-- name: Set jail provisions
+- name: set jail provisions
   replace: '
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     regexp="^# PROVIDE: .*$"
@@ -45,7 +45,7 @@
   '
   when: jail_config.stat.exists == true
 
-- name: Set jail requirements
+- name: set jail requirements
   replace: '
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     regexp="^# REQUIRE: .*$"
@@ -53,7 +53,7 @@
   '
   when: jail_config.stat.exists == true
 
-- name: Set jail precedence
+- name: set jail precedence
   replace: '
     dest=/usr/local/etc/ezjail/{{ jail_name }}
     regexp="^# BEFORE: .*$"
@@ -61,5 +61,27 @@
   '
   when: jail_config.stat.exists == true
 
+- name: set jail mounts
+  template: src=etc/fstab.jail.j2
+    dest=/etc/fstab.{{ jail_name }}
+    owner=0
+    group=0
+    mode=0644
+  notify: restart jail
+
+- set_fact:
+    outer_item: "{{ item }}"
+
+# commented until ansible 2.1 is released
+# - name: create jail mount destination if necessary
+#   file:
+#     path="{{ item_foo['on'] }}"
+#     state=directory
+#     owner=0
+#     group=0
+#     mode=0750
+#   with_items: "{{ jail_mounts }}"
+#   loop_control:
+#     loop_var: item_foo
 
 ...

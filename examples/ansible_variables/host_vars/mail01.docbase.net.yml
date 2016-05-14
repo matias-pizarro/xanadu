@@ -14,6 +14,9 @@ jail_name: mail01
 jail_index: 10
 jail_type: service
 jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/mail01/basejail', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/var/mail/vmail', 'on': '/usr/jails/mail01/var/vmail', 'fs': 'nullfs', 'r': 'rw' }
 
 nginx_http_config_worker_processes: 2
 nginx_http_config_keepalive_timeout: 600

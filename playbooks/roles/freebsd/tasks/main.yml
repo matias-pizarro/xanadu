@@ -45,6 +45,7 @@
     ssh_port: "{{ hostvars[item].ansible_ssh_port }}"
     ext_if: "{{ hostvars[item].ext_if }}"
     sshd_config_allow_users: "{{ hostvars[item].sshd_config_allow_users }}"
+    jail_mounts: "{{ hostvars[item].jail_mounts }}"
   when: provides_jail_host and has_jails
   with_items: "{{ jails }}"
 

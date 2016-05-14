@@ -14,9 +14,10 @@ jail_name: rproxy01
 jail_index: 1
 jail_type: service
 jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/rproxy01/basejail', 'fs': 'nullfs', 'r': 'ro' }
 
 features:
-  - ipv6
   - nginx_proxy
   - sshd
 
