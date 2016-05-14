@@ -2,7 +2,9 @@
 
 - set_fact:
     jail_name: "{{ jail_name }}"
-  tags: create_jails
+  tags: 
+    - create_jails
+    - config_jails
 
 - include: create.yml
   tags: 
