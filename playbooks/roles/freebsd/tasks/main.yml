@@ -11,6 +11,8 @@
 
 - include: users.yml
 
+- include: loader_conf.yml
+
 - include: rc_conf.yml
 
 - include: sysctl_conf.yml

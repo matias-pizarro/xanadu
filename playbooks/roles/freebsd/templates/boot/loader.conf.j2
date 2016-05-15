@@ -1,0 +1,4 @@
+{% if has_zfs %}
+zfs_load=YES
+vfs.root.mountfrom="zfs:{{ pool_name }}/{{ bootfs }}"
+{% endif %}

@@ -1,0 +1,13 @@
+---
+
+- name: set up /boot/loader.conf
+  template: src=boot/loader.conf.j2
+    dest=/boot/loader.conf
+    owner=0
+    group=0
+    mode=0644
+  tags:
+    - loader_conf
+    - zfs_config
+
+...
