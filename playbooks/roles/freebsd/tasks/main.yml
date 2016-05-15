@@ -48,6 +48,8 @@
     ext_if: "{{ hostvars[item].ext_if }}"
     sshd_config_allow_users: "{{ hostvars[item].sshd_config_allow_users }}"
     jail_mounts: "{{ hostvars[item].jail_mounts }}"
+    zfs_datasets: "{{ hostvars[item].zfs_datasets }}"
+    parameters: "{{ hostvars[item].parameters }}"
   when: provides_jail_host and has_jails
   with_items: "{{ jails }}"
 
