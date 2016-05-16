@@ -65,7 +65,7 @@
   replace:
     dest='/usr/local/etc/ezjail/{{ jail_name }}'
     regexp='^(export jail\_{{ jail_name }}\_zfs_datasets=").*(")$'
-    replace='\1{{ zfs_datasets }}\2'
+    replace='\1{{ jail_zfs_datasets }}\2'
   when: jail_config_exists.stat.exists == true
   notify: restart jail
 
