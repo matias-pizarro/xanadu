@@ -32,7 +32,8 @@ has_iredmail: false
 has_letsencrypt: false
 has_linuxulator: false
 has_memcached: false
-has_mysql: false
+has_mysql_client: false
+has_mysql_server: false
 has_nginx: false
 has_nginx_proxy: false
 has_openntpd: false

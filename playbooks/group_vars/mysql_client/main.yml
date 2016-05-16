@@ -4,6 +4,6 @@ provides:
   - mysql_server
 
 packages:
-  - 'databases/percona55-server'
+  - 'databases/percona56-client'
 
 ...

@@ -1,0 +1,32 @@
+---
+
+hostname: mysql01.docbase.net
+timezone: Europe/Berlin
+os: freebsd
+
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+sshd_config_allow_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+jail_name: mysql01
+jail_index: 3
+jail_type: service
+jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/mysql01/basejail', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/var/db/mysql01', 'on': '/usr/jails/mysql01/var/db/mysql', 'fs': 'nullfs', 'r': 'ro' }
+
+features:
+  - mysql_server
+  - mysql_client
+  - sshd
+
+# temporary settings
+
+...

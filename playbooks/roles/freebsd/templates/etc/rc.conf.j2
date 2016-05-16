@@ -169,7 +169,7 @@ slapd_enable="YES"
 slapd_flags="-h 'ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/'"
 slapd_sockets="/var/run/openldap/ldapi"
 {% endif %}
-{% if has_mysql %}
+{% if has_mysql_server %}
 
 # mysql
 mysql_enable="YES"

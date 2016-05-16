@@ -8,7 +8,7 @@ installed_users:
   - "{{ users.root }}"
 
 sshd_config_allow_users:
-    - "{{ users.root }}"
+  - "{{ users.root }}"
 
 jail_name: letsencrypt01
 jail_index: 2

@@ -1,5 +1,10 @@
 ---
 
+use_socket: true
+socket: /var/run/mysql/mysql.sock
+use_tcp: true
+tcp_port: 3306
+
 provides:
   - mysql_server
 
