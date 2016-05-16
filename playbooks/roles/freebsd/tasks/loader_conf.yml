@@ -10,5 +10,6 @@
   tags:
     - loader_conf
     - zfs_config
+    - poudriere_config
 
 ...

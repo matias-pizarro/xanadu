@@ -1,0 +1,17 @@
+---
+
+# - check linux modules are loaded
+
+- include: poudriere_conf.yml
+  tags:
+    - poudriere_config
+
+- include: ssl.yml
+  tags:
+    - poudriere_config
+
+- include: setup.yml
+  tags:
+    - poudriere_config
+
+...

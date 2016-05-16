@@ -41,4 +41,7 @@
   when: jail_created.changed == true
   tags: create_jails
 
+- include: services.yml
+  tags: config_jails
+
 ...

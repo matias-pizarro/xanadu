@@ -1,0 +1,57 @@
+---
+
+poudriere_dataset: /POUDRIERE/poudriere
+freebsd_host: https://download.FreeBSD.org
+resolv_conf: /etc/resolv.conf
+basefs: /usr/local/poudriere
+poudriere_data: ${BASEFS}/data
+use_portlint: no
+use_mdmfs: false
+mfssize: 4G
+use_tmpfs: all
+tmpfs_limit: null
+max_memory: null
+distfiles_cache: /usr/ports/distfiles
+use_svn: false
+svn_host: svn.FreeBSD.org
+check_changed_options: verbose
+check_changed_deps: yes
+ssl_directory: /usr/local/etc/ssl
+pkg_repo_signing_key: "{{ ssl_directory }}/keys/pkg.key"
+use_ccache: false
+ccache_dir: /var/cache/ccache
+parallel_jobs: null
+prepare_parallel_jobs: null
+save_wrkdir: no
+wrkdir_archive_format: tbz
+nolinux: no
+no_force_package: no
+no_package_building: no
+no_restricted: no
+allow_make_jobs: no
+allow_make_jobs_packages: false
+timestamp_logs: no
+url_base: null
+max_execution_time: 86400
+nohang_time: 7200
+atomic_package_repository: yes
+commit_packages_on_failure: yes
+keep_old_packages: yes
+keep_old_packages_count: 5
+porttesting_fatal: yes
+builder_hostname: null
+preserve_timestamp: no
+build_as_non_root: yes
+priority_boost: false
+buildname_format: "%Y-%m-%d_%Hh%Mm%Ss"
+duration_format: "%H:%M:%S"
+use_colors: yes
+trim_orphaned_build_deps: no
+
+provides:
+  - poudriere
+
+packages:
+  - 'ports-mgmt/poudriere'
+
+...

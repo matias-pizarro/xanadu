@@ -1,0 +1,16 @@
+---
+
+- name: check whether ports tree exists
+  stat:
+    path="{{ basefs }}/ports/default"
+  register: default_tree_exists
+  tags:
+    - poudriere_config
+
+- name: check out a fresh copy of the ports tree if it does not exist
+  command: "poudriere ports -c"
+  when: default_tree_exists.stat.exists == false
+  tags:
+    - poudriere_config
+
+...

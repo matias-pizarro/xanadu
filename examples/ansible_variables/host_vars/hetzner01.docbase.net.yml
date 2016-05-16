@@ -14,6 +14,7 @@ disks:
 jails:
   - rproxy01.docbase.net
   - letsencrypt01.docbase.net
+  - poudriere01.docbase.net
   - mail01.docbase.net
   - didierghez01.docbase.net
 

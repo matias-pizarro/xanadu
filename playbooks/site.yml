@@ -20,9 +20,16 @@
   roles:
     - freebsd
 
+- hosts: poudriere
+  become: yes
+  gather_facts: no
+  roles:
+    - poudriere
+  tags: poudriere
+
 - hosts: nginx_proxy, nginx
   become: yes
-  gather_facts: yes
+  gather_facts: no
   roles:
     - nginx
   tags: nginx

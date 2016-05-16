@@ -1,0 +1,9 @@
+---
+
+- name: load linux and linprocfs kernel modules
+  shell: kldload -n linux linprocfs
+  when: provides_poudriere and is_first_class_host
+  changed_when: false
+  tags: poudriere_config
+
+...
