@@ -102,7 +102,9 @@ def update_vars(inventory):
             jail.vars['is_not_jail'] = False
             jail.vars['jail_host'] = host.name
             jail.vars['hosting'] = host.vars.get('hosting', '')
-            jail.vars['zfs_datasets'] = ' '.join(['{}/{}'.format(host.vars.get('pool_name'), dataset) for dataset in jail.vars.get('zfs_datasets', '')])
+            jail.vars['pool_name'] = host.vars.get('pool_name', '')
+            jail.vars['has_zfs'] = host.vars.get('has_zfs', '')
+            jail.vars['zfs_datasets'] = ' '.join(['{}{}'.format(host.vars.get('pool_name'), dataset) for dataset in jail.vars.get('zfs_datasets', '')])
             set_features(inventory, jail, jail_host=host)
             set_providers(inventory, jail, jail_host=host)
             set_ips(host, jail)

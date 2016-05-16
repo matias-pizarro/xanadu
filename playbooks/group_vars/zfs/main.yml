@@ -1,6 +1,6 @@
 ---
 
 pool_name: tank
-bootfs: ROOT/default
+bootfs: /ROOT/default
 
 ...
