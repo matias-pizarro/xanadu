@@ -23,6 +23,15 @@ INSTALLATION
 
 
 
+DOCUMENTATION
+============
+
+`https://www.freebsd.org/doc/handbook/ <https://www.freebsd.org/doc/handbook/>`_
+
+`https://www.freebsd.org/doc/handbook/freebsd-glossary.html <https://www.freebsd.org/doc/handbook/freebsd-glossary.html>`_
+
+
+
 NTP
 ===
 
