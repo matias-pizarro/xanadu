@@ -11,7 +11,7 @@ mfssize: 4G
 use_tmpfs: all
 tmpfs_limit: null
 max_memory: null
-distfiles_cache: /usr/ports/distfiles
+distfiles_cache: /var/ports/distfiles
 use_svn: false
 svn_host: svn.FreeBSD.org
 check_changed_options: verbose
@@ -52,6 +52,7 @@ provides:
   - poudriere
 
 packages:
+  - 'ports-mgmt/dialog4ports'
   - 'ports-mgmt/poudriere'
 
 ...

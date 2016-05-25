@@ -5,4 +5,5 @@ vfs.root.mountfrom="zfs:{{ pool_name }}{{ bootfs }}"
 {% if provides_poudriere %}
 linux_load=YES
 linprocfs_load=YES
+tmpfs_load=YES
 {% endif %}

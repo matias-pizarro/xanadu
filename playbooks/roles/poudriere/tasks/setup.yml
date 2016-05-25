@@ -1,5 +1,13 @@
 ---
 
+- name: Check distfiles_cache existence and permissions
+  file:
+    path={{ distfiles_cache }}
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+
 - name: check whether ports tree exists
   stat:
     path="{{ basefs }}/ports/default"

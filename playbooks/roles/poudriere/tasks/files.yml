@@ -1,0 +1,43 @@
+---
+
+- name: copy make.conf files
+  copy:
+    src=files/poudriere/make/{{ item }}
+    dest=/usr/local/etc/poudriere.d/{{ item }}
+    owner=0
+    group=0
+    mode=0644
+  with_items: "{{ make_confs }}"
+  changed_when: false
+  no_log: "{{ hide_logs }}"
+
+- name: Check /usr/local/etc/poudriere.d/pkg_lists existence and permissions
+  file:
+    path=/usr/local/etc/poudriere.d/pkg_lists
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+
+- name: copy pkg lists
+  copy:
+    src=files/poudriere/pkg_lists/{{ item }}
+    dest=/usr/local/etc/poudriere.d/pkg_lists/{{ item }}
+    owner=0
+    group=0
+    mode=0644
+  with_items: "{{ pkg_lists }}"
+  changed_when: false
+  no_log: "{{ hide_logs }}"
+
+- name: sync build options
+  synchronize:
+    src=files/poudriere/build_options/{{ item }}
+    dest=/usr/local/etc/poudriere.d
+    archive=no
+    recursive=yes
+    set_remote_user=no
+  become: no
+  with_items: "{{ build_options }}"
+
+...

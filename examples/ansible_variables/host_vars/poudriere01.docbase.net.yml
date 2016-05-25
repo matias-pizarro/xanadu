@@ -1,0 +1,62 @@
+---
+
+hostname: poudriere01.docbase.net
+timezone: Europe/Berlin
+os: freebsd
+
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+sshd_config_allow_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+lo_if:
+  name: lo0
+  ipv4s:
+    - address: 127.0.0.1
+      netmask: 255.255.255.255
+      type: permanent
+  ipv6s:
+    - address: ::1
+      netmask: 128
+      type: permanent
+
+jail_name: poudriere01
+jail_index: 4
+jail_type: service
+jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/poudriere01/basejail', 'fs': 'nullfs', 'r': 'ro' }
+  # - { 'mount': '/usr/local/poudriere/data01', 'on': '/usr/jails/poudriere01/usr/local/poudriere/data', 'fs': 'nullfs', 'r': 'rw' }
+  # - { 'mount': '/usr/local/poudriere/html01', 'on': '/usr/jails/poudriere01/usr/local/share/poudriere/html', 'fs': 'nullfs', 'r': 'rw' }
+zfs_datasets:
+  - "/POUDRIERE/poudriere"
+parameters: "ip4=inherit ip6=inherit children.max=10 allow.mount allow.mount.devfs allow.mount.procfs allow.mount.zfs allow.mount.nullfs allow.raw_sockets allow.socket_af allow.sysvipc allow.chflags enforce_statfs=0"
+
+parallel_jobs: 6
+prepare_parallel_jobs: 6
+url_base: https://pkg01.docbase.net/
+builder_hostname: pkg01.docbase.net
+build_jails:
+  - 103amd64
+make_confs:
+  - 103amd64-make.conf
+pkg_lists:
+  - server_pkg_list
+build_options:
+  - 103amd64-server-options
+
+features:
+  - poudriere
+  - sshd
+
+pkg_repos:
+  - FreeBSD.latest
+
+# temporary settings
+kern_securelevel: -1
+...
