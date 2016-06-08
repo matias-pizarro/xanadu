@@ -39,5 +39,8 @@
     set_remote_user=no
   become: no
   with_items: "{{ poudriere_build_options }}"
+  register: rsync_result
+  # not really sure about this condition yet
+  changed_when: "rsync_result.msg[0:5] == '<f.sT'"
 
 ...
