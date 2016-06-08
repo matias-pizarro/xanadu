@@ -230,6 +230,20 @@ rsync using a non-default port
 
 
 
+POUDRIERE
+=========
+
+create options for jail 103amd64 using ports collection 'default', custom set 'server' for list of ports found in /usr/local/etc/poudriere.d/pkg_lists/server_pkg_list
+
+    poudriere options -j 103amd64 -p default -z server -f /usr/local/etc/poudriere.d/pkg_lists/server_pkg_list
+
+
+build packages in jail 103amd64 using ports collection 'default', custom set 'server' for list of ports found in /usr/local/etc/poudriere.d/pkg_lists/server_pkg_list
+
+    poudriere bulk -j 103amd64 -p default -z server -f /usr/local/etc/poudriere.d/pkg_lists/server_pkg_list
+
+
+
 MISC
 ====
 
