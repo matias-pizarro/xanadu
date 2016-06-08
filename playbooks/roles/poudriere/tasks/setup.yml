@@ -1,0 +1,24 @@
+---
+
+- name: Check distfiles_cache existence and permissions
+  file:
+    path={{ distfiles_cache }}
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+
+- name: check whether ports tree exists
+  stat:
+    path="{{ poudriere_basefs }}/ports/default"
+  register: default_tree_exists
+  tags:
+    - poudriere_config
+
+- name: check out a fresh copy of the ports tree if it does not exist
+  command: "poudriere ports -c"
+  when: default_tree_exists.stat.exists == false
+  tags:
+    - poudriere_config
+
+...

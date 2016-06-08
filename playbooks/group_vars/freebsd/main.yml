@@ -38,4 +38,12 @@ net_inet_icmp_bmcastecho: 0
 
 nginx_binary_name: /usr/local/sbin/nginx
 nginx_service_name: "nginx"
+
+freebsd_host: https://download.FreeBSD.org
+resolv_conf: /etc/resolv.conf
+ssl_directory: /usr/local/etc/ssl
+ccache_dir: /var/cache/ccache
+distfiles_cache: /usr/ports/distfiles
+svn_host: svn.FreeBSD.org
+
 ...

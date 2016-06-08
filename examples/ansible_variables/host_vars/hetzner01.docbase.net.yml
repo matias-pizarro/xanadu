@@ -15,6 +15,7 @@ jails:
   - rproxy01.docbase.net
   - letsencrypt01.docbase.net
   - mail01.docbase.net
+  - mysql01.docbase.net
   - didierghez01.docbase.net
 
 features:
@@ -25,6 +26,7 @@ features:
   # - mtree
   - openntpd
   - pf
+  - poudriere
   - smartmontools
   - sshd
   - sshguard
@@ -34,6 +36,7 @@ features:
 smartd_params:
   - "/dev/ada0 -a -o on -S on -s (S/../.././02|L/../../6/03)"
   - "/dev/ada1 -a -o on -S on -s (S/../.././03|L/../../7/03)"
+bootfs: /ROOT/10_3
 
 installed_users:
   - "{{ users.root }}"
@@ -63,6 +66,19 @@ ext_if:
 #   gateway: "fe80::1%re0"
 
 ansible_ssh_port: 222
+
+poudriere_parallel_jobs: 6
+poudriere_prepare_parallel_jobs: 6
+poudriere_url_base: https://pkg01.docbase.net/
+poudriere_builder_hostname: pkg01.docbase.net
+poudriere_build_jails:
+  - 103amd64
+poudriere_make_confs:
+  - 103amd64-make.conf
+poudriere_pkg_lists:
+  - server_pkg_list
+poudriere_build_options:
+  - 103amd64-server-options
 
 # temporary settings
 hide_logs: false

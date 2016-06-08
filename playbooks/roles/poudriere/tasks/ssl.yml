@@ -1,0 +1,92 @@
+---
+
+- name: Check ssl directory existence and permissions
+  file:
+    path="{{ ssl_directory }}"
+    state=directory
+    owner=0
+    group=0
+    mode=0600
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: Check ssl/certs directory existence and permissions
+  file:
+    path="{{ ssl_directory }}/certs"
+    state=directory
+    owner=0
+    group=0
+    mode=0600
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: Check ssl/keys directory existence and permissions
+  file:
+    path="{{ ssl_directory }}/keys"
+    state=directory
+    owner=0
+    group=0
+    mode=0600
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: check whether pkg.key exists
+  stat:
+    path="{{ ssl_directory }}/keys/pkg.key"
+  register: pkg_key_exists
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: create pkg.key if it doesn't exist
+  command: "openssl genrsa -out {{ ssl_directory }}/keys/pkg.key 4096"
+  when: pkg_key_exists.stat.exists == false
+  register: pkg_key_created
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: check pkg.key permissions
+  file:
+    path="{{ ssl_directory }}/keys/pkg.key"
+    state=file
+    owner=0
+    group=0
+    mode=0600
+  when: pkg_key_exists.stat.exists == true or pkg_key_created.changed == true
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: check whether pkg.cert exists
+  stat:
+    path="{{ ssl_directory }}/certs/pkg.cert"
+  register: pkg_cert_exists
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: create pkg.cert if it doesn't exist
+  command: "openssl rsa -in {{ ssl_directory }}/keys/pkg.key -out {{ ssl_directory }}/certs/pkg.cert -pubout"
+  when: pkg_cert_exists.stat.exists == false
+  register: pkg_cert_created
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+- name: check pkg.cert permissions
+  file:
+    path="{{ ssl_directory }}/certs/pkg.cert"
+    state=file
+    owner=0
+    group=0
+    mode=0600
+  when: pkg_cert_exists.stat.exists == true or pkg_cert_created.changed == true
+  tags:
+    - poudriere_config
+    - poudriere_ssl
+
+...

@@ -1,0 +1,14 @@
+---
+
+- include_vars: files/poudriere/jails/{{ build_jail }}.yml
+
+- name: check whether build jail exists
+  stat:
+    path="{{ poudriere_basefs }}/jails/{{ name }}"
+  register: build_jail_exists
+
+- name: create the build jail if it does not exist
+  command: "poudriere jail -c -j {{ name }} -v {{ version }} -a {{ architecture }}"
+  when: build_jail_exists.stat.exists == false
+
+...

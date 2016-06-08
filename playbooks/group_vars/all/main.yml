@@ -61,6 +61,7 @@ provides_mysql_server: false
 provides_nfs_server: false
 provides_ntp_server: false
 provides_postgresql_server: false
+provides_poudriere: false
 provides_reverse_proxy: false
 provides_samba_server: false
 provides_whois_server: false

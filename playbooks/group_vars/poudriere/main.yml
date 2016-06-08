@@ -1,0 +1,52 @@
+---
+
+poudriere_dataset: /POUDRIERE/poudriere
+poudriere_basefs: /usr/local/poudriere
+poudriere_data: ${BASEFS}/data
+poudriere_use_portlint: no
+poudriere_use_mdmfs: false
+poudriere_mfssize: 4G
+poudriere_use_tmpfs: all
+poudriere_tmpfs_limit: null
+poudriere_max_memory: null
+poudriere_use_svn: false
+poudriere_check_changed_options: verbose
+poudriere_check_changed_deps: yes
+pkg_repo_signing_key: "{{ ssl_directory }}/keys/pkg.key"
+poudriere_use_ccache: false
+poudriere_parallel_jobs: null
+poudriere_prepare_parallel_jobs: null
+poudriere_save_wrkdir: no
+poudriere_wrkdir_archive_format: tbz
+poudriere_nolinux: no
+poudriere_no_force_package: no
+poudriere_no_package_building: no
+poudriere_no_restricted: no
+poudriere_allow_make_jobs: no
+poudriere_allow_make_jobs_packages: false
+poudriere_timestamp_logs: no
+poudriere_url_base: null
+poudriere_max_execution_time: 86400
+poudriere_nohang_time: 7200
+poudriere_atomic_package_repository: yes
+poudriere_commit_packages_on_failure: yes
+poudriere_keep_old_packages: yes
+poudriere_keep_old_packages_count: 5
+poudriere_porttesting_fatal: yes
+poudriere_builder_hostname: null
+poudriere_preserve_timestamp: no
+poudriere_build_as_non_root: yes
+poudriere_priority_boost: false
+poudriere_buildname_format: "%Y-%m-%d_%Hh%Mm%Ss"
+poudriere_duration_format: "%H:%M:%S"
+poudriere_use_colors: yes
+poudriere_trim_orphaned_build_deps: no
+
+provides:
+  - poudriere
+
+packages:
+  - 'ports-mgmt/dialog4ports'
+  - 'ports-mgmt/poudriere'
+
+...

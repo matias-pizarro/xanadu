@@ -39,6 +39,8 @@
 - include: storage.yml
   when: disks is defined and disks|length > 0
 
+- include: services.yml
+
 - include: jails/main.yml
   vars:
     jail: "{{ item }}"

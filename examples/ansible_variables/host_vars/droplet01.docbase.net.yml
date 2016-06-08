@@ -26,7 +26,6 @@ features:
   # - smartd
   - sshd
   - sshguard
-  # - zfs
 
 smartd_params:
   - "/dev/ada0 -a -o on -S on -s (S/../.././02|L/../../6/03)"

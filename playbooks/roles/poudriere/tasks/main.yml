@@ -1,0 +1,27 @@
+---
+
+# - check linux modules are loaded
+
+- include: poudriere_conf.yml
+  tags:
+    - poudriere_config
+
+- include: ssl.yml
+  tags:
+    - poudriere_config
+
+- include: setup.yml
+  tags:
+    - poudriere_config
+
+- include: jails.yml build_jail={{ item }}
+  with_items: '{{ poudriere_build_jails }}'
+  tags:
+    - poudriere_config
+
+- include: files.yml
+  tags:
+    - poudriere_config
+    - build_config
+
+...

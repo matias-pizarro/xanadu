@@ -1,0 +1,10 @@
+---
+
+- name: create poudriere.conf
+  template: src=usr/local/etc/poudriere.conf.j2
+    dest="/usr/local/etc/poudriere.conf"
+    owner=0
+    group=0
+    mode=0644
+
+...
