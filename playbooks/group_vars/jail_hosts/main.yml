@@ -5,4 +5,15 @@ jails_base_ipv4: '10.0.{type_idx}.{jail_idx}'
 jails_ipv4_netmask: "255.255.255.0"
 jails_ipv6_netmask: "64"
 
+lo_if:
+  name: lo0
+  ipv4s:
+    - address: 127.0.0.1
+      netmask: 255.255.255.255
+      type: permanent
+  ipv6s:
+    - address: ::1
+      netmask: 128
+      type: permanent
+
 ...
