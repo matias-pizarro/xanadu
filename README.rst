@@ -141,3 +141,31 @@ If you add the following config to your .ssh/config... ::
 Get a human-readable representation of the dynamic inventory: ::
 
     ./hosts/site.py -d
+
+
+
+Create and deploy a letsencrypt cert in the letsencrypt jail
+============================================================
+
+    export DOMAINS="-d poudriere01.docbase.net"
+    export DIR=/tmp/letsencrypt-auto
+    mkdir -p $DIR
+    letsencrypt certonly -v --server https://acme-v01.api.letsencrypt.org/directory \
+    -a standalone --standalone-supported-challenges http-01 \
+    --email xxx@yyyy.net --agree-tos --non-interactive \
+    --expand \
+    --force-renewal --rsa-key-size 4096 --webroot-path=$DIR $DOMAINS
+
+    export JAIL=poudriere01
+    export RPROXY=rproxy01
+    export LETSENCRYPT=letsencrypt01
+    export LSDIR=poudriere01.docbase.net
+    mkdir -p /usr/jails/${RPROXY}/etc/ssl/${JAIL}/{certs,private}
+    chmod -R 750 /usr/jails/${RPROXY}/etc/ssl/${JAIL}
+    cp -fpH /usr/jails/${LETSENCRYPT}/usr/local/etc/letsencrypt/live/${LSDIR}/{cert.pem,chain.pem,fullchain.pem} /usr/jails/${RPROXY}/etc/ssl/${JAIL}/certs/
+    cp -fpH /usr/jails/${LETSENCRYPT}/usr/local/etc/letsencrypt/live/${LSDIR}/privkey.pem /usr/jails/${RPROXY}/etc/ssl/${JAIL}/private/
+    chmod -R 640 /usr/jails/${RPROXY}/etc/ssl/${JAIL}/{certs,private}/*
+    chown -R 0:80 /usr/jails/${RPROXY}/etc/ssl/${JAIL}
+    chown 0:80 /usr/jails/${RPROXY}/etc/ssl/certs/dhparam.pem
+    chmod 640 /usr/jails/${RPROXY}/etc/ssl/certs/dhparam.pem
+
