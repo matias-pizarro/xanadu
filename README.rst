@@ -144,8 +144,10 @@ Get a human-readable representation of the dynamic inventory: ::
 
 
 
-Create and deploy a letsencrypt cert in the letsencrypt jail
-============================================================
+Create and deploy a letsencrypt cert
+====================================
+
+in the letsencrypt jail
 
     export DOMAINS="-d poudriere01.docbase.net"
     export DIR=/tmp/letsencrypt-auto
@@ -155,6 +157,9 @@ Create and deploy a letsencrypt cert in the letsencrypt jail
     --email xxx@yyyy.net --agree-tos --non-interactive \
     --expand \
     --force-renewal --rsa-key-size 4096 --webroot-path=$DIR $DOMAINS
+
+
+on the host system
 
     export JAIL=poudriere01
     export RPROXY=rproxy01
