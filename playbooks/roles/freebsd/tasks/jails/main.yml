@@ -6,6 +6,11 @@
     - create_jails
     - config_jails
 
+- debug: msg="current jail is {{ jail_name }}"
+  tags: 
+    - create_jails
+    - config_jails
+
 - include: create.yml
   tags: 
     - create_jails
