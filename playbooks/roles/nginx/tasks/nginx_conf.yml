@@ -1,5 +1,13 @@
 ---
 
+- name: Create /usr/local/etc/nginx directory
+  file:
+    path=/usr/local/etc/nginx
+    state=directory
+    owner=80
+    group=80
+    mode=0755
+
 - name: create nginx.conf
   template: src=usr/local/etc/nginx/nginx.conf.j2
     dest="/usr/local/etc/nginx/nginx.conf"
