@@ -11,7 +11,7 @@
   register: jail_directory_exists
 
 - name: create jail
-  shell: ezjail-admin create {{ jail_name | quote }} '{% for ip in hostvars[jail].ext_if.ipv4s + hostvars[jail].ext_if.ipv6s %}{{ hostvars[jail].ext_if.name | quote }}|{{ ip.address | quote }}{% endfor %}{% for ip in hostvars[jail].lo_if.ipv4s + hostvars[jail].lo_if.ipv6s %},{{ hostvars[jail].lo_if.name | quote }}|{{ ip.address | quote }}{% endfor %}'
+  shell: ezjail-admin create {{ jail_name | quote }} '{% for ip in hostvars[jail].ext_if.ipv4s + hostvars[jail].ext_if.ipv6s %}{{ hostvars[jail].ext_if.name | quote }}|{{ ip.address | quote }}{% endfor %}{% if hostvars[jail].lo_if is defined %}{% for ip in hostvars[jail].lo_if.ipv4s + hostvars[jail].lo_if.ipv6s %},{{ hostvars[jail].lo_if.name | quote }}|{{ ip.address | quote }}{% endfor %}{% endif %}'
   when: jail_exists.stdout == "0" and jail_directory_exists.stat.exists == false
   notify: start jail
   register: jail_created
