@@ -20,7 +20,7 @@ jail_type: service
 jail_autorun: true
 jail_mounts:
   - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/mysql01/basejail', 'fs': 'nullfs', 'r': 'ro' }
-  - { 'mount': '/var/db/mysql01', 'on': '/usr/jails/mysql01/var/db/mysql', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/var/db/mysql01', 'on': '/usr/jails/mysql01/var/db/mysql', 'fs': 'nullfs', 'r': 'ro', 'owner': '88', 'group': '88' }
 
 features:
   - mysql_server

@@ -17,6 +17,7 @@ jails:
   - mail01.docbase.net
   - mysql01.docbase.net
   - didierghez01.docbase.net
+  - poudriere01.docbase.net
 
 features:
   - bsdstats
@@ -69,8 +70,8 @@ ansible_ssh_port: 222
 
 poudriere_parallel_jobs: 6
 poudriere_prepare_parallel_jobs: 6
-poudriere_url_base: https://pkg01.docbase.net/
-poudriere_builder_hostname: pkg01.docbase.net
+poudriere_url_base: https://poudriere01.docbase.net/
+poudriere_builder_hostname: poudriere01.docbase.net
 poudriere_build_jails:
   - 103amd64
 poudriere_make_confs:

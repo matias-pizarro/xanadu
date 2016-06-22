@@ -90,15 +90,15 @@
     outer_item: "{{ item }}"
 
 # commented until ansible 2.1 is released
-# - name: create jail mount destination if necessary
-#   file:
-#     path="{{ item_foo['on'] }}"
-#     state=directory
-#     owner=0
-#     group=0
-#     mode=0750
-#   with_items: "{{ jail_mounts }}"
-#   loop_control:
-#     loop_var: item_foo
+- name: create jail mount destination if necessary
+  file:
+    path="{{ item_foo['on'] }}"
+    state=directory
+    owner="{{ item_foo['owner'] if 'owner' in item_foo else '0' }}"
+    group="{{ item_foo['group'] if 'group' in item_foo else '0' }}"
+    mode="{{ item_foo['mode'] if 'mode' in item_foo else '0755' }}"
+  with_items: "{{ jail_mounts }}"
+  loop_control:
+    loop_var: item_foo
 
 ...
