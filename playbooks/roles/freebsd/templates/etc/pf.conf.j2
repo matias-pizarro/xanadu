@@ -18,7 +18,7 @@
 
   ### Interfaces ###
     ext_if              = "{{ ext_if.name }}"
-    lo_if               = "{{ loopback_if.name }}"
+    lo_if               = "{{ lo_if.name }}"
 {% if provides_jail_host and has_jails %}
     jails_if            = "{{ jails_if }}"
 {% endif %}
