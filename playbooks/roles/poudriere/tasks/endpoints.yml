@@ -1,0 +1,19 @@
+---
+
+- name: Create endpoint abi directories
+  file:
+    path=/usr/local/poudriere/endpoints/{{ item.abi }}
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+  with_items: "{{ poudriere_pkg_endpoints }}"
+
+- name: Create links from pkg endpoints to package repos
+  file:
+    state=link
+    src=/usr/local/poudriere/data/packages/{{ item.dir }}
+    dest=/usr/local/poudriere/endpoints/{{ item.abi }}/{{ item.alias }}
+  with_items: "{{ poudriere_pkg_endpoints }}"
+
+...

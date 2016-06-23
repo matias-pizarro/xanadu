@@ -18,6 +18,7 @@ jails:
   - mysql01.docbase.net
   - didierghez01.docbase.net
   - poudriere01.docbase.net
+  - pkg01.docbase.net
 
 features:
   - bsdstats
@@ -80,6 +81,11 @@ poudriere_pkg_lists:
   - server_pkg_list
 poudriere_build_options:
   - 103amd64-server-options
+poudriere_pkg_url: https://pkg.docbase.net
+poudriere_pkg_endpoints:
+  - dir: "103amd64-default-server"
+    abi: "freebsd:10:x86:64"
+    alias: "server"
 
 # temporary settings
 hide_logs: false

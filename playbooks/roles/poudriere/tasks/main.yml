@@ -24,4 +24,9 @@
     - poudriere_config
     - build_config
 
+- include: endpoints.yml
+  tags:
+    - poudriere_config
+    - build_config
+
 ...

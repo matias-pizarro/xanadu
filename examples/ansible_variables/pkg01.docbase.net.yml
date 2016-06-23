@@ -1,0 +1,40 @@
+---
+
+hostname: pkg01.docbase.net
+timezone: Europe/Berlin
+os: freebsd
+os_version: 10
+os_arch: x86
+os_word: 64
+
+installed_users:
+  - "{{ users.root }}"
+
+sshd_config_allow_users:
+  - "{{ users.root }}"
+
+jail_name: pkg01
+jail_index: 4
+jail_type: web
+jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/pkg01/basejail', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/usr/local/poudriere/data/packages', 'on': '/usr/jails/pkg01/usr/local/poudriere/data/packages', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/usr/local/poudriere/endpoints', 'on': '/usr/jails/pkg01/usr/local/www/endpoints', 'fs': 'nullfs', 'r': 'ro' }
+
+sites:
+  - name: pkg01
+    fqdns: pkg01.docbase.net
+    root: /usr/local/www/endpoints
+    autoindex: 'on'
+
+features:
+  - http_proxied
+  - nginx
+  - sshd
+
+requires: [reverse_proxy, letsencrypt]
+
+# temporary settings
+
+...

@@ -1,0 +1,52 @@
+---
+
+hostname: poudriere01.docbase.net
+timezone: Europe/Berlin
+os: freebsd
+os_version: 10
+os_arch: x86
+os_word: 64
+
+installed_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+sshd_config_allow_users:
+  - "{{ users.root }}"
+  - "{{ users.mpizarro }}"
+  - "{{ users.dpizarro }}"
+
+jail_name: poudriere01
+jail_index: 3
+jail_type: web
+jail_autorun: true
+jail_mounts:
+  - { 'mount': '/usr/jails/basejail', 'on': '/usr/jails/poudriere01/basejail', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/usr/local/share/poudriere/html', 'on': '/usr/jails/poudriere01/usr/local/www/html', 'fs': 'nullfs', 'r': 'ro' }
+  - { 'mount': '/usr/local/poudriere/data/logs/bulk', 'on': '/usr/jails/poudriere01/usr/local/www/data', 'fs': 'nullfs', 'r': 'ro', 'mode': '0775' }
+
+sites:
+  - name: poudriere01
+    fqdns: poudriere01.docbase.net
+    root: /usr/local/www/
+    index: index.html
+    autoindex: 'off'
+    locations:
+      - base: '/'
+        confs:
+          - ['alias', '/usr/local/www/html/']
+      - base: '/data/'
+        confs:
+          - ['alias', '/usr/local/www/data/']
+
+features:
+  - http_proxied
+  - nginx
+  - sshd
+
+requires: [reverse_proxy, letsencrypt]
+
+# temporary settings
+
+...

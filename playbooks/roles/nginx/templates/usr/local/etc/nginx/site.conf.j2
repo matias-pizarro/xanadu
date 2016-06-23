@@ -22,6 +22,9 @@ server {
 {% if 'index' in item %}
     index        {{ item.index }};
 {% endif %}
+{% if 'autoindex' in item %}
+    autoindex    {{ item.autoindex }};
+{% endif %}
 {% if 'max_upload_size' in item %}
 
     client_max_body_size  {{ item.max_upload_size }};
