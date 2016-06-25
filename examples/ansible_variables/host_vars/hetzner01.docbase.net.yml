@@ -84,7 +84,7 @@ poudriere_build_options:
 poudriere_pkg_url: https://pkg.docbase.net
 poudriere_pkg_endpoints:
   - dir: "103amd64-default-server"
-    abi: "freebsd:10:x86:64"
+    abis: ["FreeBSD:10:amd64", "freebsd:10:x86:64"]
     alias: "server"
 
 # temporary settings
