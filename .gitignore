@@ -3,3 +3,4 @@ playbooks/examine
 *.cache
 *.retry
 *.pyc
+typescript*
