@@ -20,6 +20,7 @@ packages:
   - 'sysutils/lsof'
   - 'sysutils/ncdu'
   - 'sysutils/pftop'
+  - 'textproc/the_silver_searcher'
 
 install_pkgs: yes
 
