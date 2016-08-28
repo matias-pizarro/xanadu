@@ -4,8 +4,8 @@
   file:
     path=/usr/local/etc/nginx
     state=directory
-    owner=80
-    group=80
+    owner=0
+    group=0
     mode=0755
 
 - name: create nginx.conf
