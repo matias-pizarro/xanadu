@@ -71,7 +71,7 @@
     group=80
     mode=0644
   with_items: "{{ proxied_sites }}"
-  when: "item.jail == hostname and not provides_reverse_proxy and 'path' in sites_available_exists"
+  when: "item.hostname == hostname and not provides_reverse_proxy and 'path' in sites_available_exists"
   notify: reload nginx
 
 - name: Create links for sites-enabled
@@ -80,7 +80,7 @@
     src=/usr/local/etc/nginx/sites-available/{{ item.name }}.conf
     dest=/usr/local/etc/nginx/sites-enabled/{{ item.name }}.conf
   with_items: "{{ proxied_sites }}"
-  when: "(provides_reverse_proxy or item.jail == hostname) and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
+  when: "(provides_reverse_proxy or item.hostname == hostname) and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
   notify: reload nginx
 
 ...

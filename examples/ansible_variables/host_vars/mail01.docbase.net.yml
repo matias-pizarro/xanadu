@@ -24,6 +24,9 @@ nginx_http_config_keepalive_timeout: 600
 sites:
   - name: mail
     fqdns: mail.docbase.net mail01.docbase.net
+    redirection:
+      permanent: true
+      https: true
     root: /usr/local/www/apache24/data
     allow_iframe: true
     sniff_content: true

@@ -219,18 +219,30 @@ def update_variables(inventory):
         proxy_configs = {}
         all_proxy_configs = ['default.conf']
         proxied_domains = {}
-        proxied_jails = [host.vars['jail_name'] for host in http_proxied.get_hosts()]
         for host in http_proxied.get_hosts():
-            proxy_configs[host.vars['hostname']] = ['default.conf']
             proxied_domains[host.vars['hostname']] = []
+            proxy_configs[host.vars['hostname']] = ['default.conf']
             for site in host.vars['sites']:
                 proxied_domains[host.vars['hostname']] += site['fqdns'].split()
                 proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
                 all_proxy_configs.append('{}.conf'.format(site['name']))
-                site['jail'] = host.vars['hostname']
+                site['hostname'] = host.vars['hostname']
                 site['jail_name'] = host.vars['jail_name']
+                site['proxy_upstream'] = site['name']
+                site['server_name__proxied'] = site['fqdns']
                 site['ipv4s'] = ' '.join([ipv4['address'] for ipv4 in host.vars['ext_if']['ipv4s']])  # should be vpn_ipv4 when vpn is set
                 proxied_sites.append(site)
+                if 'redirection' in site:
+                    status_code = '301' if site['redirection']['permanent'] else '302'
+                    scheme = 'https' if site['redirection']['https'] else 'http'
+                    fqdn = site['redirection']['fqdn'] if 'fqdn' in site['redirection'] else site['server_name__proxied'].split()[0]
+                    site['server_name__served'] = fqdn
+                else:
+                    status_code = '301'
+                    scheme = 'https'
+                    fqdn = '$host'
+                    site['server_name__served'] = site['server_name__proxied']
+                site['redirection_target'] = '{} {}://{}$request_uri'.format(status_code, scheme, fqdn)
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
         host.set_variable('proxied_sites', proxied_domains)

@@ -15,7 +15,7 @@ upstream {{ upstream.name }} {
 {% endif %}
 server {
     listen       localhost:80;
-    server_name  {{ item.fqdns }};
+    server_name  {{ item.server_name__served }};
 {% if 'root' in item %}
     root         {{ item.root }};
 {% endif %}
