@@ -48,6 +48,9 @@ ifconfig_{{ ext_if.name }}_aliases="\
 {% endfor %}
 "
 {% endif %}
+{% if provides_jail_host and has_jails %}
+ifconfig_{{ jails_if }}="inet 10.0.0.0 netmask 255.255.255.0"
+{% endif %}
 defaultrouter="{{ ext_if.gateway }}"
 {% endif %}
 {% if has_ipv6 %}
