@@ -1,0 +1,4 @@
+-r ./requirements.txt
+ipdb
+ipython==5.1.0
+pysqlite
