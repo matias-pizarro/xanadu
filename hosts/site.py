@@ -30,7 +30,7 @@ def get_hosts_list():
 
 
 def update_hosts(inventory, list_path):
-    """First computes a list of hosts and their jails, assigning them to relevant groups,
+    """First computes a list of hosts, their jails and proxied hosts, assigning them to relevant groups,
     then refreshes the inventory"""
 
     # Group containing all hosts
@@ -41,13 +41,18 @@ def update_hosts(inventory, list_path):
     jail_hosts = set()
     # Group containing all jailed hosts
     jails = set()
+    # Group containing all proxied hosts
+    proxied_hosts = set()
     for host in inventory.get_hosts():
         hosts.update([host.name])
         if len(host.vars.get('jails', [])):
             jail_hosts.update([host.name])
             jails.update(host.vars.get('jails', []))
+        if len(host.vars.get('proxied_hosts', [])):
+            proxied_hosts.update(host.vars.get('proxied_hosts', []))
     first_class_hosts = hosts.copy()
     hosts.update(jails)
+    hosts.update(proxied_hosts)
     with open(list_path, 'ab') as host_list:
         for host in hosts:
             host_list.write(host + '\n')
@@ -60,7 +65,10 @@ def update_hosts(inventory, list_path):
         host_list.write('[jails]\n')
         for host in jails:
             host_list.write(host + '\n')
-        host_list.write('[freebsd:children]\njails\njail_hosts')
+        host_list.write('[freebsd:children]\njails\njail_hosts\n')
+        host_list.write('[proxied_hosts]\n')
+        for host in proxied_hosts:
+            host_list.write(host + '\n')
     inventory.host_list = host_list.name
     inventory.refresh_inventory()
 
@@ -110,6 +118,14 @@ def update_vars(inventory):
             set_ips(host, jail)
             set_packages(jail)
             set_root_pubkeys(jail)
+        proxied_hosts_list = host.vars.get('proxied_hosts', [])
+        for proxied_host_name in proxied_hosts_list:
+            proxied_host = inventory.get_host(proxied_host_name)
+            proxied_host.vars['os'] = 'None'
+            proxied_host.vars['hosting'] = 'None'
+            proxied_host.vars['proxy'] = host.name
+            proxied_host.vars['is_jail'] = True
+            proxied_host.vars['is_not_jail'] = False
 
 
 def get_group(inventory, group_name):
@@ -214,8 +230,10 @@ def update_variables(inventory):
     set any and all variables that depend on these"""
 
     http_proxied = inventory.get_group('http_proxied')
-    if http_proxied:
+    proxied_hosts = inventory.get_group('proxied_hosts')
+    if http_proxied or proxied_hosts:
         proxied_sites = []
+        proxied_outsites = []
         proxy_configs = {}
         all_proxy_configs = ['default.conf']
         proxied_domains = {}
@@ -231,11 +249,10 @@ def update_variables(inventory):
                 site['proxy_upstream'] = site['name']
                 site['server_name__proxied'] = site['fqdns']
                 site['ipv4s'] = ' '.join([ipv4['address'] for ipv4 in host.vars['ext_if']['ipv4s']])  # should be vpn_ipv4 when vpn is set
-                proxied_sites.append(site)
                 if 'redirection' in site:
                     status_code = '301' if site['redirection']['permanent'] else '302'
                     scheme = 'https' if site['redirection']['https'] else 'http'
-                    fqdn = site['redirection']['fqdn'] if 'fqdn' in site['redirection'] else site['server_name__proxied'].split()[0]
+                    fqdn = site['fqdns'].split()[0]
                     site['server_name__served'] = fqdn
                 else:
                     status_code = '301'
@@ -243,9 +260,40 @@ def update_variables(inventory):
                     fqdn = '$host'
                     site['server_name__served'] = site['server_name__proxied']
                 site['redirection_target'] = '{} {}://{}$request_uri'.format(status_code, scheme, fqdn)
+                proxied_sites.append(site)
+        for host in proxied_hosts.get_hosts():
+            proxy = inventory.get_host(host.vars['proxy'])
+            rproxy = inventory.get_host(proxy.vars['providers']['reverse_proxy'])
+            proxied_domains[host.vars['hostname']] = []
+            proxy_configs[host.vars['hostname']] = ['default.conf']
+            for site in host.vars['sites']:
+                proxied_domains[host.vars['hostname']] += site['fqdns'].split()
+                proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
+                all_proxy_configs.append('{}.conf'.format(site['name']))
+                site['hostname'] = host.vars['hostname']
+                site['jail_name'] = rproxy.vars['jail_name']
+                status_code = '301' if site['redirection']['permanent'] else '302'
+                scheme = 'https' if site['redirection']['https'] else 'http'
+                fqdns = site['fqdns'].split()
+                fqdn = fqdns[0]
+                if site['redirection']['https']:
+                    site['server_name__proxied'] = site['fqdns']
+                else:
+                    while fqdn in fqdns:
+                        fqdns.remove(fqdn)
+                    while '' in fqdns:
+                        fqdns.remove('')
+                    site['server_name__proxied'] = ' '.join(fqdns)
+                site['server_name__served'] = fqdn
+                site['proxy_pass'] = '{}://{}'.format(scheme, site['redirection']['target_url'])
+                site['redirection']['target_domain'] = site['redirection']['target_url'].split('/')[0]
+                site['redirection_target'] = '{} {}://{}$request_uri'.format(status_code, scheme, fqdn)
+                proxied_outsites.append(site)
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
-        host.set_variable('proxied_sites', proxied_domains)
+        host.set_variable('proxied_domains', proxied_domains)
+        host.set_variable('proxied_sites', proxied_sites)
+        host.set_variable('proxied_outsites', proxied_outsites)
         host.set_variable('proxy_configs', proxy_configs)
         host.set_variable('all_proxy_configs', all_proxy_configs)
         host.set_variable('proxied_domains', proxied_domains)
@@ -254,7 +302,9 @@ def update_variables(inventory):
             for jail_name in jails_list:
                 jail = inventory.get_host(jail_name)
                 jail.vars['providers'] = host.vars['providers']
+                jail.set_variable('proxied_domains', proxied_domains)
                 jail.set_variable('proxied_sites', proxied_sites)
+                jail.set_variable('proxied_outsites', proxied_outsites)
                 jail.set_variable('proxy_configs', proxy_configs)
                 jail.set_variable('all_proxy_configs', all_proxy_configs)
                 jail.set_variable('proxied_domains', proxied_domains)

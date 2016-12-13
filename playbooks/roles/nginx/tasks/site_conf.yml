@@ -83,4 +83,23 @@
   when: "(provides_reverse_proxy or item.hostname == hostname) and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
   notify: reload nginx
 
+- name: set up outsites proxy redirections
+  template: src=usr/local/etc/nginx/outsite_proxy.conf.j2
+    dest="/usr/local/etc/nginx/sites-available/{{ item.name }}.conf"
+    owner=80
+    group=80
+    mode=0644
+  with_items: "{{ proxied_outsites }}"
+  when: "provides_reverse_proxy and 'path' in sites_available_exists"
+  notify: reload nginx
+
+- name: Create outsites links for sites-enabled
+  file:
+    state=link
+    src=/usr/local/etc/nginx/sites-available/{{ item.name }}.conf
+    dest=/usr/local/etc/nginx/sites-enabled/{{ item.name }}.conf
+  with_items: "{{ proxied_outsites }}"
+  when: "provides_reverse_proxy and 'path' in sites_available_exists and 'path' in sites_enabled_exists"
+  notify: reload nginx
+
 ...
