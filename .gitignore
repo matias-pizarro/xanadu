@@ -4,3 +4,4 @@ playbooks/examine
 *.retry
 *.pyc
 typescript*
+.work
