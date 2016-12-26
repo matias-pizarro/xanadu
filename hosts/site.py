@@ -241,7 +241,8 @@ def update_variables(inventory):
             proxied_domains[host.vars['hostname']] = []
             proxy_configs[host.vars['hostname']] = ['default.conf']
             for site in host.vars['sites']:
-                proxied_domains[host.vars['hostname']] += site['fqdns'].split()
+                fqdns = site['fqdns'].split()
+                proxied_domains[host.vars['hostname']] += fqdns
                 proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
                 all_proxy_configs.append('{}.conf'.format(site['name']))
                 site['hostname'] = host.vars['hostname']
@@ -252,7 +253,7 @@ def update_variables(inventory):
                 if 'redirection' in site:
                     status_code = '301' if site['redirection']['permanent'] else '302'
                     scheme = 'https' if site['redirection']['https'] else 'http'
-                    fqdn = site['fqdns'].split()[0]
+                    fqdn = fqdns[0]
                     site['server_name__served'] = fqdn
                 else:
                     status_code = '301'
@@ -261,14 +262,25 @@ def update_variables(inventory):
                     site['server_name__served'] = site['server_name__proxied']
                 site['redirection_target'] = '{} {}://{}$request_uri'.format(status_code, scheme, fqdn)
                 proxied_sites.append(site)
+        initial_list = []
         for host in outsite_hosts.get_hosts():
             proxy = inventory.get_host(host.vars['proxy'])
             rproxy = inventory.get_host(proxy.vars['providers']['reverse_proxy'])
-            proxied_domains[host.vars['hostname']] = []
+            if not initial_list:
+                initial_list += list(inventory.get_host(proxy.vars['providers']['jail_host']).vars['jails'])
+                initial_list += [inventory.get_host(proxy.vars['providers']['jail_host']).vars['hostname']]
+                for fqdns in proxied_domains.values():
+                    for fqdn in fqdns:
+                        try:
+                            initial_list.remove(fqdn)
+                        except ValueError:
+                            pass
             proxy_configs[host.vars['hostname']] = ['default.conf']
             for site in host.vars['outsites']:
                 fqdns = site['fqdns'].split()
-                proxied_domains[host.vars['hostname']] += fqdns
+            for site in host.vars['outsites']:
+                fqdns = site['fqdns'].split()
+                initial_list += fqdns
                 proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
                 all_proxy_configs.append('{}.conf'.format(site['name']))
                 site['hostname'] = host.vars['hostname']
@@ -289,6 +301,7 @@ def update_variables(inventory):
                     site['proxied_domains'] = fqdns[0]
                     site['redirected_domains'] = ' '.join(fqdns[1:])
                 proxied_outsites.append(site)
+            proxied_domains[rproxy.vars['hostname']] = initial_list
     jail_hosts = inventory.get_group('jail_hosts')
     for host in jail_hosts.get_hosts():
         host.set_variable('proxied_domains', proxied_domains)

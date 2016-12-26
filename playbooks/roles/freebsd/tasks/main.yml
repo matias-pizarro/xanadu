@@ -30,6 +30,11 @@
 - include: openntpd.yml
   when: has_openntpd
 
+- include: ssl.yml
+  tags:
+    - ssl
+    - letsencrypt
+
 - include: ezjail.yml
   when: has_ezjail
 

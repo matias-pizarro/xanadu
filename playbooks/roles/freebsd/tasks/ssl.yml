@@ -1,0 +1,30 @@
+---
+
+- name: copy letsencrypt renewal script
+  copy:
+    src=files/usr/local/bin/letsencrypt_renewal.sh
+    dest=/usr/local/bin
+    owner=0
+    group=0
+    mode=0500
+  when: provides_jail_host
+
+- name: configure letsencrypt daily execution
+  copy:
+    src=files/usr/local/etc/periodic/daily/9999.letsencrypt-renewal
+    dest=/usr/local/etc/periodic/daily
+    owner=0
+    group=0
+    mode=0500
+  when: provides_jail_host
+
+- name: configure letsencrypt renewal script
+  template: src=usr/local/etc/letsencrypt.conf.j2
+    dest=/usr/local/etc/letsencrypt.conf
+    owner=0
+    group=0
+    mode=0644
+  when: provides_jail_host
+  # notify: partial pf flush
+
+...
