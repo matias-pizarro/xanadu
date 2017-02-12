@@ -1,6 +1,9 @@
 upstream {{ item.proxy_upstream }}_backend {
-    # server       unix:/var/run/nginx/{{ item.jail_name }}/nginx.sock;
+{% if item.listen_to == 'tcp/ip' %}
     server     {{ item.ipv4s }};
+{% elif item.listen_to == 'unix_socket' %}
+    server       unix:/var/run/nginx/{{ item.jail_name }}/nginx.sock;
+{% endif %}
     keepalive  60;
 }
 

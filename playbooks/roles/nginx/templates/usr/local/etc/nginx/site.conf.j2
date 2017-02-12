@@ -14,7 +14,11 @@ upstream {{ upstream.name }} {
 {% endfor %}
 {% endif %}
 server {
+{% if item.listen_to == 'tcp/ip' %}
     listen       localhost:80;
+{% elif item.listen_to == 'unix_socket' %}
+    listen       unix:/var/run/nginx/{{ item.jail_name }}/nginx.sock;
+{% endif %}
     server_name  {{ item.server_name__served }};
 {% if 'root' in item %}
     root         {{ item.root }};
@@ -37,10 +41,16 @@ server {
 {% if conf[0] == 'location' %}
         {{ conf[0] }} {{ conf[1] }}
 {% else %}
-        {{ conf[0] }}  {{ conf[1] }};
+        {{ conf[0] }}{% if conf|length > 1 %}  {{ conf[1] }}{% endif %};
 {% endif %}
 {% endfor %}
     }
+{% endfor %}
+{% endif %}
+{% if 'error_pages' in item %}
+
+{% for error_page in item.error_pages %}
+    error_page  {{ error_page.status_codes }}  {{ error_page.path }};
 {% endfor %}
 {% endif %}
 {% if 'includes' in item %}
