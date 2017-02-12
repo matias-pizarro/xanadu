@@ -1,7 +1,7 @@
 ---
 
 provides:
-  - mysql_server
+  - mysql_client
 
 packages:
   - 'databases/percona56-client'
