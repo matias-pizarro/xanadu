@@ -66,6 +66,22 @@ ifconfig_{{ ext_if.name }}_ipv6="inet6 {{ ipv6.address }} prefixlen {{ ipv6.netm
 ipv6_defaultrouter="{{ ipv6.gateway }}"
 {% endif %}
 {% endif %}
+{% if provides_jail_host and has_jails %}
+
+
+# JAILS #
+############
+{% if jail_sysvipc_allowed %}
+jail_sysvipc_allow="YES"
+{% else %}
+jail_sysvipc_allow="NO"
+{% endif %}
+{% if has_ezjail %}
+
+# ezjail
+ezjail_enable="YES"
+{% endif %}
+{% endif %}
 
 
 # SERVICES #
@@ -101,11 +117,6 @@ cron_flags="$cron_flags -J 15"
 
 # rpc
 rpcbind_enable="NO"
-{% endif %}
-{% if has_ezjail %}
-
-# ezjail
-ezjail_enable="YES"
 {% endif %}
 {% if has_openntpd %}
 
@@ -171,6 +182,11 @@ sogod_enable="YES"
 slapd_enable="YES"
 slapd_flags="-h 'ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/'"
 slapd_sockets="/var/run/openldap/ldapi"
+{% endif %}
+{% if has_postgres_server %}
+
+# postgres
+postgresql_enable="YES"
 {% endif %}
 {% if has_mysql_server %}
 

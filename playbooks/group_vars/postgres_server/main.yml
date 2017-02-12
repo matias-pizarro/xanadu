@@ -1,0 +1,15 @@
+---
+
+use_socket: true
+socket: /var/run/postgres/.s.PGSQL.5432
+use_tcp: true
+tcp_port: 5432
+parameters: allow.sysvipc=1
+
+provides:
+  - postgres_server
+
+packages:
+  - 'databases/postgresql96-server'
+
+...

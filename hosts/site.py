@@ -118,6 +118,10 @@ def update_vars(inventory):
             set_ips(host, jail)
             set_packages(jail)
             set_root_pubkeys(jail)
+        if host.vars['provides_postgres_server']:
+            host.vars['jail_sysvipc_allowed'] = True
+        else:
+            host.vars['jail_sysvipc_allowed'] = False
         outsite_hosts_list = host.vars.get('outsite_hosts', [])
         for outsite_host_name in outsite_hosts_list:
             outsite_host = inventory.get_host(outsite_host_name)

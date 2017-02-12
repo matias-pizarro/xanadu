@@ -40,6 +40,8 @@ has_openntpd: false
 has_pf: false
 has_php: false
 has_postfix: false
+has_postgres_client: false
+has_postgres_server: false
 has_slapd: false
 has_smartmontools: false
 has_sogo: false
@@ -60,7 +62,7 @@ provides_memcached_server: false
 provides_mysql_server: false
 provides_nfs_server: false
 provides_ntp_server: false
-provides_postgresql_server: false
+provides_postgres_server: false
 provides_poudriere: false
 provides_reverse_proxy: false
 provides_samba_server: false

@@ -54,8 +54,8 @@
 {% if provides_samba_server %}
     samba_jail          = "{{ hostvars[providers['samba_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
-{% if provides_postgresql_server %}
-    postgresql_jail     = "{{ hostvars[providers['postgresql_server']].ext_if.ipv4s.0.address }}"
+{% if provides_postgres_server %}
+    postgres_jail       = "{{ hostvars[providers['postgres_server']].ext_if.ipv4s.0.address }}"
 {% endif %}
 {% if provides_mysql_server %}
     mysql_jail          = "{{ hostvars[providers['mysql_server']].ext_if.ipv4s.0.address }}"
@@ -89,8 +89,8 @@
     samba_udp           = "{ 137 138 }"
     samba_tcp           = "{ 139 445 }"
 {% endif %}
-{% if provides_postgresql_server %}
-    postgresql          = "5432"
+{% if provides_postgres_server %}
+    postgres            = "5432"
 {% endif %}
 {% if provides_mysql_server %}
     mysql               = "3306"
@@ -269,6 +269,12 @@
   # Allow incoming http to allowed jails
   pass in on $jails_if proto tcp from $reverse_proxy to any port $http flags S/SA keep state
   pass in on $jails_if proto udp from $reverse_proxy to any port $http
+{% endif %}
+{% if provides_postgres_server %}
+
+  # Allow incoming postgres to mail server
+  pass in on $jails_if proto tcp from any to $postgres_jail port $postgres flags S/SA keep state
+  pass in on $jails_if proto udp from any to $postgres_jail port $postgres
 {% endif %}
 {% if provides_mysql_server %}
 

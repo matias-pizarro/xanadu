@@ -15,3 +15,6 @@ net.inet.ip.redirect={{ net_inet_ip_redirect }}
 net.inet.ip.sourceroute={{ net_inet_ip_sourceroute }}
 net.inet.ip.accept_sourceroute={{ net_inet_ip_accept_sourceroute }}
 net.inet.icmp.bmcastecho={{ net_inet_icmp_bmcastecho }}
+{% if provides_jail_host and jail_sysvipc_allowed %}
+security.jail.sysvipc_allowed=1
+{% endif %}

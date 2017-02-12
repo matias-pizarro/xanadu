@@ -1,0 +1,9 @@
+---
+
+provides:
+  - postgres_client
+
+packages:
+  - 'databases/postgresql96-client'
+
+...
