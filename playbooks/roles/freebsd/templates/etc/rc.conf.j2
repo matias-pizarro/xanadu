@@ -159,7 +159,7 @@ php_fpm_enable="YES"
 
 # uwsgi
 uwsgi_enable="YES"
-{% if uwsgi_profiles %}
+{% if uwsgi_profiles is defined %}
 uwsgi_profiles="{% for profile in uwsgi_profiles %}{{ profile.name }}{% endfor %}"
 {% for profile in uwsgi_profiles %}
 uwsgi_{{ profile.name }}_flags="{{ profile.flags }}"
