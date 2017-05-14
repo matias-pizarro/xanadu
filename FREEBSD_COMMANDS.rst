@@ -215,10 +215,27 @@ Do a reverse lookup on address 123.231.123.231
 ZFS backup
 ==========
 
-send a backup of 'tank' on hetzner01 to a backup sub-filesystem on hetzner02 (full snapshot path without pool name / not mounted / force rollback)
+on the backup machine, prepare the filesystem that will receive the backup. Generally you will want to create it unmounted
 
-    zfs send -R tank@backup | ssh hetzner02.docbase.net zfs receive -dvuF tank/BACKUP/hetzner01
+    zfs create -u -o canmount=noauto -o mountpoint=/backup/hetzner02 tank/BACKUP/hetzner02
 
+
+send a backup of 'tank' from hetzner02 to a backup sub-filesystem to be stored on hetzner01 (full snapshot path without pool name / not mounted / force rollback)
+
+    TIMESTAMP=`date "+%Y%m%d%H%M%S"`
+    zfs snapshot -r tank@${TIMESTAMP}
+    zfs send -R tank@${TIMESTAMP} | ssh -p 22 hetzner01.docbase.net zfs receive -dvuF tank/BACKUP/hetzner02
+
+
+on the backup machine, make sure all backed-up filesystems are not mounted automatically on reboot
+
+    for fs in `zfs list -rH -o name tank/BACKUP/hetzner02`; do zfs set canmount=noauto ${fs}; done
+
+
+check the status of your backed-up pools
+
+    zfs list -r -d 1 -o name,used,mounted,canmount,mountpoint tank/BACKUP
+    zfs list -r -o name,used,mounted,canmount,mountpoint tank/BACKUP/hetzner02
 
 
 RSYNC
