@@ -1,5 +1,6 @@
 RPROXY={{ hostvars[providers['reverse_proxy']].jail_name }}
 LETSENCRYPT={{ hostvars[providers['letsencrypt']].jail_name }}
+# jail_name#let's encrypt dir#domains list
 JAIL_DOMAINS=( \
 {% for hostname, fqdns in proxied_domains.iteritems() %}
 "{{ hostvars[hostname].jail_name }}#{% if hostvars[hostname].letsencrypt_conf is defined %}{{ hostvars[hostname].letsencrypt_conf }}{% else %}{{ fqdns[0] }}{% endif %}#{{ fqdns|join(' ') }}" \

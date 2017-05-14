@@ -245,6 +245,8 @@ def update_variables(inventory):
             proxied_domains[host.vars['hostname']] = []
             proxy_configs[host.vars['hostname']] = ['default.conf']
             for site in host.vars['sites']:
+                if host.vars.get('dev_jail', False): 
+                    site['fqdns'] = host.vars['hostname']
                 fqdns = site['fqdns'].split()
                 proxied_domains[host.vars['hostname']] += fqdns
                 proxy_configs[host.vars['hostname']].append('{}.conf'.format(site['name']))
@@ -313,7 +315,6 @@ def update_variables(inventory):
         host.set_variable('proxied_outsites', proxied_outsites)
         host.set_variable('proxy_configs', proxy_configs)
         host.set_variable('all_proxy_configs', all_proxy_configs)
-        host.set_variable('proxied_domains', proxied_domains)
         if 'providers' in host.vars:
             jails_list = host.vars.get('jails', [])
             for jail_name in jails_list:
@@ -324,7 +325,6 @@ def update_variables(inventory):
                 jail.set_variable('proxied_outsites', proxied_outsites)
                 jail.set_variable('proxy_configs', proxy_configs)
                 jail.set_variable('all_proxy_configs', all_proxy_configs)
-                jail.set_variable('proxied_domains', proxied_domains)
                 for provision, provider_name in host.vars['providers'].iteritems():
                     provider = inventory.get_host(provider_name)
                     if provider == host or provider.vars['jail_host'] == jail.vars['jail_host']:
