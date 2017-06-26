@@ -4,6 +4,6 @@ provides:
   - letsencrypt
 
 packages:
-  - 'security/py-letsencrypt'
+  - 'security/py-certbot'
 
 ...
