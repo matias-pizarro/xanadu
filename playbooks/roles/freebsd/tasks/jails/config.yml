@@ -84,21 +84,37 @@
     group=0
     mode=0664
   notify: restart jail
+  register: jail_mounts_changed
   tags: set_jail_mounts
+
+# - debug: var=jail_mounts_changed
+#   tags: set_jail_mounts
+
+- name: create first half of non-existent jail mounts
+  shell: for DIR in `/usr/local/bin/ag --nonumber --nofilename "/" /etc/fstab.* | grep "/" | awk '{print $1}'`; do if [ ! -e "${DIR}" ]; then echo "creating ${DIR}"; mkdir -p ${DIR}; fi; done
+  when: jail_mounts_changed.changed == true
+  notify: restart jail
+  tags: create_jails
+
+- name: create second half of non-existent jail mounts
+  shell: for DIR in `/usr/local/bin/ag --nonumber --nofilename "/" /etc/fstab.* | grep "/" | awk '{print $2}'`; do if [ ! -e "${DIR}" ]; then echo "creating ${DIR}"; mkdir -p ${DIR}; fi; done
+  when: jail_mounts_changed.changed == true
+  notify: restart jail
+  tags: create_jails
 
 - set_fact:
     outer_item: "{{ item }}"
 
 # commented until ansible 2.1 is released
-- name: create jail mount destination if necessary
-  file:
-    path="{{ item_foo['on'] }}"
-    state=directory
-    owner="{{ item_foo['owner'] if 'owner' in item_foo else '0' }}"
-    group="{{ item_foo['group'] if 'group' in item_foo else '0' }}"
-    mode="{{ item_foo['mode'] if 'mode' in item_foo else '0755' }}"
-  with_items: "{{ jail_mounts }}"
-  loop_control:
-    loop_var: item_foo
+# - name: create jail mount destination if necessary
+#   file:
+#     path="{{ item_foo['on'] }}"
+#     state=directory
+#     owner="{{ item_foo['owner'] if 'owner' in item_foo else '0' }}"
+#     group="{{ item_foo['group'] if 'group' in item_foo else '0' }}"
+#     mode="{{ item_foo['mode'] if 'mode' in item_foo else '0755' }}"
+#   with_items: "{{ jail_mounts }}"
+#   loop_control:
+#     loop_var: item_foo
 
 ...
