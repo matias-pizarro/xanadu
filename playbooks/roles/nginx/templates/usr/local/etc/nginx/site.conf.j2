@@ -47,10 +47,22 @@ server {
     }
 {% endfor %}
 {% endif %}
-{% if 'error_pages' in item %}
+{% if 'confs' in item %}
 
+{% for conf in item.confs %}
+    {{ conf[0] }}{% if conf|length > 1 %}  {{ conf[1] }}{% endif %};
+{% endfor %}
+{% endif %}
+{% if 'error_pages' in item %}
 {% for error_page in item.error_pages %}
+
     error_page  {{ error_page.status_codes }}  {{ error_page.path }};
+{% if 'location' in error_page %}
+    location  {{ error_page.path }} {
+        root  {{ error_page.location }};
+        internal;
+    }
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if 'includes' in item %}
